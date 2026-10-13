@@ -2,13 +2,12 @@
 
 PCを起動したままにせず、GitHubの標準Linuxランナーで既存CLIを実行します。ゲーム・カード・楽曲・CPUの計算は変更していません。初回は2試合までに制限します。
 
-**現在はPrivateです。Public化前に、[公開前調査](docs/simulation/public-readiness-20261013.md)の個人メールと開発資料への対応を決めてください。公開設定・履歴変更は自動で行いません。**
+**この公開用リポジトリは、Private開発リポジトリの過去履歴を含まない1コミットのスナップショットとして作成しました。公開前に行った調査は[公開前調査](docs/simulation/public-readiness-20261013.md)に保存しています。**
 
 ## 初回の実行
 
-1. この変更をmainへ取り込みます。手動起動にはdefault branchへのworkflow登録が必要です。
-2. GitHubで **Actions → Balance simulation → Run workflow** を開き、取り込み後のmainを選びます。
-3. 初回は以下でRun workflowを押します。
+1. GitHubで **Actions → Balance simulation → Run workflow** を開き、mainを選びます。
+2. 初回は以下でRun workflowを押します。
 
 | 項目 | 初回の値 |
 | --- | --- |
