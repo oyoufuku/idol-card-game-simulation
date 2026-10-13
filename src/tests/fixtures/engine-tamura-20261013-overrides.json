@@ -1,0 +1,20 @@
+{
+  "C-random": {
+    "name": "C-random",
+    "normal": "1c6f4763057f99078524ec9942049311153ae2f1679cbb4eeff99db44abdf035",
+    "compact": "1f8f3441bf94e2fe953a82822786ff241c8f83226edf3053cb8422d49e4ad11e",
+    "execution": "6f9ae0efb4b4ae99adca3c61fa4dac7daefa666c0c5e88101539a774aafdeefd"
+  },
+  "E-random": {
+    "name": "E-random",
+    "normal": "e78b7a13ca4e54f238dca7fc80489a15288fe3792b9a59c3149e8db1597983bd",
+    "compact": "884e50fd53596cf5ed3499614315a057372a90fadc880be27397f27c433640b1",
+    "execution": "3f4f339d54c17af32cf87b2244bc58f6253122faa9fadab740358e091de30ba7"
+  },
+  "O-random": {
+    "name": "O-random",
+    "normal": "10e7dfe8ee21f51da636c62dd0deed3819c283120f3f623e8cb489a73e8d2821",
+    "compact": "dfd17d4cf148554f7d6fd9d900ba2964636dfe64c6cf88743ad26ac82baacb6f",
+    "execution": "3b2ebef0a03a4145ea0a618778c076823db9e3317399cd1d5aa471ea3125e11a"
+  }
+}

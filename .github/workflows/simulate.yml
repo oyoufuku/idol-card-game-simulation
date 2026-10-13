@@ -1,0 +1,133 @@
+name: Balance simulation
+run-name: Simulation ${{ inputs.scenario }} / ${{ inputs.mode }} / seed ${{ inputs.seed }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: 'CUSTOM, A=legacy+normal, B=balanced+normal, C=balanced+charge/BURST'
+        type: choice
+        options: [CUSTOM, A, B, C]
+        default: CUSTOM
+      mode:
+        description: Simulation mode (A/B/C require archetype)
+        type: choice
+        options: [archetype, random]
+        default: archetype
+      archetype_selection:
+        description: Construction (CUSTOM only)
+        type: choice
+        options: [balanced, legacy]
+        default: balanced
+      cpu_strategy:
+        description: CPU (CUSTOM only; charge axis=CHARGE, others=BURST by default)
+        type: choice
+        options: [burst-charge-archetype, normal, charge-archetype, burst]
+        default: burst-charge-archetype
+      matches_per_matchup:
+        description: ARCHETYPE games per matchup, even number INCLUDING mirrors
+        type: number
+        default: 2
+      random_matches:
+        description: RANDOM total games (1/100/1000/5000)
+        type: number
+        default: 1
+      seed:
+        description: Reproducible seed
+        type: number
+        default: 1
+      workers:
+        description: 0=auto (at most 4); do not exceed runner CPU count
+        type: number
+        default: 0
+      fast_simulation:
+        description: Skip presentation effects and charge trace
+        type: boolean
+        default: true
+      cpu_search:
+        description: Shared search precision for both CPU strategies
+        type: choice
+        options: [two-stage, exhaustive]
+        default: two-stage
+      preview_candidates:
+        description: Exact preview candidates in two-stage search
+        type: choice
+        options: ['100', '200', '300']
+        default: '100'
+      max_new_matches:
+        description: New-game limit for this run (2=smoke test, 100=benchmark, 0=all remaining)
+        type: number
+        default: 2
+      runtime_minutes:
+        description: Graceful stop before the 6-hour job limit (1-330)
+        type: number
+        default: 300
+      retention_days:
+        description: Artifact retention (1-90 days, default 7)
+        type: number
+        default: 7
+      resume_run_id:
+        description: Previous Actions run ID to download and resume; blank=new run
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: balance-simulation-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@a8198c4bff370c8506180b035930dea56dbd5288 # v5
+        with:
+          version: '11.19.0'
+          cache: false
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Validate inputs and simulation plan
+        id: prepare
+        env:
+          SIMULATION_INPUTS: ${{ toJSON(inputs) }}
+        run: node --import tsx scripts/actions-simulation.ts prepare
+      - name: Restore previous checkpoint artifact
+        if: steps.prepare.outputs.resume_run_id != ''
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.prepare.outputs.resume_run_id }}
+          pattern: simulation-results-*
+          merge-multiple: false
+          path: simulation-results/restored
+      - name: Simulate with shared game engine
+        id: simulation
+        run: node --import tsx scripts/actions-simulation.ts run
+      - name: Save results including incomplete checkpoints
+        id: upload
+        if: always() && steps.prepare.outcome == 'success'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: ${{ steps.prepare.outputs.artifact_name }}
+          path: simulation-results/remote/
+          if-no-files-found: error
+          retention-days: ${{ steps.prepare.outputs.retention_days }}
+          compression-level: 6
+      - name: Report artifact upload status
+        if: always()
+        env:
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          node -e 'const fs=require("node:fs");const outcome=process.env.UPLOAD_OUTCOME;fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\nArtifact upload: **${outcome}**.\n${process.env.ARTIFACT_URL||"No artifact URL; checkpoint recovery is not confirmed."}\n`);if(outcome!=="success")console.log("::warning::Artifact upload did not succeed; do not assume results were saved.");'

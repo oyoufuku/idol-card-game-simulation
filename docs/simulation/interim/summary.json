@@ -1,0 +1,38 @@
+{
+  "seed": 1,
+  "mode": "random",
+  "configuration": {
+    "randomMatches": 100,
+    "matchesPerMatchup": 10,
+    "variants": 3,
+    "workers": 1
+  },
+  "catalog": {
+    "idols": 48,
+    "songs": 22
+  },
+  "cpu": "shared exhaustive 8P5; points > outcome > appeal difference > final fatigue; public snapshot only",
+  "matchesPerMatchupIncludesMirrors": true,
+  "winRateDefinition": "wins / team appearances; draws count in denominator; no-sample rates are 0 with selections=0",
+  "notes": [
+    "タグ3/4はCodex用メンバーに列がないため元メンバーG/HをID照合",
+    "試合間・worker間でseedを分離。mirrorは同一デッキ・同一seed・同一編成でP1/P2を交換",
+    "BURSTは通常と強制の合計。平均Appealは7ラウンドの試合累計",
+    "AUTO/CENTERは効果が発生したパフォーマンス単位で計数。READYは状態遷移回数"
+  ],
+  "random": {
+    "games": 100,
+    "elapsedSeconds": 255.364056318,
+    "incompleteTiming": false,
+    "resumedGames": 100,
+    "p1Wins": 53,
+    "p2Wins": 47,
+    "draws": 0
+  },
+  "totalElapsedSeconds": 0.063794263,
+  "archetypeProgress": {
+    "completed": 196,
+    "planned": 450,
+    "status": "paused; checkpoint saved, matchup statistics not finalized"
+  }
+}

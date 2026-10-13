@@ -1,0 +1,1375 @@
+{
+  "source": {
+    "specification": "案_48人22曲_Codex実装用_最終確定_20261011.xlsx",
+    "memberSheet": "Codex用メンバー（修正シートも同一）",
+    "songSheet": "Codex用楽曲",
+    "cardDefinitionsFile": "src/data/idols.ts",
+    "songDefinitionsFile": "src/data/songs.ts",
+    "repositoryRoot": "/workspace/idol-card-game",
+    "gitCommit": "e1e465d919ddfe8892cc589fdb6128056e2ae715",
+    "inputFingerprint": "7767efd628c644ba626b48f279d65e08c32cecb0830780fad818dea6e034f76c",
+    "constructionPolicy": "effect-aware-v5",
+    "historicalDocument": "docs/simulation/normalized-balance-20261010.md（履歴）",
+    "currentDocument": "docs/simulation/final-balance-20261011.md",
+    "usesFixtureAsInput": false,
+    "usesWorkbookAsRuntimeInput": false,
+    "usesGeneratedJsonAsConstructionInput": false,
+    "confirmedRulings": [
+      {
+        "cardIds": [
+          5
+        ],
+        "rule": "JOYFUL LOVEでキュート上書きを解除して元の属性へ戻す。PLAINが最優先。"
+      },
+      {
+        "cardIds": [
+          16
+        ],
+        "rule": "BURST終了時の基礎低下・使用済みリセット後、同じ終了処理の条件判定で成立すれば再BURST。条件成立中は毎ラウンド可能。"
+      },
+      {
+        "cardIds": [
+          32,
+          38,
+          44
+        ],
+        "rule": "合法BACKSと交換後、最後に実消費したチャージまで回復。今回未消費でも同じ。既にBACKSなら回復のみ。次の編成で再配置可能。"
+      },
+      {
+        "cardIds": [
+          47
+        ],
+        "rule": "ステージ5人の累計BURST履歴が条件。本人と連鎖内発動済みを除くステージからランダム2人を強制BURST。共通ルール末尾の旧4人全員は採用しない。"
+      }
+    ]
+  },
+  "workbookSHA256": "47d9b71a76ade49af4b9ff6788d19bd7a8a7d7cb977ad41f17522d051b2cbfbd",
+  "checkedCards": 48,
+  "checkedFocusedCards": 16,
+  "excelMismatchesBeforeAudit": 0,
+  "approvedDescriptionOverrideCards": [
+    16,
+    32,
+    38,
+    44
+  ],
+  "archetypeTeamsChecked": 27,
+  "memberEntriesChecked": 216,
+  "latestFixtureIsRuntimeInput": false,
+  "gameEngineLogicChanged": false,
+  "cards": [
+    {
+      "id": 1,
+      "name": "石森璃花",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "パフォーマンス終了時、そのラウンドの相手チーム総Appealが30以上。",
+          "current": "パフォーマンス終了時、そのラウンドの相手チーム総Appealが30以下。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.01",
+        "name": "石森璃花",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "Appeal低下",
+          "総Appeal値"
+        ],
+        "base": 3,
+        "A": "対面の相手メンバーがクールなら、その対面のAppealを-2する。",
+        "Bcond": "パフォーマンス終了時、そのラウンドの相手チーム総Appealが30以下。",
+        "B": "次のパフォーマンス中、相手チーム全員のAppealを-1する。",
+        "C": null
+      }
+    },
+    {
+      "id": 2,
+      "name": "遠藤理子",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.02",
+        "name": "遠藤理子",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "疲労回復",
+          "Appeal低下"
+        ],
+        "base": 4,
+        "A": "自身が受ける疲労値の増加量を1減らす（最低0）。",
+        "Bcond": "パフォーマンス終了時、自身の疲労値が2以上。",
+        "B": "次のパフォーマンス中、対面のAppealを-4する。",
+        "C": null
+      }
+    },
+    {
+      "id": 3,
+      "name": "小田倉麗奈",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.03",
+        "name": "小田倉麗奈",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "対クール",
+          "対単一属性"
+        ],
+        "base": 2,
+        "A": "相手ステージのクール人数と同じ値だけ、対面のAppealをマイナスする。",
+        "Bcond": "パフォーマンス終了時、相手ステージに存在する属性の種類数が2以下。",
+        "B": "次のパフォーマンス中、相手メンバー全員をクールとしても扱う。",
+        "C": null
+      }
+    },
+    {
+      "id": 4,
+      "name": "小島凪紗",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "B": {
+          "old": "味方1人を選び、自身とその味方の疲労値を入れ替える。選んだ味方は、次のパフォーマンス終了まで相手由来の効果を受けない。この効果無効は、相手側の効果適用より優先する。",
+          "current": "味方1人を選び、自身とそのメンバーの疲労値を入れ替える。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.04",
+        "name": "小島凪紗",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "疲労回復",
+          "フォーメーション固定"
+        ],
+        "base": 3,
+        "A": "自身がBACKSにいる間、相手側または楽曲由来の数値的なAppeal減少が味方FRONTまたはCENTERに適用される場合、その減少量を1軽減する。スキル無効化・属性変更・疲労ペナルティは対象外。",
+        "Bcond": "BACKSで累計2パフォーマンスを終了する。",
+        "B": "味方1人を選び、自身とそのメンバーの疲労値を入れ替える。",
+        "C": null
+      }
+    },
+    {
+      "id": 5,
+      "name": "谷口愛季",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "B": {
+          "old": "次のパフォーマンス中、自チーム8人全員の属性をキュートのみに上書きする。",
+          "current": "次のパフォーマンス中、自チーム8人全員の属性をキュートのみに上書きする。元の属性および他の追加属性はその間失われ、効果終了後に元の属性状態へ戻る。PLAINが適用される場合はPLAINを優先する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.05",
+        "name": "谷口愛季",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "キュート",
+          "Appeal低下"
+        ],
+        "base": 5,
+        "A": "自チームのFRONT-LとFRONT-Rがともにキュートなら、対面のAppealを-2する。",
+        "Bcond": "キュート楽曲でCENTERとしてパフォーマンス終了。",
+        "B": "次のパフォーマンス中、自チーム8人全員の属性をキュートのみに上書きする。元の属性および他の追加属性はその間失われ、効果終了後に元の属性状態へ戻る。PLAINが適用される場合はPLAINを優先する。",
+        "C": "両チームのキュートではないメンバーのAppealを-1する。自チームも対象。"
+      }
+    },
+    {
+      "id": 6,
+      "name": "中嶋優月",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "パフォーマンス終了時、そのパフォーマンス中にBURST中だったメンバーが両チーム合計3人以上。",
+          "current": "パフォーマンス終了時、自チームのステージにユーモアが3人以上。"
+        },
+        "B": {
+          "old": "自身以外の味方1人を選び、強制BURSTさせる。対象のB効果も発動する。強制BURSTは対象の通常BURST使用済み状態を消費せず、通常BURST使用済みのメンバーも対象にできる。",
+          "current": "自分以外のユーモアの味方1人をランダムに強制BURSTさせる。対象のB効果も発動する。強制BURSTは通常BURST使用済み状態を消費せず、通常BURST使用済みのメンバーも対象にできる。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.06",
+        "name": "中嶋優月",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "バースト",
+          "ユーモア"
+        ],
+        "base": 3,
+        "A": "両チームで現在BURST中のメンバー数の合計だけ、自身のAppealをプラスする。",
+        "Bcond": "パフォーマンス終了時、自チームのステージにユーモアが3人以上。",
+        "B": "自分以外のユーモアの味方1人をランダムに強制BURSTさせる。対象のB効果も発動する。強制BURSTは通常BURST使用済み状態を消費せず、通常BURST使用済みのメンバーも対象にできる。",
+        "C": null
+      }
+    },
+    {
+      "id": 7,
+      "name": "的野美青",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "対面がユーモア属性を持たない場合、その対面のAUTOを無効にする。",
+          "current": "対面の相手メンバーのAUTOを無効にする。"
+        },
+        "C": {
+          "old": "相手CENTERがユーモア属性を持たない場合、そのCENTER SKILLを無効にし、自身の疲労値を+1する。",
+          "current": "相手CENTERのCENTER SKILLを無効にし、自身の疲労値を+2する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.07",
+        "name": "的野美青",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "対スキル",
+          "対センター"
+        ],
+        "base": 5,
+        "A": "対面の相手メンバーのAUTOを無効にする。",
+        "Bcond": "相手メンバーがBURSTを開始したとき。",
+        "B": "相手メンバー1人を選び、次のパフォーマンス終了まで現在のポジションに固定する。",
+        "C": "相手CENTERのCENTER SKILLを無効にし、自身の疲労値を+2する。"
+      }
+    },
+    {
+      "id": 8,
+      "name": "向井純葉",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.08",
+        "name": "向井純葉",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "Appeal上昇",
+          "勝ちポイント"
+        ],
+        "base": 4,
+        "A": "ラウンド開始時点で自チームがポイントで勝っているなら、自身のAppealを+2する。",
+        "Bcond": "自チームが2パフォーマンス連続で勝利する。",
+        "B": "次のパフォーマンス中、自身のAppealを自チームの現在ポイント数だけプラスする（最大+3）。",
+        "C": null
+      }
+    },
+    {
+      "id": 9,
+      "name": "村井優",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "そのラウンドに自身がBACKSからステージへ移動した場合、そのパフォーマンス中、自身は相手または楽曲由来のマイナス効果を受けない。R1の初期配置は移動に数えない。",
+          "current": "そのラウンドに自身がBACKSからステージへ移動した場合、そのパフォーマンス中、自身は相手・楽曲由来のAppeal減少、疲労付与、ポジションボーナス無効、属性変更を受けない。通常の位置由来疲労増加と、既に発生している疲労ペナルティは残る。R1の初期配置は移動に数えない。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.09",
+        "name": "村井優",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "フォーメーション移動",
+          "Appeal上昇"
+        ],
+        "base": 4,
+        "A": "そのラウンドに自身がBACKSからステージへ移動した場合、そのパフォーマンス中、自身は相手・楽曲由来のAppeal減少、疲労付与、ポジションボーナス無効、属性変更を受けない。通常の位置由来疲労増加と、既に発生している疲労ペナルティは残る。R1の初期配置は移動に数えない。",
+        "Bcond": "同一ラウンドに自チームの3人以上がBACKSからステージへ移動する。R1の初期配置は数えない。",
+        "B": "次のパフォーマンス中、自身のAUTOが発動する場合、その効果を味方ステージ5人全員に適用する。",
+        "C": "そのラウンドにBACKSからステージへ移動した味方メンバーのAppealを+1する。"
+      }
+    },
+    {
+      "id": 10,
+      "name": "村山美羽",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.10",
+        "name": "村山美羽",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "クール",
+          "単一属性"
+        ],
+        "base": 4,
+        "A": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+        "Bcond": "クール楽曲でBACKSとしてパフォーマンス終了。",
+        "B": "次のパフォーマンス中、自チームのクールメンバーのAppealを+1する。",
+        "C": null
+      }
+    },
+    {
+      "id": 11,
+      "name": "山下瞳月",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.11",
+        "name": "山下瞳月",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "センター",
+          "クール"
+        ],
+        "base": 2,
+        "A": "クール楽曲で自身がCENTERなら、自身のAppealを+1する。",
+        "Bcond": "CENTERで累計2パフォーマンスを終了する。",
+        "B": "BURST中、自身のAppealを+2し、相手由来の効果を受けない。",
+        "C": "CENTERなら自身のAppealを+5する。このCENTER SKILLは楽曲によるCENTER SKILL無効化を受けない。"
+      }
+    },
+    {
+      "id": 12,
+      "name": "松田里奈",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.12",
+        "name": "松田里奈",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "バースト",
+          "Appeal上昇"
+        ],
+        "base": 3,
+        "A": "自チームの累計BURST回数（通常BURST・強制BURSTを含む）が5回以上なら、自身のAppealを+3する。",
+        "Bcond": "同じパフォーマンス終了処理内で、自身以外の味方2人以上がBURSTを開始する。",
+        "B": "次のパフォーマンス終了後、味方1人をランダムに選び、そのメンバーの通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+        "C": "BURST中の味方メンバーのAppealを+2する。"
+      }
+    },
+    {
+      "id": 13,
+      "name": "井上梨名",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "パフォーマンス終了時、自チーム8人の総疲労値が20以上。",
+          "current": "パフォーマンス終了時、自チーム8人の総疲労値が15以上。"
+        },
+        "B": {
+          "old": "自チーム8人全員の疲労値を-3する（最低0）。",
+          "current": "自チーム8人全員の疲労値を-2する（最低0）。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.13",
+        "name": "井上梨名",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "疲労回復",
+          "総疲労値"
+        ],
+        "base": 3,
+        "A": "シンメの疲労値を-2する。自身がBACKSにいる場合は、シンメへの効果の代わりに味方CENTERの疲労値を-2する（最低0）。",
+        "Bcond": "パフォーマンス終了時、自チーム8人の総疲労値が15以上。",
+        "B": "自チーム8人全員の疲労値を-2する（最低0）。",
+        "C": null
+      }
+    },
+    {
+      "id": 14,
+      "name": "遠藤光莉",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.14",
+        "name": "遠藤光莉",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "クール",
+          "楽曲"
+        ],
+        "base": 3,
+        "A": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
+        "Bcond": "パフォーマンス終了時、CENTER・FRONT-L・FRONT-Rの3人全員がクール。",
+        "B": "次のパフォーマンスの楽曲を「ジャマイカビール」に変更する。",
+        "C": null
+      }
+    },
+    {
+      "id": 15,
+      "name": "大園玲",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.15",
+        "name": "大園玲",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "対スキル",
+          "Appeal増減"
+        ],
+        "base": 4,
+        "A": "自身はスキルおよび楽曲によるAppealの増減を受けない。",
+        "Bcond": "R6終了時。",
+        "B": "BURST中は自身のAUTOを無効にし、自身が受けるスキルおよび楽曲によるAppeal増減量を2倍にする。",
+        "C": null
+      }
+    },
+    {
+      "id": 16,
+      "name": "大沼昌保",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {
+        "B": {
+          "workbook": "BURST中、自身のAppealを+5する。BURSTしたパフォーマンス終了後、自身の基礎Appealを永続的に-1する（最低0）。その後、自身の通常BURST使用済み状態をリセットする。以後のパフォーマンス終了時に再び条件を満たせば通常BURSTできる。同一パフォーマンス終了処理内では再発動しない。",
+          "current": "BURST中、自身のAppealを+5する。BURSTしたパフォーマンス終了後、自身の基礎Appealを永続的に-1する（最低0）。その後、自身の通常BURST使用済み状態をリセットする。続くBURST条件判定で条件を満たした場合は、同じ終了処理内で再び通常BURSTする。"
+        }
+      },
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.16",
+        "name": "大沼昌保",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "疲労付与",
+          "バースト"
+        ],
+        "base": 3,
+        "A": "対面の疲労値を+2する。",
+        "Bcond": "パフォーマンス終了時、対面の疲労値が6以上。",
+        "B": "BURST中、自身のAppealを+5する。BURSTしたパフォーマンス終了後、自身の基礎Appealを永続的に-1する（最低0）。その後、自身の通常BURST使用済み状態をリセットする。続くBURST条件判定で条件を満たした場合は、同じ終了処理内で再び通常BURSTする。",
+        "C": null
+      }
+    },
+    {
+      "id": 17,
+      "name": "幸坂茉里乃",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "キュート楽曲を自身がステージで終了",
+          "current": "キュート楽曲でステージ5枠のいずれかに配置され、パフォーマンスを終了する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.17",
+        "name": "幸坂茉里乃",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "フォーメーション固定",
+          "Appeal低下"
+        ],
+        "base": 2,
+        "A": "自身がBACKSにいる間、相手CENTERのAppealを-2する。",
+        "Bcond": "キュート楽曲でステージ5枠のいずれかに配置され、パフォーマンスを終了する。",
+        "B": "相手メンバー1人を選び、次のパフォーマンス終了までFRONT-Rに固定し、そのメンバーのAppealを-6する。",
+        "C": null
+      }
+    },
+    {
+      "id": 18,
+      "name": "武元唯衣",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "楽曲属性がクールなら、自身のAppealを+2する。",
+          "current": "楽曲属性がクールなら、自身のAppealを+3する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.18",
+        "name": "武元唯衣",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "クール",
+          "楽曲"
+        ],
+        "base": 3,
+        "A": "楽曲属性がクールなら、自身のAppealを+3する。",
+        "Bcond": "クール楽曲が2パフォーマンス連続で続く。",
+        "B": "次のパフォーマンスの楽曲属性をクールとして扱い、自身のAppealを+2する。",
+        "C": null
+      }
+    },
+    {
+      "id": 19,
+      "name": "田村保乃",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.19",
+        "name": "田村保乃",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "対バースト",
+          "Appeal低下"
+        ],
+        "base": 4,
+        "A": "対面がBURST中なら、その対面のAppealを-4する。",
+        "Bcond": "相手メンバーがBACKSにいる状態でBURSTを開始したとき。",
+        "B": "同じパフォーマンス終了処理内でBACKSからBURSTした相手が複数いる場合も1回だけ発動し、その中からランダムに1人を選ぶ。選ばれた相手を次のパフォーマンス終了までFRONT-Rに固定し、Appealを-4する。",
+        "C": "BURST中の相手メンバーのAppealを-2する。"
+      }
+    },
+    {
+      "id": 20,
+      "name": "藤吉夏鈴",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "対面のAppeal上昇値と同じ値だけ、自身のAppealをプラスする。",
+          "current": "対面の相手AUTOによるAppeal上昇値と同じ値だけ、自身のAppealも上昇する。"
+        },
+        "Bcond": {
+          "old": "パフォーマンス終了時、そのパフォーマンス中に自身のAUTOで自身へ実適用されたAppeal上昇値が4以上。",
+          "current": "パフォーマンス終了時、そのパフォーマンス中に自身へ実適用されたAUTO・BURST・CENTER SKILL・楽曲によるAppeal上昇量の合計が4以上。位置ボーナス・基礎Appealは含めない。"
+        },
+        "B": {
+          "old": "次のパフォーマンス終了まで、自身は相手由来のAppeal減少を受けない。",
+          "current": "そのパフォーマンス中に自身へ実適用された自身のAUTOによるAppeal上昇分を、次のパフォーマンスにも引き継ぐ。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.20",
+        "name": "藤吉夏鈴",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "対スキル",
+          "Appeal上昇"
+        ],
+        "base": 4,
+        "A": "対面の相手AUTOによるAppeal上昇値と同じ値だけ、自身のAppealも上昇する。",
+        "Bcond": "パフォーマンス終了時、そのパフォーマンス中に自身へ実適用されたAUTO・BURST・CENTER SKILL・楽曲によるAppeal上昇量の合計が4以上。位置ボーナス・基礎Appealは含めない。",
+        "B": "そのパフォーマンス中に自身へ実適用された自身のAUTOによるAppeal上昇分を、次のパフォーマンスにも引き継ぐ。",
+        "C": "自チームのクールメンバーは、相手AUTOによるAppeal減少を受けない。"
+      }
+    },
+    {
+      "id": 21,
+      "name": "増本綺良",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "パフォーマンス終了時、相手チーム8人の総疲労値が25以上。",
+          "current": "パフォーマンス終了時、相手チーム8人の総疲労値が20以上。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.21",
+        "name": "増本綺良",
+        "attr": "ユーモア",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "ユーモア",
+          "疲労付与"
+        ],
+        "base": 3,
+        "A": "両チームのユーモアではないメンバーの疲労値を+1する。",
+        "Bcond": "パフォーマンス終了時、相手チーム8人の総疲労値が20以上。",
+        "B": "対面の疲労値を+8する。",
+        "C": null
+      }
+    },
+    {
+      "id": 22,
+      "name": "森田ひかる",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.22",
+        "name": "森田ひかる",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "多属性",
+          "Appeal低下"
+        ],
+        "base": 5,
+        "A": "自チームのステージにクールとユーモアが1人以上ずついるなら、対面のAppealを-1する。",
+        "Bcond": "CENTER・FRONT-L・FRONT-Rの3枠にクール・キュート・ユーモアが1人ずつ揃ってパフォーマンス終了。",
+        "B": "次のパフォーマンス中、自身を本来のキュートに加えてクール・ユーモアとしても扱い、対面のAppealを-2する。",
+        "C": "相手CENTERのAppealを、自チームのステージに存在する属性種類数だけマイナスする。"
+      }
+    },
+    {
+      "id": 23,
+      "name": "守屋麗奈",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.23",
+        "name": "守屋麗奈",
+        "attr": "キュート",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "疲労付与",
+          "Appeal低下"
+        ],
+        "base": 4,
+        "A": "対面の疲労値が3以上なら、その対面のAppealを-2する。",
+        "Bcond": "パフォーマンス終了時、そのパフォーマンス中に対面へ実適用された、位置ボーナス以外のAppeal減少量の合計が4以上。AUTO・BURST・CENTER SKILL・楽曲・疲労ペナルティを含み、Appeal増加とは相殺しない。",
+        "B": "そのパフォーマンス中に対面へ実適用された自身のAUTOによるAppeal減少分を、次のパフォーマンスにも引き継ぐ。",
+        "C": "疲労値が3以上の相手メンバーのAppealを-1する。"
+      }
+    },
+    {
+      "id": 24,
+      "name": "山崎天",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.24",
+        "name": "山崎天",
+        "attr": "クール",
+        "group": "櫻坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "負けポイント",
+          "Appeal上昇"
+        ],
+        "base": 3,
+        "A": "ラウンド開始時点で自チームがポイントで負けている場合のみ、相手チームの現在ポイント数だけ自身のAppealをプラスする。",
+        "Bcond": "自チームが2パフォーマンス連続で敗北する。引き分けは連敗に含めず、連敗数をリセットする。",
+        "B": "自身の基礎Appealを永続的に+2する。複数回発動した場合は重複する。",
+        "C": "自身がCENTERで自チームが敗北したとき、その時点でステージにいる味方の疲労値を-1し、その味方は次のパフォーマンスのみAppeal+1。引き分けでは発動しない。"
+      }
+    },
+    {
+      "id": 25,
+      "name": "金村美玖",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.25",
+        "name": "金村美玖",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "フォーメーション固定",
+          "Appeal上昇"
+        ],
+        "base": 4,
+        "A": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ自身のAppealを+1する。R1は発動しない。",
+        "Bcond": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+        "B": "BURST中、自チームのポジションボーナスを2倍にする。",
+        "C": "前ラウンドと同じポジションにいる味方メンバーのAppealを+1する。R1は発動しない。"
+      }
+    },
+    {
+      "id": 26,
+      "name": "小坂菜緒",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.26",
+        "name": "小坂菜緒",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "センター",
+          "フォーメーション固定"
+        ],
+        "base": 5,
+        "A": "自身が受けるポジション由来のAppealボーナスとポジション由来の疲労増加を、各種加算・軽減を反映した後に2倍する。自身の疲労ペナルティによるAppeal減少量も2倍する。",
+        "Bcond": "CENTERかつ自身の疲労値が6以上でパフォーマンス終了。",
+        "B": "BURST中、自身のAppealを+3する。BURSTしたパフォーマンス終了後、自身の疲労値を+5する。",
+        "C": "自身の疲労値が0～2なら、自チームのポジションボーナスをそれぞれ+1する。"
+      }
+    },
+    {
+      "id": 27,
+      "name": "髙橋未来虹",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "base": {
+          "old": 5,
+          "current": 3
+        },
+        "A": {
+          "old": "味方CENTERが現在の楽曲属性を持たない場合、自身のAppealを-1する。",
+          "current": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.27",
+        "name": "髙橋未来虹",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "クール",
+          "単一属性"
+        ],
+        "base": 3,
+        "A": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+        "Bcond": "クール楽曲で、味方CENTERがクールの状態でパフォーマンス終了。",
+        "B": "自身の基礎Appealを永続的に+1する。",
+        "C": null
+      }
+    },
+    {
+      "id": 28,
+      "name": "小西夏菜実",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "シンメがクール以外なら、自身とシンメのAppealをそれぞれ+1する。",
+          "current": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.28",
+        "name": "小西夏菜実",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "クール",
+          "フォーメーション移動"
+        ],
+        "base": 4,
+        "A": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
+        "Bcond": "自身が累計で異なる3人とシンメになってパフォーマンスを終了する。",
+        "B": "次のパフォーマンス中、自身とその時点のシンメのAppealをそれぞれ+2する。",
+        "C": null
+      }
+    },
+    {
+      "id": 29,
+      "name": "正源司陽子",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.29",
+        "name": "正源司陽子",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "対疲労付与",
+          "Appeal上昇"
+        ],
+        "base": 4,
+        "A": "自身が疲労ペナルティを受けているなら、自身のAppealを+2する。",
+        "Bcond": "自身が疲労ペナルティを3パフォーマンス連続で受ける。",
+        "B": "BURST中、自身のAppealを+3する。",
+        "C": "疲労ペナルティを受けている味方メンバーのAppealを+1する。"
+      }
+    },
+    {
+      "id": 30,
+      "name": "平岡海月",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.30",
+        "name": "平岡海月",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "楽曲",
+          "多属性"
+        ],
+        "base": 3,
+        "A": "その試合で登場済みの楽曲属性の種類数だけ自身のAppealを+1する（最大+3）。",
+        "Bcond": "クール・キュート・ユーモアの3属性の楽曲がすべて1回以上登場する。",
+        "B": "次のパフォーマンス中、自身のAppealを+3する。",
+        "C": null
+      }
+    },
+    {
+      "id": 31,
+      "name": "宮田愛萌",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.31",
+        "name": "宮田愛萌",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "疲労回復",
+          "総疲労値"
+        ],
+        "base": 4,
+        "A": "自チーム8人の総疲労値が10以下なら、自身のAppealを+2する。",
+        "Bcond": "R3以降のパフォーマンス終了時、自チーム8人の総疲労値が12以下。",
+        "B": "次のパフォーマンス中、自チームのステージ5人のAppealを+1する。",
+        "C": null
+      }
+    },
+    {
+      "id": 32,
+      "name": "渡邉美穂",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {
+        "B": {
+          "workbook": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "differencesFrom20261010": {
+        "B": {
+          "old": "自身をBACKSへ移動し、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.32",
+        "name": "渡邉美穂",
+        "attr": "クール",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "チャージ",
+          "フォーメーション固定"
+        ],
+        "base": 2,
+        "A": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りしたパフォーマンスでは、ステージ入り時点のチャージ数だけ自身のAppealをプラスし、そのチャージを0にする。",
+        "Bcond": "チャージ3以上の状態からステージ入りする。",
+        "B": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+        "C": null
+      }
+    },
+    {
+      "id": 33,
+      "name": "上村ひなの",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.33",
+        "name": "上村ひなの",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "基礎値",
+          "Appeal低下"
+        ],
+        "base": 3,
+        "A": "対面の基礎Appealが4以上なら、その対面のAppealを-2する。",
+        "Bcond": "パフォーマンス終了時、相手ステージに基礎Appeal4以上のメンバーが3人以上いる。",
+        "B": "次のパフォーマンス中、自身のAUTOを対面1人ではなく相手ステージ全員に適用する。",
+        "C": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の基礎Appealを一時的に+1した後、Appealを-1する。CENTERを外れたら基礎Appealは元に戻る。"
+      }
+    },
+    {
+      "id": 34,
+      "name": "石塚瑶季",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.34",
+        "name": "石塚瑶季",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "疲労付与",
+          "フォーメーション固定"
+        ],
+        "base": 4,
+        "A": "自身がFRONTなら、Appeal計算前に対面の疲労値を+1する。",
+        "Bcond": "FRONTで累計2パフォーマンスを終了する。",
+        "B": "次のパフォーマンス中、相手FRONT-LとFRONT-Rのポジションボーナスを0にする。",
+        "C": null
+      }
+    },
+    {
+      "id": 35,
+      "name": "清水理央",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.35",
+        "name": "清水理央",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "多属性",
+          "対スキル"
+        ],
+        "base": 3,
+        "A": "自チームのステージ5人に存在する属性種類数と同じ値だけ、対面のAppealをマイナスする。",
+        "Bcond": "パフォーマンス終了時、自チームのBACKS3人の属性がすべて異なる。",
+        "B": "次のパフォーマンス中、自チームのクールまたはユーモア属性を持つメンバーは、相手由来のスキル効果を受けない。",
+        "C": null
+      }
+    },
+    {
+      "id": 36,
+      "name": "藤嶌果歩",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.36",
+        "name": "藤嶌果歩",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "キュート",
+          "楽曲"
+        ],
+        "base": 4,
+        "A": "キュート楽曲なら、対面のAppealを-2する。",
+        "Bcond": "自身がステージでキュート楽曲を累計2回経験する。",
+        "B": "次のパフォーマンス中、現在の楽曲属性を持たない相手メンバー全員のAppealを-1する。",
+        "C": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の属性をPLAIN（属性なし）にする。PLAINは他の属性付与・変更より最優先で、クール・キュート・ユーモアの人数に数えない。"
+      }
+    },
+    {
+      "id": 37,
+      "name": "宮地すみれ",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.37",
+        "name": "宮地すみれ",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "フォーメーション固定",
+          "Appeal低下"
+        ],
+        "base": 4,
+        "A": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ対面のAppealを-1する。R1は発動しない。",
+        "Bcond": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+        "B": "BURST中、相手チームのポジションボーナスを0にする。",
+        "C": null
+      }
+    },
+    {
+      "id": 38,
+      "name": "渡辺莉奈",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {
+        "B": {
+          "workbook": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "differencesFrom20261010": {
+        "B": {
+          "old": "自身をBACKSへ移動し、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.38",
+        "name": "渡辺莉奈",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "チャージ",
+          "フォーメーション固定"
+        ],
+        "base": 3,
+        "A": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りしたパフォーマンスでは、ステージ入り時点のチャージ数だけ相手CENTERのAppealをマイナスし、そのチャージを0にする。",
+        "Bcond": "チャージ3以上の状態からステージ入りする。",
+        "B": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+        "C": null
+      }
+    },
+    {
+      "id": 39,
+      "name": "丹生明里",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "base": {
+          "old": 5,
+          "current": 4
+        }
+      },
+      "actualDefinition": {
+        "no": "No.39",
+        "name": "丹生明里",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "疲労回復",
+          "Appeal低下"
+        ],
+        "base": 4,
+        "A": "自身の疲労値が0～2なら、対面のAppealを-1する。",
+        "Bcond": "自身が2パフォーマンス連続で疲労ペナルティを受けずに終了する。",
+        "B": "次のパフォーマンス中、相手FRONT-LとFRONT-RのAppealをそれぞれ-1する。",
+        "C": "自チーム8人の総疲労値が相手チーム8人の総疲労値より低い場合、相手FRONT-LとFRONT-RのAppealをそれぞれ-2する。"
+      }
+    },
+    {
+      "id": 40,
+      "name": "河田陽菜",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "base": {
+          "old": 4,
+          "current": 5
+        },
+        "A": {
+          "old": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-3する。",
+          "current": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-2する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.40",
+        "name": "河田陽菜",
+        "attr": "キュート",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "対単一属性",
+          "Appeal低下"
+        ],
+        "base": 5,
+        "A": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-2する。",
+        "Bcond": "パフォーマンス終了時、相手ステージに同一属性が4人以上いる。",
+        "B": "次のパフォーマンス中、その属性を持つ相手メンバー全員のAppealを-1する。",
+        "C": "自身がCENTERで、相手ステージの単独最多属性が3人以上かつ相手CENTERもその属性なら、その単独最多属性の人数と同じ値だけ相手CENTERのAppealをマイナスする。"
+      }
+    },
+    {
+      "id": 41,
+      "name": "森本茉莉",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.41",
+        "name": "森本茉莉",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "多属性",
+          "バースト"
+        ],
+        "base": 5,
+        "A": "各ラウンド開始時、本来のユーモアに加えてクールまたはキュートのどちらか1属性をランダムで追加する。そのラウンド中のみ有効。",
+        "Bcond": "追加された属性と現在の楽曲属性が一致した状態でパフォーマンス終了。",
+        "B": "自身のAppealを+2し、自身の通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+        "C": null
+      }
+    },
+    {
+      "id": 42,
+      "name": "山口陽世",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.42",
+        "name": "山口陽世",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "3期生",
+        "themeTags": [
+          "疲労回復",
+          "疲労付与"
+        ],
+        "base": 4,
+        "A": "パフォーマンス開始前、自チームで疲労値が最も高いメンバー1人の疲労値を-1し、相手チームで疲労値が最も高いメンバー1人の疲労値を+1する。対象が複数いる場合はランダムに1人を選ぶ。",
+        "Bcond": "パフォーマンス終了時、自チームのメンバーの最高疲労値が5以上。",
+        "B": "BURST中は、自身のAUTOによる疲労値の減少量・増加量をそれぞれ1から3に変更する。",
+        "C": "自身がCENTERにいるパフォーマンス開始前、相手BACKS3人全員の疲労値を+3する。"
+      }
+    },
+    {
+      "id": 43,
+      "name": "竹内希来里",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.43",
+        "name": "竹内希来里",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "チャージ",
+          "フォーメーション固定"
+        ],
+        "base": 3,
+        "A": "ラウンド終了時、BACKSにいる味方メンバーそれぞれのチャージを+1する。",
+        "Bcond": "同じ3人をBACKSに配置した状態で、2パフォーマンス連続で終了する。",
+        "B": "BURST中、自身のAppealを+3する。",
+        "C": null
+      }
+    },
+    {
+      "id": 44,
+      "name": "平尾帆夏",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {
+        "B": {
+          "workbook": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "differencesFrom20261010": {
+        "B": {
+          "old": "自身をBACKSへ移動し、このパフォーマンスで消費した自身のチャージを、ステージ入り直前の値まで回復する。",
+          "current": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.44",
+        "name": "平尾帆夏",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "チャージ",
+          "フォーメーション固定"
+        ],
+        "base": 3,
+        "A": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りするパフォーマンスの開始前、ステージ入り時点のチャージ数だけ味方CENTERの疲労値を減らし、相手CENTERの疲労値を増やした後、そのチャージを0にする。",
+        "Bcond": "チャージ3以上の状態からステージ入りする。",
+        "B": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+        "C": null
+      }
+    },
+    {
+      "id": 45,
+      "name": "山下葉留花",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {},
+      "actualDefinition": {
+        "no": "No.45",
+        "name": "山下葉留花",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "4期生",
+        "themeTags": [
+          "フォーメーション移動",
+          "疲労付与"
+        ],
+        "base": 2,
+        "A": "その試合で自身がパフォーマンスを経験したポジション種別（CENTER・FRONT・MIDDLE・BACKS）の種類数だけ、自身のAppealをプラスする。",
+        "Bcond": "CENTER・FRONT・MIDDLEの3種類すべてで1回以上パフォーマンスを終了する。",
+        "B": "次のパフォーマンス中、相手チームのポジション由来の疲労増加量を2倍にする。",
+        "C": "自身がCENTERにいるパフォーマンス開始前、前ラウンドからポジション種別を移動した相手ステージメンバーの疲労値を+2する。FRONT-L↔FRONT-R、MIDDLE-L↔MIDDLE-Rの左右入れ替えは移動に数えない。R1は発動しない。"
+      }
+    },
+    {
+      "id": 46,
+      "name": "濱岸ひより",
+      "focusCard": false,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "現在の楽曲属性が前ラウンドと異なるなら、自身のAppealを+2する。R1は発動しない。",
+          "current": "現在の楽曲属性が前ラウンドと同じなら、自身のAppealを+2する。R1は発動しない。"
+        },
+        "Bcond": {
+          "old": "自身のAUTOが累計3回発動する。",
+          "current": "自身のAUTOが累計2回発動する。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.46",
+        "name": "濱岸ひより",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "楽曲",
+          "多属性"
+        ],
+        "base": 4,
+        "A": "現在の楽曲属性が前ラウンドと同じなら、自身のAppealを+2する。R1は発動しない。",
+        "Bcond": "自身のAUTOが累計2回発動する。",
+        "B": "次のパフォーマンスの楽曲を「NO WAR in the future」に変更する。",
+        "C": null
+      }
+    },
+    {
+      "id": 47,
+      "name": "富田鈴花",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "Bcond": {
+          "old": "パフォーマンス終了時、現在の自チームのステージ5人全員が、その試合中に1回以上BURSTを開始済み。自身の配置場所は問わない。自身がステージにいる場合は、自身もその5人に含む。",
+          "current": "パフォーマンス終了時、その時点の味方ステージ5人全員が、その試合中に1回以上BURSTを開始済み。富田自身の配置は条件に問わず、富田がステージにいる場合は本人も5人の条件判定に含む。"
+        },
+        "B": {
+          "old": "そのステージ5人のうち自身を除くメンバーから、重複なしでランダムに2人を選び、1人ずつ強制BURSTさせる。各対象のB効果も発動し、通常BURST使用済み状態は消費しない。同じ強制BURST連鎖内ですでに発動したメンバーは抽選対象から除外し、候補が2人未満なら残る候補のみ発動する。",
+          "current": "BURST開始時点の味方ステージから富田本人と、同一BURST連鎖内ですでに発動済みのメンバーを除外し、残る候補からseed付き乱数で重複なし2人を選んで1人ずつ強制BURSTさせる。候補が2人未満なら残る候補だけを対象とする。各対象のB効果も発動し、通常BURST使用済み状態・累計BURST回数はリセットしない。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.47",
+        "name": "富田鈴花",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "バースト",
+          "Appeal上昇"
+        ],
+        "base": 3,
+        "A": "自チームの累計BURST回数が相手チームより多いなら、自身のAppealを+2する。",
+        "Bcond": "パフォーマンス終了時、その時点の味方ステージ5人全員が、その試合中に1回以上BURSTを開始済み。富田自身の配置は条件に問わず、富田がステージにいる場合は本人も5人の条件判定に含む。",
+        "B": "BURST開始時点の味方ステージから富田本人と、同一BURST連鎖内ですでに発動済みのメンバーを除外し、残る候補からseed付き乱数で重複なし2人を選んで1人ずつ強制BURSTさせる。候補が2人未満なら残る候補だけを対象とする。各対象のB効果も発動し、通常BURST使用済み状態・累計BURST回数はリセットしない。",
+        "C": null
+      }
+    },
+    {
+      "id": 48,
+      "name": "松田好花",
+      "focusCard": true,
+      "latestExcelMismatchBeforeAudit": [],
+      "confirmedTextOverrides": {},
+      "differencesFrom20261010": {
+        "A": {
+          "old": "そのパフォーマンスで両チーム合計のBURST中メンバーが1人以下なら、自身のAppealを+4する。R1では発動しない。",
+          "current": "そのパフォーマンスで両チーム合計のBURST中メンバーが1人以下なら、自身のAppealを+3する。R1では発動しない。"
+        }
+      },
+      "actualDefinition": {
+        "no": "No.48",
+        "name": "松田好花",
+        "attr": "ユーモア",
+        "group": "日向坂46",
+        "generation": "2期生",
+        "themeTags": [
+          "バースト",
+          "対バースト"
+        ],
+        "base": 3,
+        "A": "そのパフォーマンスで両チーム合計のBURST中メンバーが1人以下なら、自身のAppealを+3する。R1では発動しない。",
+        "Bcond": "2パフォーマンス連続で両チームとも誰もBURSTしない。",
+        "B": "自身以外の味方1人を選び、強制BURSTさせる。対象のB効果も発動し、通常BURST使用済み状態は消費しない。",
+        "C": "CENTER時、両チームにBURST中のメンバーが0人なら自身のAppealを+3する。"
+      }
+    }
+  ]
+}

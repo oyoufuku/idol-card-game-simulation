@@ -1,0 +1,30 @@
+{
+  "name": "idol-card-game",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:testplay": "pnpm build && node scripts/build-testplay.mjs",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "simulate": "tsx src/simulation/cli.ts",
+    "simulate:export": "tsx scripts/export-analysis.ts"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "fflate": "^0.8.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.0"
+  }
+}

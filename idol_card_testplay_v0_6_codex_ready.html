@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>アイドル対戦カードゲーム テストプレイ v0.6 Codex-ready</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f2937;background:#f5f6f8}
+*{box-sizing:border-box} body{margin:0;padding:16px}
+h1{font-size:22px;margin:0 0 8px} h2{font-size:18px;margin:18px 0 8px} h3{font-size:15px;margin:10px 0 6px}
+small,.muted{color:#6b7280}
+.panel{background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:12px;margin:10px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,select,input{font:inherit;min-height:42px}
+button{border:1px solid #9ca3af;border-radius:9px;background:#fff;padding:8px 12px;cursor:pointer}
+button.primary{background:#111827;color:#fff;border-color:#111827}
+button:disabled{opacity:.45;cursor:not-allowed}
+select{width:100%;padding:7px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+.setup-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+@media(min-width:720px){.setup-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+label.chk{display:flex;align-items:center;gap:6px;border:1px solid #e5e7eb;padding:6px;border-radius:8px;background:#fafafa}
+.teamhead{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.stat{font-weight:700}
+.positions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.positions .center{grid-column:1/-1}
+.cardline{border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-top:6px;background:#fafafa}
+.badge{display:inline-block;border:1px solid #cbd5e1;border-radius:999px;padding:2px 7px;font-size:12px;margin-right:4px}
+.ready{font-weight:700}
+.log{white-space:pre-wrap;background:#111827;color:#f9fafb;border-radius:10px;padding:10px;max-height:420px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.45}
+.warn{background:#fff7ed;border-color:#fdba74}
+.ok{background:#f0fdf4;border-color:#86efac}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid #e5e7eb;padding:6px;text-align:left;vertical-align:top}
+th{background:#f8fafc;position:sticky;top:0}
+.scroll{overflow:auto;max-height:360px}
+</style>
+</head>
+<body>
+<h1>アイドル対戦カードゲーム テストプレイ v0.6 Codex-ready</h1>
+<div class="muted">2人分を1台で操作するルール検証用。通信・演出より、まずゲームが成立するかを容赦なく調べる版です。</div>
+
+<div id="assumptions" class="panel warn">
+<b>この版の暫定処理</b><br>
+・「属性3人以上」はステージ上の5人のみを数える。<br>
+・BURST状態は次の1パフォーマンス終了まで。<br>
+・山下Bの「相手効果を受けない」は、AUTO/CENTER SKILLの無効化より優先。<br>
+・中嶋Bによる強制BURSTは、他のユーモア属性からランダムに1人を選ぶ。通常BURST回数を消費せず、B効果も発動。松田Bの永続+2も重複。<br>
+・的野Cが有効なラウンドは、Appeal計算前に自身の疲労+2。この+2は同ラウンドの疲労ペナルティに反映。<br>
+・疲労7以上の「半減」は、各種補正後の最終Appealを1/2として扱う。<br>・小島Aは、本人がバックスにいる間、味方CENTERが相手スキルから受ける「数値Appeal減少」を1軽減する。AUTO/CENTER SKILLの無効化、疲労ペナルティ、楽曲効果は対象外。<br>・楽曲属性を全10曲に設定。A/E/I=クール、B/D/G=キュート、C/F/H/J=ユーモア（暫定割当）。<br>・楽曲Jの2倍対象はAUTOによるAppeal増減のみ。B/Cやその他の効果は2倍にならない。<br>
+・松田Bの「2パフォーマンス連続敗北」は引き分けでは進行せず、引き分けで連敗は途切れる。松田Cの「敗北時」も引き分けでは発動しない。Cで付与したAppeal+1は次ラウンドの1パフォーマンスだけ有効。<br>・村井Bは、村井本人に関係なく「同じラウンドにバックスから3人以上がステージ入り」した場合に条件達成。R1の初期配置はバックスからの登場として数えない。<br>・CPUは未来を読まず、現在ラウンドの予測総Appeal最大化のみで配置する。<br>・楽曲JはAUTOによるAppeal増減値のみ2倍。BURST・CENTER SKILL・松田Cの次ラウンド効果・楽曲効果には適用しない。
+</div>
+
+<section id="setup" class="panel">
+<h2>1. 編成</h2>
+<div class="row" style="margin-bottom:10px">
+  <label><b>対戦モード</b>
+    <select id="modeSelect" style="width:auto">
+      <option value="cpu" selected>P1（あなた） vs CPU</option>
+      <option value="local">P1 vs P2（両方手動）</option>
+    </select>
+  </label>
+  <span class="muted">CPUはP2を担当し、そのラウンドの予測総Appealが最大になる配置を全候補から選びます。</span>
+</div>
+<div class="grid2">
+  <div id="setupP1"></div>
+  <div id="setupP2"></div>
+</div>
+<div class="row" style="margin-top:12px">
+<button id="startBtn" class="primary">ゲーム開始</button>
+<span id="setupMsg" class="muted"></span>
+</div>
+</section>
+
+<section id="game" style="display:none">
+<div class="panel">
+  <div class="teamhead">
+    <div><b id="roundTitle">ROUND 1</b>　楽曲：<span id="songName"></span></div>
+    <div>得点 <span class="stat" id="scoreP1">0</span> - <span class="stat" id="scoreP2">0</span></div>
+  </div>
+  <div id="songEffect" class="muted"></div>
+</div>
+
+<div class="grid2">
+  <div class="panel"><div id="p1Game"></div></div>
+  <div class="panel"><div id="p2Game"></div></div>
+</div>
+
+<div class="panel">
+  <div class="row">
+    <button id="cpuThinkBtn" style="display:none">CPU配置を決定</button>
+    <button id="performBtn" class="primary">パフォーマンス実行</button>
+    <button id="nextBtn" disabled>次のラウンドへ</button>
+    <button id="restartBtn">最初から</button>
+  </div>
+  <div id="resultBox" style="margin-top:10px"></div>
+</div>
+
+<div class="panel">
+<h2>ログ</h2>
+<div id="log" class="log"></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>カード確認</h2>
+<div class="scroll"><table id="cardTable"></table></div>
+<h2>楽曲確認</h2>
+<div class="scroll"><table id="songTable"></table></div>
+</section>
+
+<script>
+const IDOLS = [
+{id:1,no:"No.01",name:"石森璃花",attr:"キュート",base:3,A:"シンメの疲労-2。自身がバックスならCENTERの疲労-1",Bcond:"自チーム総疲労15以上",B:"自チーム全員の疲労-2",C:null},
+{id:2,no:"No.02",name:"遠藤理子",attr:"キュート",base:4,A:"自身が受ける疲労+を1軽減",Bcond:"自身の疲労3以上",B:"自身Appeal+4",C:null},
+{id:3,no:"No.03",name:"小田倉麗奈",attr:"クール",base:2,A:"相手ステージのクール人数だけ自身Appeal+",Bcond:"相手ステージにクール0人",B:"次のパフォーマンスは相手全員をクール扱い",C:null},
+{id:4,no:"No.04",name:"小島凪紗",attr:"ユーモア",base:3,A:"自身がバックスならCENTERへの相手Appeal減少を1軽減",Bcond:"バックスで2パフォーマンス",B:"味方1人と自身の疲労を入れ替える",C:null},
+{id:5,no:"No.05",name:"谷口愛季",attr:"キュート",base:5,A:"FRONT2人がキュートなら自身Appeal+1",Bcond:"キュート楽曲でCENTER終了",B:"次のパフォーマンスは味方全員キュート扱い",C:"味方キュートのAppeal+1"},
+{id:6,no:"No.06",name:"中嶋優月",attr:"ユーモア",base:4,A:"味方のBURST中人数だけ自身Appeal+",Bcond:"終了時、味方ステージにユーモア3人以上",B:"自分以外のユーモア1人を強制BURST",C:null},
+{id:7,no:"No.07",name:"的野美青",attr:"クール",base:5,A:"正面の相手AUTOを無効",Bcond:"相手メンバーBURST時",B:"相手1人の位置を次のパフォーマンスまで固定",C:"相手CENTER SKILL無効＋自身疲労+2"},
+{id:8,no:"No.08",name:"向井純葉",attr:"クール",base:3,A:"自チームが得点で勝っていれば自身Appeal+2",Bcond:"2パフォーマンス連続勝利",B:"自チーム得点だけ自身Appeal+（最大+3）",C:null},
+{id:9,no:"No.09",name:"村井優",attr:"ユーモア",base:4,A:"バックスから登場時、自身Appeal+2",Bcond:"同一ラウンドにバックスから3人がステージ入り",B:"自身CENTER SKILL効果を2倍",C:"味方はバックスから出た時Appeal+1"},
+{id:10,no:"No.10",name:"村山美羽",attr:"クール",base:4,A:"味方ステージにクール3人以上なら自身Appeal+2",Bcond:"クール楽曲でCENTER終了",B:"味方クールのAppeal+1",C:null},
+{id:11,no:"No.11",name:"山下瞳月",attr:"キュート",base:2,A:"村井優とシンメなら自身Appeal+2",Bcond:"CENTERで2パフォーマンス",B:"自身Appeal+2＋相手効果を受けない",C:"CENTERなら自身Appeal+6"},
+{id:12,no:"No.12",name:"松田里奈",attr:"ユーモア",base:3,A:"自チームがポイントで負けている時のみ、相手チーム得点の数だけ自身Appeal+",Bcond:"2パフォーマンス連続敗北",B:"自身Appealを永続+2（重複可）",C:"敗北時、場の味方疲労-1＋次パフォーマンスAppeal+1"}
+];
+const SONGS = [
+{id:"A",name:"A",type:"クール",effect:"クールメンバーのAppeal+1"},
+{id:"B",name:"B",type:"キュート",effect:"キュートメンバーのAppeal+1"},
+{id:"C",name:"C",type:"ユーモア",effect:"ユーモアメンバーのAppeal+1"},
+{id:"D",name:"D",type:"キュート",effect:"全メンバーの疲労-1"},
+{id:"E",name:"E",type:"クール",effect:"CENTERの疲労-2"},
+{id:"F",name:"F",type:"ユーモア",effect:"バックスから登場したアイドルのAppeal+1"},
+{id:"G",name:"G",type:"キュート",effect:"BURST中アイドルのAppeal+1"},
+{id:"H",name:"H",type:"ユーモア",effect:"負けているプレイヤーのアイドルAppeal+1"},
+{id:"I",name:"I",type:"クール",effect:"お互いのCENTER SKILLを無効"},
+{id:"J",name:"J",type:"ユーモア",effect:"AUTOによるAppeal増減値を2倍"}
+];
+const SLOTS=["CENTER","FRONT-L","FRONT-R","MIDDLE-L","MIDDLE-R"];
+const PAIRS={"FRONT-L":"FRONT-R","FRONT-R":"FRONT-L","MIDDLE-L":"MIDDLE-R","MIDDLE-R":"MIDDLE-L"};
+const POSITION_BONUS={"CENTER":2,"FRONT-L":1,"FRONT-R":1,"MIDDLE-L":0,"MIDDLE-R":0};
+const POSITION_FATIGUE={"CENTER":3,"FRONT-L":2,"FRONT-R":2,"MIDDLE-L":1,"MIDDLE-R":1};
+
+let game=null;
+
+function byId(id){return IDOLS.find(x=>x.id===id)}
+function songById(id){return SONGS.find(x=>x.id===id)}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function shuffle(a){a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a}
+function clamp0(x){return Math.max(0,x)}
+function log(s){const el=document.getElementById("log");el.textContent+=s+"\n";el.scrollTop=el.scrollHeight}
+function stateFor(id){return {id,fatigue:0,normalUsed:false,ready:false,burstActive:false,forcedBurstCount:0,permBonus:0,nextBonus:0,activeNextBonus:0,backCount:0,centerCount:0,enteredCount:0,prevPos:"BACK",pos:"BACK",lockedPos:null}}
+function mkPlayer(label, ids, songIds){return {label,ids:[...ids],songs:[...songIds],points:0,totalAppeal:0,states:Object.fromEntries(ids.map(id=>[id,stateFor(id)])),formation:{},winsStreak:0,lossStreak:0,tempAttr:null,enteredThisRoundIds:[]}}
+
+function setupPlayerHtml(pn, defaultsIds, defaultsSongs){
+  let h=`<h3>Player ${pn}</h3><b>アイドル8人</b><div class="setup-list">`;
+  IDOLS.forEach((x,i)=>{h+=`<label class="chk"><input type="checkbox" data-p="${pn}" data-kind="idol" value="${x.id}" ${defaultsIds.includes(x.id)?"checked":""}>${x.name} (${x.base}/${x.attr})</label>`});
+  h+=`</div><b style="display:block;margin-top:8px">楽曲3枚</b><div class="setup-list">`;
+  SONGS.forEach(x=>{h+=`<label class="chk"><input type="checkbox" data-p="${pn}" data-kind="song" value="${x.id}" ${defaultsSongs.includes(x.id)?"checked":""}>${x.name}【${x.type}】: ${x.effect}</label>`});
+  h+=`</div>`;
+  return h;
+}
+document.getElementById("setupP1").innerHTML=setupPlayerHtml(1,[1,2,4,5,6,9,11,12],["B","F","H"]);
+document.getElementById("setupP2").innerHTML=setupPlayerHtml(2,[3,5,6,7,8,9,10,12],["A","I","J"]);
+
+function chosen(p,kind){return [...document.querySelectorAll(`input[data-p="${p}"][data-kind="${kind}"]:checked`)].map(x=>kind==="idol"?+x.value:x.value)}
+
+function renderTables(){
+ document.getElementById("cardTable").innerHTML="<tr><th>No.</th><th>名前</th><th>属性</th><th>基礎</th><th>A</th><th>B条件</th><th>B効果</th><th>C</th></tr>"+IDOLS.map(x=>`<tr><td>${x.no}</td><td>${x.name}</td><td>${x.attr}</td><td>${x.base}</td><td>${x.A}</td><td>${x.Bcond}</td><td>${x.B}</td><td>${x.C||"なし"}</td></tr>`).join("");
+ document.getElementById("songTable").innerHTML="<tr><th>楽曲</th><th>属性</th><th>効果</th></tr>"+SONGS.map(x=>`<tr><td>${x.name}</td><td>${x.type}</td><td>${x.effect}</td></tr>`).join("");
+}
+renderTables();
+
+document.getElementById("startBtn").addEventListener("click",()=>{
+ const i1=chosen(1,"idol"),i2=chosen(2,"idol"),s1=chosen(1,"song"),s2=chosen(2,"song");
+ if(i1.length!==8||i2.length!==8||s1.length!==3||s2.length!==3){document.getElementById("setupMsg").textContent="各Player：アイドル8人・楽曲3枚を選んでください。";return}
+ const cpuMode=document.getElementById("modeSelect").value==="cpu";
+ game={round:1,done:false,cpuMode,cpuLocked:false,p1:mkPlayer("P1",i1,s1),p2:mkPlayer(cpuMode?"CPU":"P2",i2,s2),songDeck:shuffle([...s1,...s2]),roundSong:null,roundResolved:false};
+ autoInitialFormation(game.p1); autoInitialFormation(game.p2);
+ document.getElementById("setup").style.display="none";document.getElementById("game").style.display="";
+ log("=== GAME START ===");
+ prepareRound();
+});
+
+function autoInitialFormation(p){
+ SLOTS.forEach((s,i)=>p.formation[s]=p.ids[i]);
+ p.ids.forEach(id=>{
+   const pos=Object.entries(p.formation).find(([_,v])=>v===id)?.[0]||"BACK";
+   p.states[id].pos=pos;
+   p.states[id].prevPos=pos;
+ });
+ p.enteredThisRoundIds=[];
+}
+
+function effectiveAttr(p,id){return p.tempAttr || byId(id).attr}
+function isStage(p,id){return Object.values(p.formation).includes(id)}
+function posOf(p,id){for(const s of SLOTS)if(p.formation[s]===id)return s;return "BACK"}
+function idsStage(p){return SLOTS.map(s=>p.formation[s])}
+function idsBack(p){return p.ids.filter(id=>!idsStage(p).includes(id))}
+function countAttr(p,attr){return idsStage(p).filter(id=>effectiveAttr(p,id)===attr).length}
+function symmeId(p,id){const pos=posOf(p,id),pair=PAIRS[pos];return pair?p.formation[pair]:null}
+function oppositeId(op,slot){return op.formation[slot]}
+
+function calcEnteredThisRoundIds(p,formation,roundNo=game?.round||1){
+ if(roundNo===1)return [];
+ return p.ids.filter(id=>{
+   const newPos=Object.entries(formation).find(([_,v])=>v===id)?.[0]||"BACK";
+   return p.states[id].prevPos==="BACK" && newPos!=="BACK";
+ });
+}
+
+function teamPanel(p,opp,n){
+ let options=p.ids.map(id=>`<option value="${id}">${byId(id).name}</option>`).join("");
+ let h=`<div class="teamhead"><h2 style="margin:0">${p.label}</h2><div>得点 <b>${p.points}</b> / 累計Appeal <b>${p.totalAppeal}</b></div></div>`;
+ h+=`<div class="positions">`;
+ SLOTS.forEach(slot=>{h+=`<div class="${slot==="CENTER"?"center":""}"><label><b>${slot}</b><select data-team="${n}" data-slot="${slot}">${options}</select></label></div>`});
+ h+=`</div><div class="cardline"><b>バックス：</b><span id="backs${n}"></span></div>`;
+ h+=`<div class="cardline"><b>この配置でバックスから登場：</b><span id="entries${n}"></span></div>`;
+ h+=`<h3>BURSTターゲット指定</h3>`;
+ const teamOpts=p.ids.map(id=>`<option value="${id}">${byId(id).name}</option>`).join("");
+ const oppOpts=opp.ids.map(id=>`<option value="${id}">${byId(id).name}</option>`).join("");
+ if(game?.cpuMode && n===2){
+   h+=`<div class="row"><span class="muted">CPU：小島B・的野Bの対象は自動選択。中嶋Bは他のユーモアからランダム。</span></div>`;
+ }else{
+   h+=`<div class="row"><label>小島B→味方 <select id="kojiTarget${n}" style="width:auto">${teamOpts}</select></label><span class="muted">中嶋B→他のユーモアからランダム</span><label>的野B→相手 <select id="matonoTarget${n}" style="width:auto">${oppOpts}</select></label></div>`;
+ }
+ h+=`<h3>配置時Appeal予測</h3><div id="appealPreview${n}" class="cardline"></div>`;
+ h+=`<h3>状態</h3><div id="states${n}"></div>`;
+ return h;
+}
+
+function renderGame(){
+ document.getElementById("p1Game").innerHTML=teamPanel(game.p1,game.p2,1);
+ document.getElementById("p2Game").innerHTML=teamPanel(game.p2,game.p1,2);
+ [1,2].forEach(n=>{
+   const p=n===1?game.p1:game.p2;
+   SLOTS.forEach(slot=>{
+     const sel=document.querySelector(`select[data-team="${n}"][data-slot="${slot}"]`);
+     sel.value=p.formation[slot];
+     if(game.cpuMode && n===2)sel.disabled=true;
+     sel.addEventListener("change",()=>{
+       if(game.cpuMode && n===1){
+         game.cpuLocked=false;
+         document.getElementById("performBtn").disabled=true;
+         document.getElementById("cpuThinkBtn").disabled=false;
+       }
+       updateBacksAndStates();
+     });
+   });
+ });
+ updateBacksAndStates();
+}
+
+function readFormation(n){
+ const p=n===1?game.p1:game.p2, f={};
+ SLOTS.forEach(slot=>f[slot]=+document.querySelector(`select[data-team="${n}"][data-slot="${slot}"]`).value);
+ return f;
+}
+function validateFormation(p,f){
+ const vals=Object.values(f); if(new Set(vals).size!==5)return "同じアイドルを複数ポジションには置けません。";
+ for(const id of vals)if(!p.ids.includes(id))return "編成外のアイドルが含まれています。";
+ for(const id of p.ids){const st=p.states[id];if(st.lockedPos){const newPos=Object.entries(f).find(([_,v])=>v===id)?.[0]||"BACK";if(newPos!==st.lockedPos)return `${byId(id).name}は的野Bにより ${st.lockedPos} に固定されています。`;}}
+ return null;
+}
+
+function applyPrePerformancePreview(p,opp,cEnabled){
+ const song=game.roundSong;
+ if(song.id==="D")p.ids.forEach(id=>p.states[id].fatigue=clamp0(p.states[id].fatigue-1));
+ if(song.id==="E")p.states[p.formation.CENTER].fatigue=clamp0(p.states[p.formation.CENTER].fatigue-2);
+ if(p.ids.includes(1)){
+   const s=p.states[1],pos=posOf(p,1);
+   if(pos==="BACK"){
+     const cid=p.formation.CENTER;
+     p.states[cid].fatigue=clamp0(p.states[cid].fatigue-1);
+   }
+   const sy=symmeId(p,1);
+   if(sy)p.states[sy].fatigue=clamp0(p.states[sy].fatigue-2);
+ }
+ if(cEnabled && p.formation.CENTER===7)p.states[7].fatigue+=2;
+}
+function renderAppealPreview(){
+ if(!game)return;
+ let f1,f2;
+ try{f1=readFormation(1);f2=readFormation(2)}catch{return}
+ const err1=validateFormation(game.p1,f1),err2=validateFormation(game.p2,f2);
+ if(err1||err2){
+   document.getElementById("appealPreview1").innerHTML=`<span class="muted">配置確定後に表示します。</span>`;
+   document.getElementById("appealPreview2").innerHTML=`<span class="muted">配置確定後に表示します。</span>`;
+   return;
+ }
+ const p1=structuredClone(game.p1),p2=structuredClone(game.p2);
+ p1.formation=f1;p2.formation=f2;
+ p1.enteredThisRoundIds=calcEnteredThisRoundIds(p1,f1,game.round);
+ p2.enteredThisRoundIds=calcEnteredThisRoundIds(p2,f2,game.round);
+ p1.ids.forEach(id=>p1.states[id].pos=Object.entries(f1).find(([_,v])=>v===id)?.[0]||"BACK");
+ p2.ids.forEach(id=>p2.states[id].pos=Object.entries(f2).find(([_,v])=>v===id)?.[0]||"BACK");
+ const [c1,c2]=resolveCenterSkills(p1,p2);
+ applyPrePerformancePreview(p1,p2,c1);
+ applyPrePerformancePreview(p2,p1,c2);
+ const r1=calcTeam(p1,p2,1,c1,c2),r2=calcTeam(p2,p1,2,c2,c1);
+ const make=(p,r)=>`<div><b>総Appeal予測：${r.total}</b></div>`+
+   SLOTS.map((slot,i)=>{
+     const id=p.formation[slot];
+     return `<div>${slot}: <b>${esc(byId(id).name)}</b> → <b>${r.lines[i].match(/ = ([0-9.]+)/)?.[1]||"?"}</b></div>`;
+   }).join("")+
+   `<div class="muted" style="margin-top:4px">※現在の楽曲・疲労・A/B/C・位置補正を反映した予測値。パフォーマンス実行前です。</div>`;
+ document.getElementById("appealPreview1").innerHTML=make(p1,r1);
+ document.getElementById("appealPreview2").innerHTML=make(p2,r2);
+}
+function updateBacksAndStates(){
+ if(!game)return;
+ [1,2].forEach(n=>{
+  const p=n===1?game.p1:game.p2; let f;
+  try{f=readFormation(n)}catch{f=p.formation}
+  const used=new Set(Object.values(f)); const backs=p.ids.filter(id=>!used.has(id));
+  const entries=calcEnteredThisRoundIds(p,f,game.round);
+  document.getElementById(`backs${n}`).textContent=backs.map(id=>byId(id).name).join(" / ");
+  document.getElementById(`entries${n}`).textContent=entries.length ? `${entries.map(id=>byId(id).name).join(" / ")}（${entries.length}人）` : "なし";
+  document.getElementById(`states${n}`).innerHTML=p.ids.map(id=>{
+    const st=p.states[id]; let mark=[];
+    if(st.ready)mark.push("B READY");
+    if(st.burstActive)mark.push("BURST");
+    if(st.normalUsed)mark.push("B USED");
+    if(st.permBonus)mark.push(`永続+${st.permBonus}`);
+    if(st.activeNextBonus)mark.push(`松田C発動中+${st.activeNextBonus}`);
+    if(st.nextBonus)mark.push(`松田C次R+${st.nextBonus}`);
+    if(id===1){
+      const p1=posOf(p,1);
+      if(p1==="BACK")mark.push("A有効:CENTER疲労-1");
+      else if(PAIRS[p1])mark.push(`A有効:シンメ疲労-2`);
+    }
+    if(id===4 && posOf(p,4)==="BACK")mark.push("A有効:CENTER数値デバフ軽減1");
+    if(st.lockedPos)mark.push(`固定:${st.lockedPos}`);
+    return `<div class="cardline"><b>${byId(id).name}</b>　疲労 ${st.fatigue}　<span class="badge">${byId(id).attr}</span> ${mark.map(x=>`<span class="badge ready">${x}</span>`).join("")}</div>`;
+  }).join("");
+ });
+ renderAppealPreview();
+}
+
+function getTarget(n,type){
+ const p=n===1?game.p1:game.p2,opp=n===1?game.p2:game.p1;
+ if(game?.cpuMode && n===2){
+   if(type==="koji"){
+     const candidates=p.ids.filter(id=>id!==4);
+     candidates.sort((a,b)=>p.states[b].fatigue-p.states[a].fatigue || byId(b).base-byId(a).base);
+     return candidates[0]||0;
+   }
+   if(type==="matono"){
+     const candidates=[...opp.ids];
+     candidates.sort((a,b)=>{
+       const ca=byId(a),cb=byId(b);
+       const sa=ca.base+(ca.C?3:0)+opp.states[a].permBonus;
+       const sb=cb.base+(cb.C?3:0)+opp.states[b].permBonus;
+       return sb-sa;
+     });
+     return candidates[0]||0;
+   }
+ }
+ const id={koji:`kojiTarget${n}`,matono:`matonoTarget${n}`}[type];
+ return +(document.getElementById(id)?.value||0);
+}
+
+function applyBurst(p,opp,id,forced=false,n=1){
+ const st=p.states[id], card=byId(id);
+ if(!forced){ if(st.normalUsed)return; st.normalUsed=true; st.ready=false; }
+ st.burstActive=true; st.fatigue=0; if(forced)st.forcedBurstCount++;
+ log(`${p.label} ${card.name} BURST${forced?"（中嶋による強制・通常回数を消費しない）":""}：疲労→0`);
+ if(id===1){p.ids.forEach(x=>p.states[x].fatigue=clamp0(p.states[x].fatigue-2));log(`  B: 味方全員 疲労-2`);}
+ if(id===2){st.burstSelfAppeal=(st.burstSelfAppeal||0)+4;log(`  B: 自身Appeal+4`);}
+ if(id===3){opp.tempAttr="クール";log(`  B: 相手全員をこのパフォーマンス中クール扱い`);}
+ if(id===4){const t=getTarget(n,"koji"); if(t&&t!==id&&p.states[t]){const a=st.fatigue,b=p.states[t].fatigue;st.fatigue=b;p.states[t].fatigue=a;log(`  B: ${byId(t).name}と疲労を交換`)}}
+ if(id===5){p.tempAttr="キュート";log(`  B: 味方全員をこのパフォーマンス中キュート扱い`);}
+ if(id===6){
+   const candidates=p.ids.filter(x=>x!==id && byId(x).attr==="ユーモア");
+   if(candidates.length){
+     const t=candidates[Math.floor(Math.random()*candidates.length)];
+     log(`  B: ランダム選出 → ${byId(t).name}を強制BURST`);
+     applyBurst(p,opp,t,true,n);
+   }else{
+     log(`  B: 対象となる他のユーモア属性がいないため不発`);
+   }
+ }
+ if(id===7){
+   const t=getTarget(n,"matono");
+   if(t&&opp.states[t]){
+     const lock=opp.states[t].pos||"BACK";opp.states[t].lockedPos=lock;log(`  B: ${byId(t).name}を ${lock} に次のパフォーマンスまで固定`);
+   }
+ }
+ if(id===8){st.burstSelfAppeal=(st.burstSelfAppeal||0)+Math.min(p.points,3);log(`  B: 自身Appeal+${Math.min(p.points,3)}`);}
+ if(id===9){st.muraiDoubleC=true;log(`  B: このパフォーマンス、自身のCENTER SKILL効果×2`);}
+ if(id===10){p.burstCoolBonus=(p.burstCoolBonus||0)+1;log(`  B: 味方クールAppeal+1`);}
+ if(id===11){st.burstSelfAppeal=(st.burstSelfAppeal||0)+2;st.shield=true;log(`  B: 自身Appeal+2、相手効果を受けない`);}
+ if(id===12){st.permBonus+=2;log(`  B: 永続Appeal+2（累計+${st.permBonus}）`);}
+ // Matono reacts to any opponent burst
+ if(opp.ids.includes(7)){
+   const ms=opp.states[7];
+   if(!ms.normalUsed && !ms.burstActive){
+     log(`${opp.label} 的野美青：相手BURSTを検知し、自動BURST条件達成`);
+     applyBurst(opp,p,7,false,n===1?2:1);
+   }
+ }
+}
+
+function beginBursts(){
+ // normal ready bursts fire automatically
+ [[game.p1,game.p2,1],[game.p2,game.p1,2]].forEach(([p,o,n])=>{
+   p.ids.forEach(id=>{if(p.states[id].ready&&!p.states[id].normalUsed)applyBurst(p,o,id,false,n)})
+ });
+}
+
+function roundSong(){
+ if(game.round<=6)return songById(game.songDeck[game.round-1]);
+ const p1=game.p1,p2=game.p2;
+ let pool;
+ if(p1.points<p2.points)pool=p1.songs;
+ else if(p2.points<p1.points)pool=p2.songs;
+ else pool=[...p1.songs,...p2.songs];
+ if(!game.encoreSong)game.encoreSong=songById(pool[Math.floor(Math.random()*pool.length)]);
+ return game.encoreSong;
+}
+
+
+function permutations5(ids){
+ const out=[];
+ for(let a=0;a<ids.length;a++)
+ for(let b=0;b<ids.length;b++){if(b===a)continue;
+ for(let c=0;c<ids.length;c++){if(c===a||c===b)continue;
+ for(let d=0;d<ids.length;d++){if(d===a||d===b||d===c)continue;
+ for(let e=0;e<ids.length;e++){if(e===a||e===b||e===c||e===d)continue;
+   out.push([ids[a],ids[b],ids[c],ids[d],ids[e]]);
+ }}}}
+ return out;
+}
+function formationFromArray(arr){
+ return Object.fromEntries(SLOTS.map((s,i)=>[s,arr[i]]));
+}
+function estimateFutureFatigue(p){
+ let sum=0;
+ SLOTS.forEach(slot=>{
+   const id=p.formation[slot];
+   let inc=POSITION_FATIGUE[slot];
+   if(id===2)inc=Math.max(0,inc-1);
+   sum+=p.states[id].fatigue+inc;
+ });
+ idsBack(p).forEach(id=>sum+=Math.max(0,p.states[id].fatigue-2));
+ return sum;
+}
+function cpuChooseBestFormation(){
+ if(!game?.cpuMode)return;
+ let humanF;
+ try{humanF=readFormation(1)}catch{return}
+ const err=validateFormation(game.p1,humanF);
+ if(err){alert(err);return}
+ game.p1.formation=humanF;
+ game.p1.ids.forEach(id=>game.p1.states[id].pos=Object.entries(humanF).find(([_,v])=>v===id)?.[0]||"BACK");
+
+ let best=null,checked=0;
+ for(const arr of permutations5(game.p2.ids)){
+   const f=formationFromArray(arr);
+   if(validateFormation(game.p2,f))continue;
+   const p1=structuredClone(game.p1),p2=structuredClone(game.p2);
+   p2.formation=f;
+   p1.enteredThisRoundIds=calcEnteredThisRoundIds(p1,p1.formation,game.round);
+   p2.enteredThisRoundIds=calcEnteredThisRoundIds(p2,f,game.round);
+   p2.ids.forEach(id=>p2.states[id].pos=Object.entries(f).find(([_,v])=>v===id)?.[0]||"BACK");
+   const [c1,c2]=resolveCenterSkills(p1,p2);
+   applyPrePerformancePreview(p1,p2,c1);
+   applyPrePerformancePreview(p2,p1,c2);
+   const r2=calcTeam(p2,p1,2,c2,c1);
+   const fatigue=estimateFutureFatigue(p2);
+   checked++;
+   if(!best || r2.total>best.total || (r2.total===best.total && fatigue<best.fatigue)){
+     best={formation:f,total:r2.total,fatigue};
+   }
+ }
+ if(!best){alert("CPUが合法な配置を見つけられませんでした。");return}
+ game.p2.formation=best.formation;
+ game.p2.ids.forEach(id=>game.p2.states[id].pos=Object.entries(best.formation).find(([_,v])=>v===id)?.[0]||"BACK");
+ SLOTS.forEach(slot=>{
+   const sel=document.querySelector(`select[data-team="2"][data-slot="${slot}"]`);
+   if(sel)sel.value=best.formation[slot];
+ });
+ game.cpuLocked=true;
+ document.getElementById("performBtn").disabled=false;
+ document.getElementById("cpuThinkBtn").disabled=true;
+ updateBacksAndStates();
+ log(`CPU配置決定：${checked}候補を評価 / 予測総Appeal ${best.total}`);
+}
+
+function prepareRound(){
+ game.roundResolved=false;
+ // 松田Cで前ラウンドに付与されたボーナスを、このラウンドだけ有効化する。
+ [game.p1,game.p2].forEach(p=>{
+   p.ids.forEach(id=>{
+     const st=p.states[id];
+     st.activeNextBonus=st.nextBonus||0;
+     st.nextBonus=0;
+   });
+   p.enteredThisRoundIds=[];
+ });
+ // locks were meant for this upcoming performance, keep until after performance.
+ // burst statuses from previous performance are already cleared at its end.
+ beginBursts();
+ game.roundSong=roundSong();
+ document.getElementById("roundTitle").textContent=game.round===7?"ROUND 7 - ENCORE":`ROUND ${game.round}`;
+ document.getElementById("songName").textContent=`${game.roundSong.name}【${game.roundSong.type}】`;
+ document.getElementById("songEffect").textContent=game.roundSong.effect;
+ document.getElementById("scoreP1").textContent=game.p1.points;document.getElementById("scoreP2").textContent=game.p2.points;
+ renderGame();
+ const cpuBtn=document.getElementById("cpuThinkBtn");
+ if(game.cpuMode){
+   game.cpuLocked=false;
+   cpuBtn.style.display="";
+   cpuBtn.disabled=false;
+   document.getElementById("performBtn").disabled=true;
+ }else{
+   cpuBtn.style.display="none";
+   document.getElementById("performBtn").disabled=false;
+ }
+ document.getElementById("nextBtn").disabled=true;
+ document.getElementById("resultBox").innerHTML="";
+ log(`\n--- ROUND ${game.round}${game.round===7?" ENCORE":""} / 楽曲 ${game.roundSong.name}: ${game.roundSong.effect} ---`);
+}
+
+function autoMultiplier(){return game.roundSong.id==="J"?2:1}
+function cInitiallyEnabled(p,id){return posOf(p,id)==="CENTER" && !!byId(id).C && game.roundSong.id!=="I"}
+
+function resolveCenterSkills(p1,p2){
+ let e1=cInitiallyEnabled(p1,p1.formation.CENTER),e2=cInitiallyEnabled(p2,p2.formation.CENTER);
+ const c1=p1.formation.CENTER,c2=p2.formation.CENTER;
+ // Matono C attempts to nullify opponent C unless target is shielded.
+ if(e1&&c1===7&&!p2.states[c2].shield)e2=false;
+ if(e2&&c2===7&&!p1.states[c1].shield)e1=false;
+ // if both Matono, treat both as mutually nullified
+ if(c1===7&&c2===7&&game.roundSong.id!=="I"){e1=false;e2=false}
+ return [e1,e2];
+}
+function applyPrePerformance(p,opp,n,cEnabled){
+ const song=game.roundSong;
+ // song fatigue recovery
+ if(song.id==="D")p.ids.forEach(id=>p.states[id].fatigue=clamp0(p.states[id].fatigue-1));
+ if(song.id==="E")p.states[p.formation.CENTER].fatigue=clamp0(p.states[p.formation.CENTER].fatigue-2);
+ // Ishimori AUTO
+ if(p.ids.includes(1)){
+   const s=p.states[1],pos=posOf(p,1);
+   if(pos==="BACK"){
+     const cid=p.formation.CENTER;
+     const before=p.states[cid].fatigue;
+     p.states[cid].fatigue=clamp0(before-1);
+     if(before!==p.states[cid].fatigue)log(`${p.label} 石森A：${byId(cid).name}(CENTER) 疲労 ${before}→${p.states[cid].fatigue}`);
+   }
+   const sy=symmeId(p,1);
+   if(sy){
+     const before=p.states[sy].fatigue;
+     p.states[sy].fatigue=clamp0(before-2);
+     if(before!==p.states[sy].fatigue)log(`${p.label} 石森A：${byId(sy).name}(シンメ) 疲労 ${before}→${p.states[sy].fatigue}`);
+   }
+ }
+ // Matono C drawback, only if his C actually resolves
+ if(cEnabled && p.formation.CENTER===7){p.states[7].fatigue+=2;log(`${p.label} 的野C：相手CENTER SKILL無効 / 自身疲労+2`);}
+}
+function autoDisabledByOpponent(opp,slot,targetState){
+ if(targetState.shield)return false;
+ const oid=oppositeId(opp,slot);
+ return oid===7; // Matono A
+}
+
+function kojimaCenterMitigation(p){
+ // 小島がバックスにいる間、味方CENTERが「相手由来の数値Appeal減少」を1軽減。
+ // 無効化・属性変更・疲労ペナルティ・楽曲効果は数値Appeal減少ではないため対象外。
+ return p.ids.includes(4) && posOf(p,4)==="BACK" ? 1 : 0;
+}
+function opponentNumericAppealReduction(p,opp,id,slot){
+ // 現在の12人には、直接Appealを数値で下げる相手スキルは未収録。
+ // 将来ここに妨害スキルを追加した際、小島Aが自動的に機能する。
+ return 0;
+}
+function appealFor(p,opp,id,slot,cEnabled,oppCEnabled,n){
+ const card=byId(id),st=p.states[id],song=game.roundSong,autoMult=autoMultiplier();
+ let val=card.base+st.permBonus+(POSITION_BONUS[slot]||0);
+ const details=[`基礎${card.base}`,st.permBonus?`永続+${st.permBonus}`:"",POSITION_BONUS[slot]?`位置+${POSITION_BONUS[slot]}`:""].filter(Boolean);
+ const addRaw=(x,label)=>{val+=x;details.push(`${label}${x>=0?"+":""}${x}`)};
+ const addAuto=(x,label="A")=>{const z=x*autoMult;val+=z;details.push(`${label}${z>=0?"+":""}${z}${autoMult===2?"(J×2)":""}`)};
+ const autoOff=autoDisabledByOpponent(opp,slot,st);
+ if(!autoOff){
+  if(id===2){} // fatigue handling elsewhere
+  if(id===3)addAuto(countAttr(opp,"クール"));
+  if(id===5&&effectiveAttr(p,p.formation["FRONT-L"])==="キュート"&&effectiveAttr(p,p.formation["FRONT-R"])==="キュート")addAuto(1);
+  if(id===6)addAuto(p.ids.filter(x=>p.states[x].burstActive).length);
+  if(id===8&&p.points>opp.points)addAuto(2);
+  if(id===9&&p.enteredThisRoundIds.includes(id))addAuto(2);
+  if(id===10&&countAttr(p,"クール")>=3)addAuto(2);
+  if(id===11&&symmeId(p,11)===9)addAuto(2);
+  if(id===12&&p.points<opp.points)addAuto(opp.points);
+ } else details.push("A無効");
+ if(st.burstSelfAppeal)addRaw(st.burstSelfAppeal,"B");
+ if(p.burstCoolBonus&&effectiveAttr(p,id)==="クール")addRaw(p.burstCoolBonus,"B全体");
+ if(st.activeNextBonus)addRaw(st.activeNextBonus,"松田C");
+ // Center skills
+ if(cEnabled){
+   const cid=p.formation.CENTER;
+   if(cid===5&&effectiveAttr(p,id)==="キュート")addRaw(1,"C");
+   if(cid===9&&p.enteredThisRoundIds.includes(id)){
+      const factor=p.states[9].muraiDoubleC?2:1; addRaw(1*factor,"C");
+   }
+   if(cid===11&&id===11)addRaw(6,"C");
+ }
+ // songs
+ if(song.id==="A"&&effectiveAttr(p,id)==="クール")addRaw(1,"曲");
+ if(song.id==="B"&&effectiveAttr(p,id)==="キュート")addRaw(1,"曲");
+ if(song.id==="C"&&effectiveAttr(p,id)==="ユーモア")addRaw(1,"曲");
+ if(song.id==="F"&&p.enteredThisRoundIds.includes(id))addRaw(1,"曲");
+ if(song.id==="G"&&st.burstActive)addRaw(1,"曲");
+ if(song.id==="H"&&p.points<opp.points)addRaw(1,"曲");
+ // 相手由来の数値Appeal減少。小島AはCENTERに限り1軽減する。
+ let enemyReduction=opponentNumericAppealReduction(p,opp,id,slot);
+ if(enemyReduction>0){
+   let mitigated=0;
+   if(slot==="CENTER"){
+     mitigated=Math.min(enemyReduction,kojimaCenterMitigation(p));
+     enemyReduction-=mitigated;
+     if(mitigated)details.push(`小島A軽減+${mitigated}`);
+   }
+   if(enemyReduction>0){val-=enemyReduction;details.push(`相手妨害-${enemyReduction}`);}
+ }else if(slot==="CENTER" && kojimaCenterMitigation(p)>0){
+   details.push("小島A有効(相手数値デバフを1軽減)");
+ }
+ // fatigue penalty
+ if(st.fatigue>=7){val=val/2;details.push("疲労>=7→半減");}
+ else if(st.fatigue>=5){val-=2;details.push("疲労-2");}
+ else if(st.fatigue>=3){val-=1;details.push("疲労-1");}
+ val=Math.max(0,val);
+ return {val,details:autoOff?details:["A有効",...details]};
+}
+function calcTeam(p,opp,n,cEnabled,oppCEnabled){
+ let total=0,lines=[];
+ SLOTS.forEach(slot=>{const id=p.formation[slot],r=appealFor(p,opp,id,slot,cEnabled,oppCEnabled,n);total+=r.val;lines.push(`${byId(id).name} [${slot}] = ${r.val} (${r.details.join(", ")})`)});
+ return {total,lines};
+}
+function applyFatigueAndPost(p,outcome,cEnabled){
+ // positional fatigue
+ SLOTS.forEach(slot=>{
+   const id=p.formation[slot],st=p.states[id];let inc=POSITION_FATIGUE[slot];
+   if(id===2)inc=Math.max(0,inc-1);
+   st.fatigue+=inc;
+ });
+ idsBack(p).forEach(id=>p.states[id].fatigue=clamp0(p.states[id].fatigue-2));
+ // Matsuda center skill on loss
+ if(outcome==="loss" && cEnabled && p.formation.CENTER===12){
+   SLOTS.forEach(slot=>{const st=p.states[p.formation[slot]];st.fatigue=clamp0(st.fatigue-1);st.nextBonus=(st.nextBonus||0)+1});
+   log(`${p.label} 松田C：敗北により場の5人 疲労-1、次パフォーマンスAppeal+1`);
+ }
+}
+function checkBurstConditions(p,opp,outcome,song,n){
+ if(outcome==="win"){p.winsStreak++;p.lossStreak=0}
+ else if(outcome==="loss"){p.lossStreak++;p.winsStreak=0}
+ else {p.winsStreak=0;p.lossStreak=0}
+ p.ids.forEach(id=>{
+   const st=p.states[id]; if(st.normalUsed||st.ready)return;
+   let ok=false;
+   if(id===1)ok=p.ids.reduce((s,x)=>s+p.states[x].fatigue,0)>=15;
+   if(id===2)ok=st.fatigue>=3;
+   if(id===3)ok=countAttr(opp,"クール")===0;
+   if(id===4){if(posOf(p,id)==="BACK")st.backCount++;ok=st.backCount>=2}
+   if(id===5)ok=song.type==="キュート"&&posOf(p,id)==="CENTER";
+   if(id===6)ok=countAttr(p,"ユーモア")>=3;
+   // id 7 reactive only
+   if(id===8)ok=p.winsStreak>=2;
+   if(id===9)ok=(p.enteredThisRoundIds||[]).length>=3;
+   if(id===10)ok=song.type==="クール"&&posOf(p,id)==="CENTER";
+   if(id===11){if(posOf(p,id)==="CENTER")st.centerCount++;ok=st.centerCount>=2}
+   if(id===12)ok=p.lossStreak>=2;
+   if(ok){st.ready=true;log(`${p.label} ${byId(id).name}：BURST READY`)}
+ });
+}
+
+function executeRound(){
+ if(game.cpuMode && !game.cpuLocked){alert("先に「CPU配置を決定」を押してください。");return}
+ const f1=readFormation(1),f2=readFormation(2);
+ let e=validateFormation(game.p1,f1)||validateFormation(game.p2,f2);
+ if(e){alert(e);return}
+ // record entry and positions
+ [[game.p1,f1],[game.p2,f2]].forEach(([p,f])=>{
+  p.enteredThisRoundIds=calcEnteredThisRoundIds(p,f,game.round);
+  p.formation=f;
+  p.ids.forEach(id=>{
+    const st=p.states[id],newPos=Object.entries(f).find(([_,v])=>v===id)?.[0]||"BACK";
+    st.pos=newPos;
+  });
+  if(p.enteredThisRoundIds.length){
+    log(`${p.label} バックス→ステージ：${p.enteredThisRoundIds.map(id=>byId(id).name).join(" / ")}（${p.enteredThisRoundIds.length}人）`);
+  }
+ });
+ const [c1,c2]=resolveCenterSkills(game.p1,game.p2);
+ applyPrePerformance(game.p1,game.p2,1,c1);applyPrePerformance(game.p2,game.p1,2,c2);
+ const r1=calcTeam(game.p1,game.p2,1,c1,c2),r2=calcTeam(game.p2,game.p1,2,c2,c1);
+ game.p1.totalAppeal+=r1.total; game.p2.totalAppeal+=r2.total;
+ let winner=0,diff=Math.abs(r1.total-r2.total),pts=0;
+ if(r1.total>r2.total)winner=1;else if(r2.total>r1.total)winner=2;
+ if(winner){pts=game.round===7?(diff>=10?3:2):(diff>=10?2:1);(winner===1?game.p1:game.p2).points+=pts}
+ log(`${game.p1.label} Appeal ${r1.total}\n  ${r1.lines.join("\n  ")}`);
+ log(`${game.p2.label} Appeal ${r2.total}\n  ${r2.lines.join("\n  ")}`);
+ if(!winner)log(`RESULT: DRAW`);
+ else log(`RESULT: ${winner===1?game.p1.label:game.p2.label} +${pts}pt（差${diff}）`);
+ const outcome1=winner===1?"win":winner===2?"loss":"draw";
+ const outcome2=winner===2?"win":winner===1?"loss":"draw";
+ applyFatigueAndPost(game.p1,outcome1,c1);applyFatigueAndPost(game.p2,outcome2,c2);
+ checkBurstConditions(game.p1,game.p2,outcome1,game.roundSong,1);
+ checkBurstConditions(game.p2,game.p1,outcome2,game.roundSong,2);
+ // after performance: BURST等を解除。松田Cの「今ラウンド有効分」だけ消費する。
+ [game.p1,game.p2].forEach(p=>{
+   p.ids.forEach(id=>{
+     const st=p.states[id];
+     st.burstActive=false;st.burstSelfAppeal=0;st.shield=false;st.muraiDoubleC=false;
+     st.activeNextBonus=0;
+     st.prevPos=st.pos;
+     st.lockedPos=null;
+   });
+   p.burstCoolBonus=0;p.tempAttr=null;
+ });
+ document.getElementById("scoreP1").textContent=game.p1.points;document.getElementById("scoreP2").textContent=game.p2.points;
+ document.getElementById("resultBox").innerHTML=`<b>ROUND ${game.round}</b>：P1 ${r1.total} vs P2 ${r2.total} → ${winner?`P${winner} +${pts}pt`:"同点"}`;
+ document.getElementById("performBtn").disabled=true;
+ updateBacksAndStates();
+ if(game.round>=7){
+   let txt;
+   if(game.p1.points>game.p2.points)txt="P1 WIN";
+   else if(game.p2.points>game.p1.points)txt="P2 WIN";
+   else if(game.p1.totalAppeal>game.p2.totalAppeal)txt="P1 WIN（累計Appeal）";
+   else if(game.p2.totalAppeal>game.p1.totalAppeal)txt="P2 WIN（累計Appeal）";
+   else txt="DRAW";
+   document.getElementById("resultBox").innerHTML+=`<div class="panel ok"><b>FINAL：${txt}</b><br>得点 ${game.p1.points}-${game.p2.points} / 累計Appeal ${game.p1.totalAppeal}-${game.p2.totalAppeal}</div>`;
+   log(`=== FINAL ${txt} / points ${game.p1.points}-${game.p2.points} / appeal ${game.p1.totalAppeal}-${game.p2.totalAppeal} ===`);
+ }else document.getElementById("nextBtn").disabled=false;
+}
+document.getElementById("cpuThinkBtn").addEventListener("click",cpuChooseBestFormation);
+document.getElementById("performBtn").addEventListener("click",executeRound);
+document.getElementById("nextBtn").addEventListener("click",()=>{game.round++;prepareRound()});
+document.getElementById("restartBtn").addEventListener("click",()=>location.reload());
+</script>
+</body>
+</html>

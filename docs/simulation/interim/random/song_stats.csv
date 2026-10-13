@@ -1,0 +1,23 @@
+﻿song,name,teams,matches,wins,draws,winRate,sufficientSamples,sampleCount,sampleStatus
+A,Start over!,33,31,15,0,0.45454545454545453,false,33,provisional
+B,夏の近道,32,29,17,0,0.53125,false,32,provisional
+C,Make or Break,30,26,16,0,0.5333333333333333,false,30,provisional
+D,桜月,21,18,9,0,0.42857142857142855,false,21,provisional
+E,何歳の頃に戻りたいのか？,37,34,22,0,0.5945945945945946,false,37,provisional
+F,Unhappy birthday構文,20,19,9,0,0.45,false,20,provisional
+G,ドローン旋回中,25,23,13,0,0.52,false,25,provisional
+H,UDAGAWA GENERATION,18,17,11,0,0.6111111111111112,false,18,insufficient
+I,静寂の暴力,31,27,16,0,0.5161290322580645,false,31,provisional
+J,MCタイム,33,30,15,0,0.45454545454545453,false,33,provisional
+K,ジャマイカビール,25,23,15,0,0.6,false,25,provisional
+L,ってか,22,21,16,0,0.7272727272727273,false,22,provisional
+M,僕なんか,31,26,14,0,0.45161290322580644,false,31,provisional
+N,君はハニーデュー,23,19,13,0,0.5652173913043478,false,23,provisional
+O,Am I ready?,22,21,10,0,0.45454545454545453,false,22,provisional
+P,見たことのない魔物,31,28,15,0,0.4838709677419355,false,31,provisional
+Q,One choice,24,23,11,0,0.4583333333333333,false,24,provisional
+R,キツネ,32,30,14,0,0.4375,false,32,provisional
+S,NO WAR in the future,25,22,13,0,0.52,false,25,provisional
+T,Right?,31,31,9,0,0.2903225806451613,false,31,provisional
+U,アザトカワイイ,32,27,20,0,0.625,false,32,provisional
+V,JOYFUL LOVE,22,20,7,0,0.3181818181818182,false,22,provisional

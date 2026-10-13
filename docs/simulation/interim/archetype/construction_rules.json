@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "themes": [
+    {
+      "tag": "クール",
+      "count": 6,
+      "subTags": [
+        "楽曲",
+        "単一属性",
+        "センター"
+      ]
+    },
+    {
+      "tag": "チャージ",
+      "count": 4,
+      "subTags": [
+        "フォーメーション固定"
+      ]
+    },
+    {
+      "tag": "バースト",
+      "count": 6,
+      "subTags": [
+        "Appeal上昇",
+        "ユーモア",
+        "多属性"
+      ]
+    },
+    {
+      "tag": "フォーメーション移動",
+      "count": 3,
+      "subTags": [
+        "Appeal上昇",
+        "クール",
+        "楽曲"
+      ]
+    },
+    {
+      "tag": "フォーメーション固定",
+      "count": 9,
+      "subTags": [
+        "チャージ",
+        "Appeal上昇",
+        "Appeal低下"
+      ]
+    },
+    {
+      "tag": "多属性",
+      "count": 5,
+      "subTags": [
+        "楽曲",
+        "Appeal低下",
+        "バースト"
+      ]
+    },
+    {
+      "tag": "対スキル",
+      "count": 4,
+      "subTags": [
+        "Appeal上昇",
+        "Appeal増減",
+        "多属性"
+      ]
+    },
+    {
+      "tag": "疲労回復",
+      "count": 6,
+      "subTags": [
+        "Appeal低下",
+        "総疲労値",
+        "Appeal上昇"
+      ]
+    },
+    {
+      "tag": "疲労付与",
+      "count": 4,
+      "subTags": [
+        "Appeal低下",
+        "バースト",
+        "フォーメーション固定"
+      ]
+    }
+  ],
+  "coreTaggedMembers": 3,
+  "variants": 3,
+  "policy": "main tag 12, sub tag 3, attribute 7, center role 4, explicit ability/condition synergies, base/2, seeded jitter <=4, rotate top 3; songs use tags, attributes, conditions, effect checks. No match results used."
+}
