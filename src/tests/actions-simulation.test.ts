@@ -3,18 +3,40 @@ import {expect,it} from 'vitest';
 import {mkdtempSync,mkdirSync,existsSync,cpSync,readFileSync,writeFileSync,rmSync,symlinkSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {parseInputs,contract,cliArgs,fileHashes,validateResume,repairInterruptedTail,repairInterruptedSummary,restoredArtifactRoot,performanceReport,executeCli} from '../../scripts/actions-simulation';
+import {parseInputs,contract,cliArgs,warCliArgs,validateAnalysisPrerequisites,fileHashes,validateResume,repairInterruptedTail,repairInterruptedSummary,restoredArtifactRoot,performanceReport,executeCli} from '../../scripts/actions-simulation';
 const context={sha:'a'.repeat(40),repository:'oyoufuku/idol-card-game',runId:'123',attempt:'1'};
 function fixture(dir:string,attempt='1'){
  const expected=contract(parseInputs({}),context);writeFileSync(join(dir,'archetype-checkpoint.jsonl'),'{"index":0}\n');
  writeFileSync(join(dir,'remote-manifest.json'),JSON.stringify({schemaVersion:1,repository:context.repository,latestRunId:context.runId,contract:expected,lineage:[{runId:'123',attempt}],files:fileHashes(dir)}));return expected;
 }
 it('入力はpresetと混合CPUを正規化し、少数試合・同一探索設定を既定にする',()=>{
- const c=parseInputs({},2);expect(c).toMatchObject({cpuStrategy:'burst-charge-archetype',selection:'balanced',workers:2,maxNewMatches:2,search:'two-stage',candidates:100,retentionDays:7});
+ const c=parseInputs({},2);expect(c).toMatchObject({cpuStrategy:'charge-archetype',selection:'balanced',workers:2,maxNewMatches:2,search:'two-stage',candidates:100,retentionDays:7});
  expect(parseInputs({scenario:'A'})).toMatchObject({selection:'legacy',cpuStrategy:'normal'});
- expect(parseInputs({scenario:'B'})).toMatchObject({selection:'balanced',cpuStrategy:'normal'});
+ expect(parseInputs({scenario:'B'})).toMatchObject({selection:'balanced',cpuStrategy:'charge-archetype'});
  expect(parseInputs({scenario:'C',cpu_strategy:'normal'})).toMatchObject({selection:'balanced',cpuStrategy:'burst-charge-archetype'});
  expect(parseInputs({workers:1,fast_simulation:'false'})).toMatchObject({workers:1,fast:false});
+});
+it('WAR段階はall基準と前段artifactを必須にし、L3は指定カードだけを受け付ける',()=>{
+ expect(()=>parseInputs({analysis_level:'level1'})).toThrow('mode=all');
+ expect(()=>parseInputs({analysis_level:'level1',mode:'all'})).toThrow('resume_run_id');
+ const l1=parseInputs({analysis_level:'level1',mode:'all',resume_run_id:'123',war_max_new_jobs:10});
+ expect(warCliArgs(l1,'out')).toEqual(expect.arrayContaining(['--war-max-new-jobs','10','--card-war']));
+ const l2=parseInputs({analysis_level:'level2',mode:'all',resume_run_id:'123'});expect(warCliArgs(l2,'out')).toContain('--random-card-war');
+ expect(()=>parseInputs({analysis_level:'level3',mode:'all',resume_run_id:'123'})).toThrow('war_detail_ids');
+ const l3=parseInputs({analysis_level:'level3',mode:'all',resume_run_id:'123',war_detail_ids:'1,7',war_pairs:'1:7'});
+ expect(warCliArgs(l3,'out')).toEqual(expect.arrayContaining(['--war-detail-ids','1,7','--war-pairs','1:7']));
+ expect(()=>parseInputs({analysis_level:'level3',mode:'all',resume_run_id:'123',war_detail_ids:'1',war_pairs:'1:7'})).toThrow('included');
+});
+it('WARの0は全件実行として上限を省略し、段階順序を飛ばせない',()=>{
+ const l1=parseInputs({analysis_level:'level1',mode:'all',resume_run_id:'123',war_max_new_jobs:0});expect(warCliArgs(l1,'out')).not.toContain('--war-max-new-jobs');expect(warCliArgs(l1,'out',0)).toEqual(expect.arrayContaining(['--war-max-new-jobs','0']));
+ expect(()=>validateAnalysisPrerequisites(l1,{})).toThrow('baselines');
+ const base={random:{complete:true},archetype:{complete:true},warRuns:[]};expect(()=>validateAnalysisPrerequisites(parseInputs({analysis_level:'level2',mode:'all',resume_run_id:'123'}),base)).toThrow('LEVEL 1');
+ const withL1={...base,warRuns:[{output:'war/level1-archetype',complete:true}]};expect(()=>validateAnalysisPrerequisites(parseInputs({analysis_level:'level3',mode:'all',resume_run_id:'123',war_detail_ids:'1'}),withL1)).toThrow('LEVEL 2');
+ expect(()=>validateAnalysisPrerequisites(parseInputs({analysis_level:'level3',mode:'all',resume_run_id:'123',war_detail_ids:'1'}),{...withL1,warRuns:[...withL1.warRuns,{output:'war/level2-random',complete:true}]})).not.toThrow();
+});
+it('constructedは12固定デッキを78組にし、チャージ主軸だけCHARGE CPUへ振り分ける',()=>{
+ const config=parseInputs({scenario:'CUSTOM',mode:'archetype',archetype_selection:'constructed',cpu_strategy:'charge-archetype',matches_per_matchup:50});
+ const expected=contract(config,context);expect(expected).toMatchObject({plannedGames:3900,selection:'constructed',cpuStrategy:'charge-archetype'});
 });
 it('不正引数・shell injection・上限超過はCLI起動前に拒否する',()=>{
  for(const input of [{seed:'1; rm -rf /'},{workers:16},{random_matches:0},{matches_per_matchup:3},{runtime_minutes:360},{retention_days:91},{resume_run_id:'123\nTOKEN=x'},{cpu_strategy:'evil'},{fast_simulation:'yes'},{preview_candidates:150},{scenario:'A',mode:'random'},{unknown:'x'}])expect(()=>parseInputs(input,4)).toThrow();
@@ -26,7 +48,7 @@ it('0=全未完了とcheckpoint集計だけの0試合を区別する',()=>{
 });
 it('契約は実予定対戦をhashし、worker/時間/予算の変更を許すがゲーム条件を分離する',()=>{
  const config=parseInputs({});const original=contract(config,context);
- expect(original).toMatchObject({plannedGames:90,cpuStrategy:'burst-charge-archetype'});
+ expect(original).toMatchObject({plannedGames:90,cpuStrategy:'charge-archetype'});
  expect(contract({...config,workers:1,minutes:10,maxNewMatches:100,retentionDays:3},context)).toEqual(original);
  for(const change of [{seed:2},{selection:'legacy' as const},{cpuStrategy:'normal' as const},{matchesPerMatchup:10},{fast:false},{search:'exhaustive' as const},{candidates:200}])expect(contract({...config,...change},context)).not.toEqual(original);
  expect(contract(config,{...context,sha:'b'.repeat(40)})).not.toEqual(original);

@@ -1,29 +1,29 @@
 name: Balance simulation
-run-name: Simulation ${{ inputs.scenario }} / ${{ inputs.mode }} / seed ${{ inputs.seed }}
+run-name: Simulation ${{ inputs.analysis_level }} / ${{ inputs.scenario }} / ${{ inputs.mode }} / seed ${{ inputs.seed }}
 
 on:
   workflow_dispatch:
     inputs:
       scenario:
-        description: 'CUSTOM, A=legacy+normal, B=balanced+normal, C=balanced+charge/BURST'
+        description: 'CUSTOM, A=legacy+normal, B=balanced+charge-axis, C=balanced+charge/BURST'
         type: choice
         options: [CUSTOM, A, B, C]
         default: CUSTOM
       mode:
-        description: Simulation mode (A/B/C require archetype)
+        description: Simulation mode (WAR pipeline requires all)
         type: choice
-        options: [archetype, random]
+        options: [archetype, random, all]
         default: archetype
       archetype_selection:
         description: Construction (CUSTOM only)
         type: choice
-        options: [balanced, legacy]
+        options: [balanced, legacy, constructed]
         default: balanced
       cpu_strategy:
-        description: CPU (CUSTOM only; charge axis=CHARGE, others=BURST by default)
+        description: CPU (CUSTOM only; default=charge axis CHARGE, others normal)
         type: choice
         options: [burst-charge-archetype, normal, charge-archetype, burst]
-        default: burst-charge-archetype
+        default: charge-archetype
       matches_per_matchup:
         description: ARCHETYPE games per matchup, even number INCLUDING mirrors
         type: number
@@ -44,6 +44,10 @@ on:
         description: Skip presentation effects and charge trace
         type: boolean
         default: true
+      burst_round_trace:
+        description: Record BURST rounds for later L3 contribution analysis
+        type: boolean
+        default: false
       cpu_search:
         description: Shared search precision for both CPU strategies
         type: choice
@@ -68,6 +72,36 @@ on:
         default: 7
       resume_run_id:
         description: Previous Actions run ID to download and resume; blank=new run
+        type: string
+        default: ''
+      analysis_level:
+        description: Baseline, L1 ARCHETYPE WAR, L2 RANDOM WAR, or explicit-card L3
+        type: choice
+        options: [baseline, level1, level2, level3]
+        default: baseline
+      war_samples_per_card:
+        description: Paired samples per card for L1/L2/L3
+        type: number
+        default: 50
+      war_workers:
+        description: WAR workers; 0=auto (at most 4)
+        type: number
+        default: 0
+      war_max_new_jobs:
+        description: Counterfactual-job limit for this run; 0=all remaining
+        type: number
+        default: 0
+      war_detail_ids:
+        description: L3 only, explicit comma-separated card IDs (example 1,7,25)
+        type: string
+        default: ''
+      war_skill_ablation:
+        description: L3 skill ablation selection
+        type: choice
+        options: ['AUTO,BURST,CENTER,ALL', AUTO, BURST, CENTER, ALL]
+        default: 'AUTO,BURST,CENTER,ALL'
+      war_pairs:
+        description: L3 optional pairs; all IDs must be in detail IDs (example 1:7,7:25)
         type: string
         default: ''
 

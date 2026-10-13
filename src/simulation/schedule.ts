@@ -5,11 +5,12 @@ import { META_ARCHETYPE } from './meta-teams';
 import { CHARGE_POLICY,type CpuStrategy } from './charge-cpu';
 import { BURST_CPU_POLICY } from '../game/burst-cpu';
 export type StrategySelection='normal'|'charge'|'charge-archetype'|'burst'|'burst-archetype'|'burst-charge-archetype';
+const isChargeTheme=(team:Team)=>team.archetype==='チャージ軸'||team.mainTags.includes('チャージ');
 export function withStrategies(specs:MatchSpec[],selection:StrategySelection):MatchSpec[]{
  if(selection==='normal')return specs;
- if(selection==='burst-charge-archetype')return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>t.archetype==='チャージ軸'?'charge':'burst') as [CpuStrategy,CpuStrategy],cpuPolicy:`${CHARGE_POLICY}+${BURST_CPU_POLICY}`}));
+ if(selection==='burst-charge-archetype')return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>isChargeTheme(t)?'charge':'burst') as [CpuStrategy,CpuStrategy],cpuPolicy:`${CHARGE_POLICY}+${BURST_CPU_POLICY}`}));
  if(selection==='burst'||selection==='burst-archetype')return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>selection==='burst'||t.archetype==='バースト軸'?'burst':'normal') as [CpuStrategy,CpuStrategy],cpuPolicy:BURST_CPU_POLICY}));
- return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>selection==='charge'||t.archetype==='チャージ軸'?'charge':'normal') as [CpuStrategy,CpuStrategy],cpuPolicy:CHARGE_POLICY}));
+ return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>selection==='charge'||isChargeTheme(t)?'charge':'normal') as [CpuStrategy,CpuStrategy],cpuPolicy:CHARGE_POLICY}));
 }
 export function chargeComparisonSchedule(seed:number,games:number,teams=generateArchetypes(seed)):MatchSpec[]{
  if(games<2||games%2)throw new Error('--matches-per-matchup はmirrorを含む偶数（2以上）で指定してください');

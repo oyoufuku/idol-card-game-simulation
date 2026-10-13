@@ -2,6 +2,8 @@
 
 PCだけで動きます。実行中にCodexやChatGPTを開く必要はありません。Node.js 22以降（LTS版を推奨）が必要です。Excel・Pythonは不要です。
 
+GitHub ActionsでB条件、構築済み12デッキ、L1/L2/L3を段階実行する手順は [GitHub WARパイプライン](docs/simulation/GITHUB_WAR_PIPELINE.md) を参照してください。構築済み12デッキは `--archetype-selection constructed`、各組み合わせ50試合は `--matches-per-matchup 50`、チャージ主軸だけCHARGE CPUにする場合は `--cpu-strategy charge-archetype` を使用します。
+
 ## 1. 最新版を取得する
 
 GitHub Desktopで `oyoufuku/idol-card-game` を開き、Current branchを **main** にしてください。Fetch origin → Pull originで最新版を取得します。未mergeのPRを試す場合は、そのPRのブランチを選んでください。

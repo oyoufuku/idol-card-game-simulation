@@ -16,6 +16,12 @@ it('現行9軸27チーム、固定タグは保持、代表戦はチャージ対�
  expect(archetypeSchedule(1,20)).toHaveLength(900);expect(archetypeSchedule(1,2,teams,true).some(s=>s.a.archetype==='チャージ軸'&&s.b.archetype==='疲労回復軸')).toBe(true);
  for(const s of withStrategies(archetypeSchedule(1,2),'charge-archetype'))expect(s.cpuStrategies).toEqual([s.a,s.b].map(t=>t.archetype==='チャージ軸'?'charge':'normal'));
 });
+it('構築済み12デッキは固定8人3曲・同型込み78組×50戦で、チャージ主軸だけCHARGE CPUを使う',()=>{
+ const teams=generateArchetypes(1,3,'constructed');expect(teams).toHaveLength(12);expect(new Set(teams.map(t=>t.name)).size).toBe(12);
+ for(const team of teams){expect(team.members).toHaveLength(8);expect(new Set(team.members).size).toBe(8);expect(team.songs).toHaveLength(3);expect(new Set(team.songs).size).toBe(3);expect(team.selectionPolicy).toBe('constructed-decks-20261013-v1');}
+ const schedule=withStrategies(archetypeSchedule(1,50,teams),'charge-archetype');expect(schedule).toHaveLength(3900);
+ for(const spec of schedule)expect(spec.cpuStrategies).toEqual([spec.a,spec.b].map(team=>team.mainTags.includes('チャージ')?'charge':'normal'));
+});
 it('自軍/相手のBURST・疲労・移動を区別する',()=>{
  expect(abilitySemantics(byId(19)).ownBurst).toBe(false);expect(synergy(byId(19),[],'バースト').reasons.some(r=>r.includes('自軍BURST'))).toBe(false);
  expect(abilitySemantics({...byId(19),themeTags:[]} ).ownBurst).toBe(false);

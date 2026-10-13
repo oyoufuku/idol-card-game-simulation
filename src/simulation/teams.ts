@@ -10,6 +10,7 @@ import { abilitySemantics,usesTheme,legacyOwnCool } from './ability-semantics';
 import { chargeCore,chargeSupportPolicy } from './charge-team-policy';
 import { balanceTeamCoverage } from './team-coverage';
 import { buildTacticalTeams,tacticalSongAllowed,tacticalProfile,tacticalSongScore } from './tactical-team-policy';
+import {constructedTeams} from './constructed-teams';
 export interface Team {selectionPolicy?:string;name:string;archetype:string;members:number[];songs:string[];mainTags:string[];subTags:string[];reasons:Record<string,string[]>;scores?:Record<string,{construction:number;seedJitter:number;ranking:number}>;construction?:{profile:string;plan:string;caveats:string[];fixedMembers?:number[]}}
 export const ATTRS:Attribute[]=['クール','キュート','ユーモア'];
 export function randomTeam(seed:number,name:string):Team{const r=prng(seed);return {name,archetype:'RANDOM',members:shuffle(IDOLS.map(c=>c.id),r).slice(0,8),songs:shuffle(SELECTABLE_SONGS.map(s=>s.id),r).slice(0,3),mainTags:[],subTags:[],reasons:{}};}
@@ -54,7 +55,8 @@ export function constructionScore(c:Idol,selected:Idol[],tag:string,subTags:stri
     }
     return syn;
 }
-export function generateArchetypes(seed:number,variants=3,selection:'balanced'|'legacy'='balanced'):Team[]{
+export function generateArchetypes(seed:number,variants=3,selection:'balanced'|'legacy'|'constructed'='balanced'):Team[]{
+ if(selection==='constructed')return constructedTeams();
  const teams:Team[]=[];
  for(const theme of themes())for(let variant=0;variant<variants;variant++){
   const r=prng(seedFor(seed,theme.tag,variant)),selected:Idol[]=[],reasons:Record<string,string[]>={},memberScores:NonNullable<Team['scores']>={};
