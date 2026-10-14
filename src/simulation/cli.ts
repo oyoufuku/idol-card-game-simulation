@@ -1,3 +1,4 @@
+import {warScope} from './war-scope';
 import { buildWarPlan,hash,type WarOptions } from './war-plan';
 import { executeWarPlan } from './war-runner';
 import { writeWarOutput } from './war-output';
@@ -32,7 +33,7 @@ if(warOnly){
  if(!existsSync(saved))throw new Error('--war-only requires an existing --out with summary/checkpoints');
  const summary=JSON.parse(readFileSync(saved,'utf8')),config=summary.configuration;
  for(const [key,value] of Object.entries({mode:summary.mode,seed:summary.seed,'random-matches':config.randomMatches,'matches-per-matchup':config.matchesPerMatchup,variants:config.variants,'cpu-strategy':config.cpuStrategy,'archetype-selection':config.archetypeSelection??'legacy',archetypes:(config.archetypes||[]).join(','),'cpu-search':config.cpuSearch?.mode||'exhaustive','preview-candidates':config.cpuSearch?.previewCandidates||200}))defaults[key]=String(value);
- for(const flag of ['fast-simulation','charge-comparison','representative','burst-round-trace'])if(config[{'fast-simulation':'fastSimulation','charge-comparison':'chargeComparison','representative':'representative','burst-round-trace':'recordBurstRounds'}[flag]!])args.push('--'+flag);
+ for(const flag of ['fast-simulation','charge-comparison','representative','burst-round-trace','war-exclude-selection-decks'])if(config[{'fast-simulation':'fastSimulation','charge-comparison':'chargeComparison','representative':'representative','burst-round-trace':'recordBurstRounds','war-exclude-selection-decks':'warExcludeSelectionDecks'}[flag]!])args.push('--'+flag);
  args.push('--resume');
 }
 const get=(key:string,fallback:string)=>{const i=args.indexOf('--'+key);return i<0?(defaults[key]??fallback):args[i+1];};
@@ -72,6 +73,8 @@ const previousSummaryPath=join(out,'summary.json');
 const previousSummary=(args.includes('--resume')||warOnly)&&existsSync(previousSummaryPath)?JSON.parse(readFileSync(previousSummaryPath,'utf8')):null;
 const archetypeSelection=get('archetype-selection','balanced') as 'balanced'|'legacy'|'constructed';
 if(!['balanced','legacy','constructed'].includes(archetypeSelection))throw new Error('--archetype-selection は balanced / legacy / constructed');
+const warExcludeSelectionDecks=args.includes('--war-exclude-selection-decks');
+if(warExcludeSelectionDecks&&archetypeSelection!=='constructed')throw new Error('--war-exclude-selection-decks requires constructed selection');
 const allTeams=generateArchetypes(seed,Math.max(3,number('variants',3)),archetypeSelection);
 for(const name of filter)if(!allTeams.some(t=>t.archetype===name))throw new Error(`存在しないアーキタイプ: ${name}`);
 const selectedTeams=filter.length?allTeams.filter(t=>filter.includes(t.archetype)):allTeams;
@@ -82,7 +85,7 @@ console.log(`[settings] mode=${mode} cpu=${cpuStrategy} workers=${workers} avail
 const catalogSource=catalogProvenance();summary.catalogSource=catalogSource;
 console.log(`[catalog] ${catalogSource.cardDefinitionsFile} / ${catalogSource.specification} / fingerprint=${INPUT_FINGERPRINT}`);
 summary.inputFingerprint=INPUT_FINGERPRINT;summary.cpuStrategy=chargeComparison?'normal-vs-charge':cpuStrategy;
-summary.configuration={...(summary.configuration as object),cpuStrategy,chargeComparison,archetypeSelection,coveragePolicy:COVERAGE_POLICY,representative:args.includes('--representative'),archetypes:filter,chargePolicy:CHARGE_POLICY,...(cpuStrategy.startsWith('burst')?{burstPolicy:BURST_CPU_POLICY}:{}),fastSimulation,cpuSearch,recordBurstRounds};
+summary.configuration={...(summary.configuration as object),cpuStrategy,chargeComparison,archetypeSelection,warExcludeSelectionDecks,coveragePolicy:COVERAGE_POLICY,representative:args.includes('--representative'),archetypes:filter,chargePolicy:CHARGE_POLICY,...(cpuStrategy.startsWith('burst')?{burstPolicy:BURST_CPU_POLICY}:{}),fastSimulation,cpuSearch,recordBurstRounds};
 summary.chargeTelemetryAvailable=!fastSimulation;
 if(cpuStrategy==='charge'||cpuStrategy==='charge-archetype'||chargeComparison)summary.cpu='通常CPUは不変。CHARGEはシミュレーション専用：現在得点/勝敗/差/疲労＋蓄積・BURST回復・R5出場/R6復帰/R7再登場の固定ヒューリスティック。公開状態だけを使用';
 if(cpuStrategy.startsWith('burst'))summary.cpu='BURST考慮：公開状態から本番engineで今回終了・BURSTを実行し、公開楽曲候補と次回の合法な交換・同時投入を限定評価。今回得点/勝敗/Appeal差＋0.6×次回平均。通常/CHARGEは不変';
@@ -138,20 +141,22 @@ try{
  if(mode!=='random'){const specs=chargeComparison?comparisonSpecs:withStrategies(archetypeSchedule(seed,number('matches-per-matchup',10),teams,args.includes('--representative')),cpuStrategy);const results=await run(specs,'archetype');saveTeams();archetypeStats=writeMode(join(out,'archetype'),results);writeArchetypeStats(join(out,'archetype'),results);warBaselines.push(...results);}
  for(const [kind,stats] of [['random',randomStats],['archetype',archetypeStats]] as const)if(stats.length)csv(join(out,kind,'idol_stats.csv'),stats.map((c,i)=>({...c,randomWinRate:randomStats[i]?.winRate??null,archetypeWinRate:archetypeStats[i]?.winRate??null})));
  csv(join(out,'idol_comparison.csv'),Array.from({length:48},(_,i)=>({id:i+1,name:(randomStats[i]||archetypeStats[i]).name,randomSelections:randomStats[i]?.selections??0,randomWinRate:randomStats[i]?.winRate??null,archetypeSelections:archetypeStats[i]?.selections??0,archetypeWinRate:archetypeStats[i]?.winRate??null})));
+ const effectiveWarBaselines=warScope(warBaselines,warExcludeSelectionDecks);
+ summary.warScope={excludeSelectionDecks:warExcludeSelectionDecks,baselineGames:warBaselines.length,eligibleGames:effectiveWarBaselines.length,description:warExcludeSelectionDecks?'構築WARは基本9デッキ同士のみ。選抜3デッキを自軍/相手両方から除外。RANDOMは独立集計。':'全基準試合（モード別集計）'};
  const savedWarRuns=previousSummary?.warRuns??(previousSummary?.cardWar?[previousSummary.cardWar]:[]);
  if(savedWarRuns.length){
-  const baselineHash=hash(warBaselines),retained=savedWarRuns.filter((run:{baselineHash:string;inputFingerprint:string})=>run.baselineHash===baselineHash&&run.inputFingerprint===INPUT_FINGERPRINT);
+  const baselineHash=hash(effectiveWarBaselines),retained=savedWarRuns.filter((run:{baselineHash:string;inputFingerprint:string})=>run.baselineHash===baselineHash&&run.inputFingerprint===INPUT_FINGERPRINT);
   if(retained.length){summary.warRuns=retained;summary.cardWar=retained.at(-1);}
  }
  if(warOptions){
   const options=warOptions,detailIds=options.detailIds,warModes=options.modes;
-  const plan=buildWarPlan(warBaselines,options,matchOptions),warOut=resolve(get('war-out',join(out,'war',detailIds.length?'detail':warModes.length===2?'basic-all':warModes[0]==='random'?'level2-random':'level1-archetype'))),warStarted=performance.now();
-  console.log(`[war] baselines=${warBaselines.length}, planned counterfactual jobs=${plan.jobs.length}; RANDOM/ARCHETYPE are separate`);
-  if(!warBaselines.some(r=>warModes.includes(r.spec.mode)))throw new Error('No completed baseline for requested WAR mode. RANDOM uses --random-card-war; ARCHETYPE uses --card-war');
+  const plan=buildWarPlan(effectiveWarBaselines,options,matchOptions),warOut=resolve(get('war-out',join(out,'war',detailIds.length?'detail':warModes.length===2?'basic-all':warModes[0]==='random'?'level2-random':'level1-archetype'))),warStarted=performance.now();
+  console.log(`[war] baselines=${effectiveWarBaselines.length}, planned counterfactual jobs=${plan.jobs.length}; RANDOM/ARCHETYPE are separate`);
+  if(!effectiveWarBaselines.some(r=>warModes.includes(r.spec.mode)))throw new Error('No completed baseline for requested WAR mode. RANDOM uses --random-card-war; ARCHETYPE uses --card-war');
   if(args.includes('--war-plan-only')){json(join(out,'war-planned.json'),plan);summary.cardWarPlan={plannedJobs:plan.jobs.length};}
   else{
    const results=await executeWarPlan(plan,warOut,{workers:Math.max(1,number('war-workers',1)),resume:args.includes('--war-resume')||warOnly,maxNewJobs:args.includes('--war-max-new-jobs')?number('war-max-new-jobs',0):Infinity,stopped:()=>interrupted,reusePaths:(previousSummary?.warRuns??(previousSummary?.cardWar?[previousSummary.cardWar]:[])).map((run:{output:string})=>resolve(out,run.output)),progress:(done,total)=>console.log(`[war] ${done}/${total}`)});
-   summary.cardWar={...writeWarOutput(warOut,plan,warBaselines,results),baselineHash:plan.baselineHash,output:relative(out,warOut),sessionElapsedSeconds:(performance.now()-warStarted)/1000};
+   summary.cardWar={...writeWarOutput(warOut,plan,effectiveWarBaselines,results),baselineHash:plan.baselineHash,output:relative(out,warOut),sessionElapsedSeconds:(performance.now()-warStarted)/1000};
    const prior=(previousSummary?.warRuns??(previousSummary?.cardWar?[previousSummary.cardWar]:[])).filter((run:{baselineHash:string;inputFingerprint:string;output:string;options:{seed:number}})=>run.baselineHash===plan.baselineHash&&run.inputFingerprint===plan.fingerprint&&run.options.seed===plan.options.seed&&run.output!==relative(out,warOut));
    summary.warRuns=[...prior,summary.cardWar];
    if(warModes.includes('archetype'))console.log(`[war] 詳細検査候補のみ保存しました: ${join(warOut,'detail_candidates.csv')}（追加試合は自動開始しません）`);

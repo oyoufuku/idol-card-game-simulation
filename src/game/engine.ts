@@ -12,15 +12,15 @@ import { calcBoth } from './appeal';
 import { skillFor } from './skills';
 import { finalResult, scoreRound } from './scoring';
 import { effectsFor } from './effects';
-export const GAME_RULE_VERSION='end-performance-burst-v1';
+export const GAME_RULE_VERSION='reviewed-burst-20261014-v2';
 export function stateFor(id: number): IdolState {
   return { charge: 0, spentCharge: 0, lastSpentCharge: 0, samePositionStreak: 0, positionCounts: {}, symmetries: [], positionKinds: [], fatigueStreak: 0, freshStreak: 0, cuteRounds: 0, exactlyTwoCuteRounds: 0, repeatedSongAutos: 0, swapReduction: 0, plain: false, baseAdjustment: 0, fatigueAffected: false, autoTriggered: false, centerTriggered: false, matchedAttribute: null, stats: { auto: 0, ready: 0, center: 0, positions: { CENTER: 0, 'FRONT-L': 0, 'FRONT-R': 0, 'MIDDLE-L': 0, 'MIDDLE-R': 0, BACK: 0 } }, id, fatigue: 0, normalUsed: false, burstActive: false, forcedBurstCount: 0, burstCount: 0, burstStacks: 0, attributeOverride: null, addedAttributes: [],
-    autoGainTotal: 0, autoDebuffTotal: 0, lastAutoGain: 0, lastAutoDebuff: 0, lastAppealGain:0, lastOppositeReduction:0, nextAutoCarry: 0, activeAutoCarry: 0, burstDebuff: 0, permBonus: 0,
+    autoGainTotal: 0, autoDebuffTotal: 0, lastAutoGain: 0, lastAutoDebuff: 0, lastAppealGain:0, lastOppositeReduction:0,lastOppositeGain:0, nextAutoCarry: 0, activeAutoCarry: 0, burstDebuff: 0, permBonus: 0,
     nextBonus: 0, activeNextBonus: 0, backCount: 0, centerCount: 0, enteredCount: 0, prevPos: 'BACK', pos: 'BACK', lockedPos: null,
     burstSelfAppeal: 0, shield: false, muraiDoubleC: false };
 }
 export function mkPlayer(label: string, ids: number[], songs: string[]): Player {
-  const p: Player = { songHistory: [], noBurstStreak: 0, burstBackCandidates: [], label, ids: [...ids], songs: [...songs], points: 0, totalAppeal: 0,
+  const p: Player = { songHistory: [], burstRounds:[], noBurstStreak: 0, burstBackCandidates: [], label, ids: [...ids], songs: [...songs], points: 0, totalAppeal: 0,
     states: Object.fromEntries(ids.map(id => [id, stateFor(id)])), formation: formationFromArray(ids),
     winsStreak: 0, lossStreak: 0, round: 1, lastAppeal: 0, coolStreak: 0, addedAttributes: [], tempAttr: null, enteredThisRoundIds: [], burstCoolBonus: 0 };
   ids.forEach(id => { p.states[id].pos = p.states[id].prevPos = posOf(p, id); });
@@ -102,7 +102,7 @@ function clonePlayerForCpu(p:Player,chargeForecast:boolean):Player {
   {...s,addedAttributes:[...s.addedAttributes],stats:{...s.stats,positions:{...s.stats.positions}},...(s.burstDebuffSources?{burstDebuffSources:s.burstDebuffSources.map(source=>({...source}))}:{})}:
   {...s};
  }
- return inheritAnalysisSkills(p,{...p,states,...(chargeForecast?{songHistory:[...p.songHistory],burstBackCandidates:[...p.burstBackCandidates],addedAttributes:[...p.addedAttributes]}:{})});
+ return inheritAnalysisSkills(p,{...p,states,burstRounds:[...(p.burstRounds||[])],...(chargeForecast?{songHistory:[...p.songHistory],burstBackCandidates:[...p.burstBackCandidates],addedAttributes:[...p.addedAttributes]}:{})});
 }
 /** CPU-only projection; shared roster/position-history collections are read-only.
  * Use chargeForecast when also executing finishPerformance/reaction BURSTs.
@@ -133,9 +133,9 @@ export function executeRound(game: Game, f1: Formation = game.p1.formation, f2: 
   const { p1: r1, p2: r2 } = calcBoth(p1, p2, game.roundSong, options?.detailedAppeal??true, effects);
   for (const [p, result] of [[p1, r1], [p2, r2]] as const) {
     p.lastAppeal = result.total; p.coolStreak = game.roundSong.type === 'クール' ? p.coolStreak + 1 : 0;
-    p.ids.forEach(id => { p.states[id].lastAutoGain = 0; p.states[id].lastAutoDebuff = 0; p.states[id].lastAppealGain=0;p.states[id].lastOppositeReduction=0; });
+    p.ids.forEach(id => { p.states[id].lastAutoGain = 0; p.states[id].lastAutoDebuff = 0; p.states[id].lastAppealGain=0;p.states[id].lastOppositeReduction=0;p.states[id].lastOppositeGain=0; });
     const other=result===r1?r2:r1;
-    for (const m of result.members) { const st = p.states[m.id]; st.lastAutoGain = m.autoGain; st.lastAutoDebuff = m.autoDebuff; st.autoGainTotal += m.autoGain; st.autoDebuffTotal += m.autoDebuff;st.lastAppealGain=m.skillGain??0;st.lastOppositeReduction=other.members.find(target=>target.slot===m.slot)?.skillReduction??0; }
+    for (const m of result.members) { const st = p.states[m.id]; st.lastAutoGain = m.autoGain; st.lastAutoDebuff = m.autoDebuff; st.autoGainTotal += m.autoGain; st.autoDebuffTotal += m.autoDebuff;st.lastAppealGain=m.skillGain??0;st.lastOppositeReduction=other.members.find(target=>target.slot===m.slot)?.skillReduction??0;st.lastOppositeGain=other.members.find(target=>target.slot===m.slot)?.skillGain??0; }
   }
   p1.totalAppeal += r1.total; p2.totalAppeal += r2.total;
   const { winner, points } = scoreRound(r1.total, r2.total, game.round);
@@ -143,7 +143,7 @@ export function executeRound(game: Game, f1: Formation = game.p1.formation, f2: 
   log(`${p1.label} Appeal ${r1.total}\n  ${r1.lines.join('\n  ')}`); log(`${p2.label} Appeal ${r2.total}\n  ${r2.lines.join('\n  ')}`);
   log(winner ? `RESULT: ${winner === 1 ? p1.label : p2.label} +${points}pt（差${Math.abs(r1.total - r2.total)}）` : 'RESULT: DRAW');
   const o1 = winner === 1 ? 'win' : winner === 2 ? 'loss' : 'draw', o2 = winner === 2 ? 'win' : winner === 1 ? 'loss' : 'draw';
-  recordPerformance(p1,p2,game.roundSong); recordPerformance(p2,p1,game.roundSong);
+  recordPerformance(p1,p2,game.roundSong,o1); recordPerformance(p2,p1,game.roundSong,o2);
   applyFatigueAndPost(p1, p2, o1, c1, game.roundSong, log, effects); applyFatigueAndPost(p2, p1, o2, c2, game.roundSong, log, effects);
   for (const [p, opp] of [[p1, p2], [p2, p1]]) for (const id of p.ids) {
     if (p.states[id].burstStacks > 0) {const post=skillFor(id,p).postBurst;
@@ -155,8 +155,8 @@ export function executeRound(game: Game, f1: Formation = game.p1.formation, f2: 
   finishPerformance(p1,p2,game.roundSong,effects); finishPerformance(p2,p1,game.roundSong,effects);
   const eligible1=checkBurstConditions(game,p1,p2,o1),eligible2=checkBurstConditions(game,p2,p1,o2);
   [p1, p2].forEach(p => {
-    p.ids.forEach(id => { const st = p.states[id]; st.burstActive = false; st.burstStacks = 0; st.burstDebuff = 0; delete st.burstDebuffSources; st.attributeOverride = null; st.addedAttributes = []; st.activeAutoCarry = 0; st.burstSelfAppeal = 0; st.shield = false; st.grantedShield=false;st.negativeShield=false;st.appealReductionShield=false; st.muraiDoubleC = false; st.activeNextBonus = 0; st.plain=false; st.baseAdjustment=0; st.prevPos = st.pos; st.lockedPos = null; });
-    p.cuteOnly=false;p.burstCoolBonus = 0; p.tempAttr = null; p.addedAttributes = [];
+    p.ids.forEach(id => { const st = p.states[id]; st.burstActive = false; st.burstStacks = 0; st.burstDebuff = 0; delete st.burstDebuffSources; st.attributeOverride = null; st.addedAttributes = []; st.activeAutoCarry = 0; st.burstSelfAppeal = 0; st.shield = false; st.grantedShield=false;st.negativeShield=false;st.immunitySources=[];st.protectedTargets=[];st.appealReductionShield=false; st.muraiDoubleC = false; st.activeNextBonus = 0; st.plain=false; st.baseAdjustment=0; st.prevPos = st.pos; st.lockedPos = null; });
+    p.cuteOnly=false;p.coolOnly=false;p.burstCoolBonus = 0; p.tempAttr = null; p.addedAttributes = [];
   });
   if(game.skillEffects)game.burstEffectSources=[];
   queueBursts(game,eligible1,eligible2);
@@ -174,5 +174,5 @@ export function nextRound(game: Game, random = Math.random) {
 }
 
 export function clonePlayer(p: Player): Player {
- return inheritAnalysisSkills(p,{...p, ids:[...p.ids],songs:[...p.songs],songHistory:[...p.songHistory],burstBackCandidates:[...p.burstBackCandidates],formation:{...p.formation},addedAttributes:[...p.addedAttributes],enteredThisRoundIds:[...p.enteredThisRoundIds],states:Object.fromEntries(p.ids.map(id=>{const s=p.states[id];return [id,{...s,addedAttributes:[...s.addedAttributes],positionCounts:{...s.positionCounts},symmetries:[...s.symmetries],positionKinds:[...s.positionKinds],...(s.burstDebuffSources?{burstDebuffSources:s.burstDebuffSources.map(source=>({...source}))}:{}),stats:{...s.stats,positions:{...s.stats.positions}}}];}))});
+ return inheritAnalysisSkills(p,{...p, ids:[...p.ids],songs:[...p.songs],songHistory:[...p.songHistory],burstRounds:[...(p.burstRounds||[])],burstBackCandidates:[...p.burstBackCandidates],formation:{...p.formation},addedAttributes:[...p.addedAttributes],enteredThisRoundIds:[...p.enteredThisRoundIds],states:Object.fromEntries(p.ids.map(id=>{const s=p.states[id];return [id,{...s,addedAttributes:[...s.addedAttributes],positionCounts:{...s.positionCounts},symmetries:[...s.symmetries],positionKinds:[...s.positionKinds],...(s.burstDebuffSources?{burstDebuffSources:s.burstDebuffSources.map(source=>({...source}))}:{}),stats:{...s.stats,positions:{...s.stats.positions}}}];}))});
 }

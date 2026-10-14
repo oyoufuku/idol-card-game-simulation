@@ -1,3 +1,4 @@
+import {removeImmunitySource} from './immunity';
 import type { Player,Skill } from './types';
 import { IDOLS } from '../data/idols';
 
@@ -13,8 +14,10 @@ export function suppressBurstHooks(skill:Skill,keys:readonly (keyof Skill)[]):Sk
 export function disableBurstSkill(p:Player,opp:Player,id:number,untilRound:number){
  const s=p.states[id];s.burstDisabledUntilRound=Math.max(s.burstDisabledUntilRound??0,untilRound);
  s.burstSelfAppeal=0;s.activeAutoCarry=0;s.nextAutoCarry=0;s.muraiDoubleC=false;s.appealReductionShield=false;
+ removeImmunitySource(p,id,'B');s.protectedTargets=[];
  const kind=IDOLS.find(c=>c.id===id)!.skill;
  if(kind==='taniguchi')p.cuteOnly=false;
+ if(kind==='odakura')opp.coolOnly=false;
  if(kind==='murayama')p.burstCoolBonus=0;
  // Locks/movements already applied by a B remain; its continuing Appeal
  // reduction does not. Keep reductions from other sources separately.

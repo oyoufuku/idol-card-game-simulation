@@ -9,9 +9,9 @@ it('拡大カードは名前→画像枠→A/B条件/B/Cの順で、省略しな
   expect(html.indexOf('idol-name')).toBeLessThan(html.indexOf('card-picture'));
   expect(html.indexOf('card-picture')).toBeLessThan(html.indexOf('card-skill-list'));
   expect(html.match(/class="card-skill"/g)).toHaveLength(4);
-  expect(html.indexOf('>A</b>')).toBeLessThan(html.indexOf('>B条件</b>'));
-  expect(html.indexOf('>B条件</b>')).toBeLessThan(html.indexOf('>B</b>'));
-  expect(html.indexOf('>B</b>')).toBeLessThan(html.indexOf('>C</b>'));
+  expect(html.indexOf('>Aスキル</b>')).toBeLessThan(html.indexOf('>B条件</b>'));
+  expect(html.indexOf('>B条件</b>')).toBeLessThan(html.indexOf('>Bスキル</b>'));
+  expect(html.indexOf('>Bスキル</b>')).toBeLessThan(html.indexOf('>Cスキル</b>'));
   for(const text of [card.A,card.Bcond,card.B,card.C])if(text)expect(html).toContain(text);
 });
 it('現在の追加・変更属性を使用し、2属性は2色、3属性は3色、重複は同じ色を増やさない', () => {

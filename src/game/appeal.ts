@@ -9,9 +9,9 @@ export function resolveCenterSkills(p1: Player, p2: Player, song: Song): [boolea
   const eligible = (p: Player) => !!byId(p.formation.CENTER).C && skillEnabled(p,p.formation.CENTER,'CENTER') && (song.rule !== 'disableCenter' || !!skillFor(p.formation.CENTER,p).centerSongImmune);
   let e1 = eligible(p1), e2 = eligible(p2);
   const d1 = skillFor(p1.formation.CENTER,p1).disableOpponentCenter, d2 = skillFor(p2.formation.CENTER,p2).disableOpponentCenter;
-  if (e1 && d1 && !p2.states[p2.formation.CENTER].shield) e2 = false;
-  if (e2 && d2 && !p1.states[p1.formation.CENTER].shield) e1 = false;
-  if (d1 && d2 && song.rule !== 'disableCenter'&&!p1.states[p1.formation.CENTER].shield&&!p2.states[p2.formation.CENTER].shield) { e1 = false; e2 = false; }
+  if (e1 && d1 && !(p2.states[p2.formation.CENTER].shield||p2.states[p2.formation.CENTER].negativeShield)) e2 = false;
+  if (e2 && d2 && !(p1.states[p1.formation.CENTER].shield||p1.states[p1.formation.CENTER].negativeShield)) e1 = false;
+  if (d1 && d2 && song.rule !== 'disableCenter'&&!(p1.states[p1.formation.CENTER].shield||p1.states[p1.formation.CENTER].negativeShield)&&!(p2.states[p2.formation.CENTER].shield||p2.states[p2.formation.CENTER].negativeShield)) { e1 = false; e2 = false; }
   return [e1, e2];
 }
 export function songAppealEffects(p:Player,opp:Player,song:Song):AppealEffect[] {
@@ -46,6 +46,7 @@ type Kind = 'A' | 'B' | 'C' | '曲';
 interface Modifier { owner: Player; target: Player; actor: number; id: number; amount: number; kind: Kind; label: string }
 function ignoreExplanation() {}
 export function calcBoth(p1: Player, p2: Player, song: Song, detailed = true, effects?:EffectRecorder): { p1: TeamAppeal; p2: TeamAppeal } {
+  for(const p of [p1,p2])for(const id of p.ids)p.states[id].autoReductionCurrent=0;
   const enabled = resolveCenterSkills(p1, p2, song), mods: Modifier[] = [];
   const add = (p: Player, opp: Player, actor: number, kind: Kind, effects: AppealEffect[], label = `${byId(actor).name}${kind}`) => effects.forEach(e => { if (e.amount) mods.push({ owner: p, target: e.opponent ? opp : p, actor, id: e.id, amount: e.amount, kind, label }); });
   for (const [index, p, opp] of [[0, p1, p2], [1, p2, p1]] as const) {
@@ -74,7 +75,7 @@ export function calcBoth(p1: Player, p2: Player, song: Song, detailed = true, ef
   function adjusted(m: Modifier): { n: number; reason: string; blocker?:number; blocked?:number } {
     const p = m.target, opp = p === p1 ? p2 : p1, st = p.states[m.id], slot = posOf(p, m.id);
     if (slot === 'BACK') return { n: 0, reason: 'バックス' };
-    if (m.amount<0&&(m.owner!==p||m.kind==='曲')&&st.negativeShield)return {n:0,reason:'村井Aマイナス効果無効'};
+    if (m.amount<0&&(m.owner!==p||m.kind==='曲')&&st.negativeShield)return {n:0,reason:'マイナス無効'};
     if(m.amount<0&&m.owner!==p&&st.appealReductionShield)return {n:0,reason:'藤吉B相手Appeal減少無効'};
     if (m.owner !== p && st.shield) return { n: 0, reason: '相手効果無効' };
     const skill = skillFor(m.id,p);
@@ -87,7 +88,7 @@ export function calcBoth(p1: Player, p2: Player, song: Song, detailed = true, ef
       const reduction = idsBack(p).reduce((sum, id) => sum + (autoEnabled(p, opp, id) ? skillFor(id,p).backCenterMitigation || 0 : 0), 0);
       if (reduction) { for(const id of idsBack(p))if(autoEnabled(p,opp,id)&&skillFor(id,p).backCenterMitigation)p.states[id].autoTriggered=true; n = Math.min(0, n + reduction); reason = '小島A軽減'; }
     }
-    if (skill.immuneAppeal && skillEnabled(p,m.id,'BURST') && st.burstActive) { n *= 2; reason = [reason, '大園B×2'].filter(Boolean).join(' / '); }
+    if (skill.immuneAppeal && skillEnabled(p,m.id,'BURST') && st.burstActive) { n = n<0?0:n*2; reason = [reason, '大園B×2'].filter(Boolean).join(' / '); }
     return { n, reason, ...(blocker===undefined?{}:{blocker,blocked}) };
   }
   // Snapshot resolved positive modifiers before copies; two copying AUTOs cannot recurse.
@@ -129,6 +130,8 @@ export function calcBoth(p1: Player, p2: Player, song: Song, detailed = true, ef
       if(m.target!==m.owner)own.autoDebuff+=Math.max(0,-m.n);
     }
   }
+
+  for(const [side,p] of [[0,p1],[1,p2]] as const)for(const id of p.ids)p.states[id].autoReductionCurrent=totals[side][id].autoDebuff;
 
   function contribution(owner:Player|undefined,id:number|undefined,kind:AppealContribution['kind'],amount:number,effect:string,name?:string,reason?:string):AppealContribution {
     return {side:owner===p1?0:owner===p2?1:null,...(id===undefined?{}:{sourceId:id}),sourceName:name??(id===undefined?'':byId(id).name),kind,amount,effect,...(reason?{reason}:{})};

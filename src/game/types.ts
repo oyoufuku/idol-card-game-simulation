@@ -9,6 +9,8 @@ export interface Idol { id: number; no: string; name: string; attr: Attribute; t
 export interface Song { id: string; name: string; type: Attribute; effect: string; tags?: string[]; selectable?: boolean; rule: 'attribute' | 'nonCute' | 'nonHumorFatigue' | 'doubleFatigue' | 'losing' | 'entry' | 'nonBurst' | 'missingAttributes' | 'disableCenter' | 'recoverAll' | 'coolFront' | 'burstPenalty' | 'samePosition' | 'middleBonus' | 'fatigueRelief' | 'highBase' | 'attributeCount' | 'majority' | 'doubleCurrentFatigue' | 'allAttributes' | 'sameFatigue' | 'moved' | 'cancelBurst' }
 export interface IdolState {
   burstDisabledUntilRound?:number;
+  immunitySources?:{id:number;kind:'A'|'B'}[]; protectedTargets?:number[];
+  autoReductionCurrent?:number; autoSuccessRounds?:number; fatigueTwoEnds?:number; stageWins?:number; coolStageRounds?:number; stageSongAttributes?:Attribute[]; stageFreshRounds?:number; qualifiedBackRounds?:number; lastOppositeGain?:number;
   grantedShield?:boolean; negativeShield?:boolean; appealReductionShield?:boolean;
   charge: number; spentCharge: number; lastSpentCharge: number; samePositionStreak: number;
   positionCounts: Record<string, number>; symmetries: number[]; positionKinds: string[];
@@ -26,7 +28,7 @@ export interface IdolState {
   lockedPos: Position | null; burstSelfAppeal: number; shield: boolean; muraiDoubleC: boolean;
 }
 export interface Player {
-  cuteOnly?:boolean;
+  cuteOnly?:boolean; coolOnly?:boolean; burstRounds?:number[];
   performanceRandom?:number[]; performanceBurstCount?:number; backGroupStreak?:number; previousBackIds?:number[];
   songHistory: Attribute[]; noBurstStreak: number; burstBackCandidates: number[];
   label: string; ids: number[]; songs: string[]; points: number; totalAppeal: number;
@@ -72,6 +74,7 @@ export interface Context {
 }
 export interface Skill {
   start?: (ctx: Context) => void;
+  burstPre?: (ctx:Context)=>void; selfBurstShield?:boolean; reactionPosition?:'FRONT'|'STAGE'; centerEntryFatigueReduction?:number;
   post?: (ctx: Context) => void;
   autoActive?: (ctx: Context) => boolean;
   chargeConsumer?: boolean;

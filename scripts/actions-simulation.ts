@@ -13,7 +13,7 @@ export interface Config {
  matchesPerMatchup:number;randomMatches:number;seed:number;workers:number;fast:boolean;search:'exhaustive'|'two-stage';
  candidates:number;maxNewMatches:number;minutes:number;retentionDays:number;resumeRunId:string;burstRoundTrace:boolean;
  analysisLevel:'baseline'|'level1'|'level2'|'level3';warSamplesPerCard:number;warWorkers:number;warMaxNewJobs:number;
- warDetailIds:number[];warSkillAblation:string;warPairs:string;continueToLevel2:boolean;resumeCompatibleCommit:string;
+ warDetailIds:number[];warDetailMode:'archetype'|'random';warSkillAblation:string;warPairs:string;continueToLevel2:boolean;resumeCompatibleCommit:string;
 }
 export interface Context {sha:string;repository:string;runId:string;attempt:string}
 const keys=['scenario','mode','archetype_selection','cpu_strategy','matches_per_matchup','random_matches','seed','workers','fast_simulation','cpu_search','preview_candidates','max_new_matches','runtime_minutes','retention_days','resume_run_id','burst_round_trace','analysis_level','war_samples_per_card','war_workers','war_max_new_jobs','war_detail_ids','war_skill_ablation','war_pairs','continue_to_level2','resume_compatible_commit'];
@@ -41,9 +41,12 @@ export function parseInputs(raw:Record<string,unknown>,cpuCount=availableParalle
  const analysisLevel=choice(raw.analysis_level,'baseline',['baseline','level1','level2','level3'],'analysis_level');
  const warDetailText=String(raw.war_detail_ids??'').trim();if(warDetailText&&!/^\d{1,2}(,\d{1,2})*$/.test(warDetailText))throw new Error('war_detail_ids must be comma-separated card IDs');
  const warDetailIds=warDetailText?warDetailText.split(',').map(Number):[];if(new Set(warDetailIds).size!==warDetailIds.length||warDetailIds.some(id=>id<1||id>48))throw new Error('war_detail_ids must be unique integers 1..48');
- const warSkillAblation=choice(raw.war_skill_ablation,'AUTO,BURST,CENTER,ALL',['AUTO,BURST,CENTER,ALL','AUTO','BURST','CENTER','ALL'],'war_skill_ablation');
+ const warSkillInput=choice(raw.war_skill_ablation,'AUTO,BURST,CENTER,ALL',['AUTO,BURST,CENTER,ALL','AUTO','BURST','CENTER','ALL','RANDOM:AUTO,BURST,CENTER,ALL'],'war_skill_ablation');
+ const warDetailMode=warSkillInput.startsWith('RANDOM:')?'random':'archetype';
+ const warSkillAblation=warSkillInput.replace(/^RANDOM:/,'');
  const warPairs=String(raw.war_pairs??'').trim();if(warPairs&&!/^\d{1,2}:\d{1,2}(,\d{1,2}:\d{1,2})*$/.test(warPairs))throw new Error('war_pairs must be card pairs such as 1:2,3:4');
  for(const id of warPairs.split(/[,:]/).filter(Boolean).map(Number))if(id<1||id>48||!warDetailIds.includes(id))throw new Error('war_pairs IDs must be 1..48 and included in war_detail_ids');
+ if(warDetailMode==='random'&&analysisLevel!=='level3')throw new Error('RANDOM ablation selection is LEVEL 3 only');
  if(analysisLevel!=='baseline'&&mode!=='all')throw new Error('WAR pipeline requires mode=all so ARCHETYPE and RANDOM stay in one analysis output');
  if(analysisLevel!=='baseline'&&!resumeRunId)throw new Error('L1/L2/L3 require resume_run_id from the preceding artifact');
  if(analysisLevel==='level3'&&!warDetailIds.length)throw new Error('LEVEL 3 requires explicit war_detail_ids');
@@ -52,7 +55,7 @@ export function parseInputs(raw:Record<string,unknown>,cpuCount=availableParalle
  if(continueToLevel2&&(mode!=='all'||analysisLevel==='level3'||warDetailIds.length||warPairs))throw new Error('Automatic pipeline requires mode=all and baseline/L1/L2 only');
  const resumeCompatibleCommit=String(raw.resume_compatible_commit??'');if(resumeCompatibleCommit&&(!/^[a-f\d]{40}$/.test(resumeCompatibleCommit)||!resumeRunId))throw new Error('resume_compatible_commit requires a full commit SHA and resume_run_id');
  const configuredWarWorkers=integer(raw.war_workers,0,0,32,'war_workers');if(configuredWarWorkers>cpuCount)throw new Error('war_workers exceeds available CPUs; use 0 for auto');
- return {scenario,mode,selection,cpuStrategy,matchesPerMatchup,randomMatches:integer(raw.random_matches,1,1,50000,'random_matches'),seed:integer(raw.seed,1,0,4294967295,'seed'),workers:configuredWorkers||Math.min(cpuCount,4),fast:fast===true||fast==='true',search:choice(raw.cpu_search,'two-stage',['exhaustive','two-stage'],'cpu_search'),candidates,maxNewMatches:integer(raw.max_new_matches,2,0,50000,'max_new_matches'),minutes:integer(raw.runtime_minutes,300,1,330,'runtime_minutes'),retentionDays:integer(raw.retention_days,7,1,90,'retention_days'),resumeRunId,burstRoundTrace:burstRoundTrace===true||burstRoundTrace==='true',analysisLevel,warSamplesPerCard:integer(raw.war_samples_per_card,50,1,5000,'war_samples_per_card'),warWorkers:configuredWarWorkers||Math.min(cpuCount,4),warMaxNewJobs:integer(raw.war_max_new_jobs,0,0,500000,'war_max_new_jobs'),warDetailIds,warSkillAblation,warPairs,continueToLevel2,resumeCompatibleCommit};
+ return {scenario,mode,selection,cpuStrategy,matchesPerMatchup,randomMatches:integer(raw.random_matches,1,1,50000,'random_matches'),seed:integer(raw.seed,1,0,4294967295,'seed'),workers:configuredWorkers||Math.min(cpuCount,4),fast:fast===true||fast==='true',search:choice(raw.cpu_search,'two-stage',['exhaustive','two-stage'],'cpu_search'),candidates,maxNewMatches:integer(raw.max_new_matches,2,0,50000,'max_new_matches'),minutes:integer(raw.runtime_minutes,300,1,330,'runtime_minutes'),retentionDays:integer(raw.retention_days,7,1,90,'retention_days'),resumeRunId,burstRoundTrace:burstRoundTrace===true||burstRoundTrace==='true',analysisLevel,warSamplesPerCard:integer(raw.war_samples_per_card,50,1,5000,'war_samples_per_card'),warWorkers:configuredWarWorkers||Math.min(cpuCount,4),warMaxNewJobs:integer(raw.war_max_new_jobs,0,0,500000,'war_max_new_jobs'),warDetailIds,warDetailMode,warSkillAblation,warPairs,continueToLevel2,resumeCompatibleCommit};
 }
 export function contract(config:Config,context:Context){
  if(!/^[a-f\d]{40}$/.test(context.sha)||!/^[-\w.]+\/[-\w.]+$/.test(context.repository)||!/^\d+$/.test(context.runId)||!/^\d+$/.test(context.attempt))throw new Error('Invalid GitHub execution context');
@@ -67,11 +70,12 @@ export function cliArgs(config:Config,out:string,resume=false,maxNewMatches=conf
 }
 export function warCliArgs(config:Config,out:string,maxNewJobs:number|undefined=config.warMaxNewJobs||undefined){
  const args=['--war-only','--out',out,'--war-samples-per-card',String(config.warSamplesPerCard),'--war-seed',String(config.seed),'--war-workers',String(config.warWorkers)];
+ if(config.selection==='constructed')args.push('--war-exclude-selection-decks');
  if(maxNewJobs!==undefined)args.push('--war-max-new-jobs',String(maxNewJobs));
  if(config.analysisLevel==='level1')args.push('--card-war');
  else if(config.analysisLevel==='level2')args.push('--random-card-war');
  else if(config.analysisLevel==='level3'){
-  args.push('--card-war','--war-detail-ids',config.warDetailIds.join(','),'--war-skill-ablation',config.warSkillAblation);
+  args.push(config.warDetailMode==='random'?'--random-card-war':'--card-war','--war-detail-ids',config.warDetailIds.join(','),'--war-skill-ablation',config.warSkillAblation);
   if(config.warPairs)args.push('--war-pairs',config.warPairs);
  }
  return args;
@@ -182,7 +186,7 @@ async function run(){
   else {const result=await executeCli([...cliArgs(config,out,false,0),'--generate-only'],log,120000);if(result.code)throw new Error('CLI preflight failed');}
   if(config.analysisLevel!=='baseline'){
    const before=JSON.parse(readFileSync(join(out,'summary.json'),'utf8'));validateAnalysisPrerequisites(config,before);
-   const warDir=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':`war/detail-${config.warDetailIds.join('-')}`;
+   const warDir=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':`war/detail-${config.warDetailMode==='random'?'random-':''}${config.warDetailIds.join('-')}`;
    const checkpoint=join(out,warDir,'checkpoint.jsonl');if(existsSync(checkpoint))repairInterruptedTail(checkpoint);
    const args=[...warCliArgs(config,out), '--war-out',join(out,warDir)];
    const result=await executeCli(args,log,config.minutes*60000,r=>{reason=r;});elapsed=result.elapsed;code=result.code;
@@ -198,14 +202,14 @@ async function run(){
    repairInterruptedSummary(join(out,'summary.json'));
    if(config.analysisLevel==='baseline'&&(code||!existsSync(join(out,'analysis.xlsx')))){const result=await executeCli(cliArgs(config,out,true,0,true),log,600000);if(result.code)throw new Error('Checkpoint-only aggregation failed');}
    if(config.analysisLevel!=='baseline'&&code){
-    const warDir=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':`war/detail-${config.warDetailIds.join('-')}`;
+    const warDir=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':`war/detail-${config.warDetailMode==='random'?'random-':''}${config.warDetailIds.join('-')}`;
     const checkpoint=join(out,warDir,'checkpoint.jsonl');if(existsSync(checkpoint)){repairInterruptedTail(checkpoint);
      const result=await executeCli([...warCliArgs(config,out,0),'--war-out',join(out,warDir)],log,600000);if(result.code)throw new Error('WAR checkpoint-only aggregation failed');}
    }
   }catch(error){aggregateError=String(error);code=1;reason='failed';}
  }
  const summary=existsSync(join(out,'summary.json'))?JSON.parse(readFileSync(join(out,'summary.json'),'utf8')):{};
- const runs=summary.warRuns??(summary.cardWar?[summary.cardWar]:[]),warOutput=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':config.analysisLevel==='level3'?`war/detail-${config.warDetailIds.join('-')}`:'';
+ const runs=summary.warRuns??(summary.cardWar?[summary.cardWar]:[]),warOutput=config.analysisLevel==='level1'?'war/level1-archetype':config.analysisLevel==='level2'?'war/level2-random':config.analysisLevel==='level3'?`war/detail-${config.warDetailMode==='random'?'random-':''}${config.warDetailIds.join('-')}`:'';
  const baselineComplete=config.mode==='all'?summary.random?.complete===true&&summary.archetype?.complete===true:summary[config.mode]?.complete===true;
  const complete=config.analysisLevel==='baseline'?baselineComplete:runs.some((run:{output:string;complete:boolean})=>run.output===warOutput&&run.complete===true);if(!complete&&reason==='completed')reason='partial';
  const report={state:reason,complete,elapsedSeconds:elapsed,exitCode:code,aggregateError,context,hardware:request.hardware,config,performance:performanceReport(summary,elapsed,config)};

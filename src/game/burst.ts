@@ -34,6 +34,7 @@ function applyBurstInternal(game: Game, p: Player, opp: Player, id: number, forc
   if(!game.burstChain?.length)game.burstSeen=game.burstTask?.seen ?? [];
   (game.burstChain??=[]).push(chainKey); (game.burstSeen??=[]).push(chainKey);
   if (!forced) { if (st.normalUsed) { game.burstChain.pop(); return; } st.normalUsed = true; }
+  p.burstRounds=[...new Set([...(p.burstRounds||[]),p.round])];
   st.burstActive = true; st.fatigue = 0; st.burstCount++; st.burstStacks++;
   if (forced) st.forcedBurstCount++;
   const log = (s: string) => game.logs.push(s);
@@ -47,6 +48,7 @@ function applyBurstInternal(game: Game, p: Player, opp: Player, id: number, forc
   } else reactToBurst(game,p,opp,burstPosition,random);
   game.burstChain.pop();
 }
+function reactionPositionAllowed(p:Player,id:number){const required=skillFor(id,p).reactionPosition,pos=posOf(p,id);return !required||(required==='FRONT'?pos.startsWith('FRONT'):pos!=='BACK');}
 function reactToBurst(game:Game,p:Player,opp:Player,burstPosition:ReturnType<typeof posOf>,random:()=>number) {
   const log=(s:string)=>game.logs.push(s);
   for (const target of p.ids) {
@@ -58,7 +60,7 @@ function reactToBurst(game:Game,p:Player,opp:Player,burstPosition:ReturnType<typ
   }
   for (const target of opp.ids) {
     const reaction = opp.states[target];
-    if ((skillFor(target,opp).reactToOpponentBurst || (skillFor(target,opp).reactToOpponentBackBurst && burstPosition === 'BACK' && !game.deferredBackReactions)) && !reaction.normalUsed && !reaction.burstActive) {
+    if ((skillFor(target,opp).reactToOpponentBurst || (skillFor(target,opp).reactToOpponentBackBurst && burstPosition === 'BACK' && !game.deferredBackReactions)) && reactionPositionAllowed(opp,target) && !reaction.normalUsed && !reaction.burstActive) {
       log(`${opp.label} ${byId(target).name}：相手BURSTを検知`);
       applyBurst(game, opp, p, target, false, random);
     }
@@ -79,7 +81,7 @@ export function pendingBurst(game:Game):BurstJob|undefined {
       game.deferredBackReactions=false;
       for(const [side,p,opp] of [[0,game.p1,game.p2],[1,game.p2,game.p1]] as const)
         if(opp.burstBackCandidates.length)for(const id of p.ids)
-          if(skillFor(id,p).reactToOpponentBackBurst&&!p.states[id].normalUsed&&!p.states[id].burstActive)
+          if(skillFor(id,p).reactToOpponentBackBurst&&reactionPositionAllowed(p,id)&&!p.states[id].normalUsed&&!p.states[id].burstActive)
             queue.push({side,id,forced:false,seen:[],phase:'burst'});
       continue;
     }
@@ -119,7 +121,8 @@ export function resolveNextBurst(game:Game,target?:number,random=Math.random) {
   if(effects)effects.capture(effects.source(p,job.id,'B','burst'),run);else run();
   if(game.skillEffects)game.burstEffectSources=[...(game.burstEffectSources||[]),...game.skillEffects.slice(effectStart)];
   game.pendingBursts!.unshift(...game.burstChildren);delete game.burstTask;delete game.burstChildren;
-  pendingBurst(game);
+  const remaining=pendingBurst(game);
+  if(!remaining&&game.done&&game.result?.final){const index=game.logs.findIndex(line=>line.startsWith('=== FINAL '));if(index>=0&&index!==game.logs.length-1)game.logs.push(...game.logs.splice(index,1));}
   return true;
 }
 export function resolvePendingBursts(game:Game,random=Math.random) {

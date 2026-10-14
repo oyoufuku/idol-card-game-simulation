@@ -100,7 +100,7 @@ it.each([false,true])('村井の登場免疫は石塚BのFRONT位置ボーナス
  setAnalysisSkillMasks(game.p2,game.p2.ids.map(id=>({id,kind:id===34?'AUTO':'ALL'})));
  game.p2.states[34].burstActive=true;game.p2.states[34].burstStacks=1;
  game.p1.states[9].muraiDoubleC=party;game.p1.states[9].burstActive=party;game.p1.states[9].burstStacks=+party;
- const prediction=preview(game);expect(prediction.p1.members.find(m=>m.id===9)!.val).toBe(5);
+ const prediction=preview(game);expect(prediction.p1.members.find(m=>m.id===9)!.val).toBe(party?6:5);
  expect(coarse(game).total).toBe(prediction.p1.total);verifyExecution(game);
 });
 

@@ -96,9 +96,9 @@ on:
         type: string
         default: ''
       war_skill_ablation:
-        description: L3 skill ablation selection
+        description: L3 skills; RANDOM prefix tests RANDOM baselines only
         type: choice
-        options: ['AUTO,BURST,CENTER,ALL', AUTO, BURST, CENTER, ALL]
+        options: ['AUTO,BURST,CENTER,ALL', AUTO, BURST, CENTER, ALL, 'RANDOM:AUTO,BURST,CENTER,ALL']
         default: 'AUTO,BURST,CENTER,ALL'
       war_pairs:
         description: L3 optional pairs; all IDs must be in detail IDs (example 1:7,7:25)

@@ -1,0 +1,115 @@
+name: Constructed decks and RANDOM in parallel
+run-name: Parallel decks + RANDOM / seed ${{ inputs.seed }}
+on:
+  workflow_dispatch:
+    inputs:
+      resume_run_id:
+        description: Previous parallel run ID; same commit and settings required
+        type: string
+        default: ""
+      seed:
+        type: number
+        default: 1
+      matches_per_matchup:
+        description: Games per constructed matchup INCLUDING mirrors
+        type: number
+        default: 50
+      random_matches:
+        type: number
+        default: 1000
+      runtime_minutes:
+        type: number
+        default: 300
+      retention_days:
+        type: number
+        default: 7
+      continue_to_level2:
+        description: Continue combined baseline through L1/L2; stop before L3
+        type: boolean
+        default: true
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: parallel-simulation-${{ github.ref }}-${{ inputs.seed }}
+  cancel-in-progress: false
+jobs:
+  baseline:
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [random, archetype]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@a8198c4bff370c8506180b035930dea56dbd5288
+        with:
+          version: '11.19.0'
+          cache: false
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        if: inputs.resume_run_id != ''
+        with:
+          pattern: parallel-baseline-*
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+          path: simulation-results/restored
+      - name: Run one baseline on its own runner
+        env:
+          PARALLEL_INPUTS: ${{ toJSON(inputs) }}
+          PART_MODE: ${{ matrix.mode }}
+        run: node --import tsx scripts/actions-parallel.ts "$PART_MODE" simulation-results/part
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: parallel-baseline-${{ matrix.mode }}
+          overwrite: true
+          path: simulation-results/part/
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+  aggregate:
+    needs: baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@a8198c4bff370c8506180b035930dea56dbd5288
+        with:
+          version: '11.19.0'
+          cache: false
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: parallel-baseline-*
+          path: simulation-results/parts
+      - name: Validate and aggregate without playing new games
+        env:
+          PARALLEL_INPUTS: ${{ toJSON(inputs) }}
+        run: node --import tsx scripts/actions-parallel.ts aggregate simulation-results/remote
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: simulation-results-parallel-${{ github.run_id }}-${{ github.run_attempt }}
+          path: simulation-results/remote/
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+      - name: Continue through L1 and L2
+        if: inputs.continue_to_level2
+        env:
+          PARALLEL_INPUTS: ${{ toJSON(inputs) }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          export SIMULATION_INPUTS="$(node --import tsx --input-type=module -e 'import {parallelInputs} from "./scripts/actions-parallel.ts"; process.stdout.write(JSON.stringify(parallelInputs(JSON.parse(process.env.PARALLEL_INPUTS))));')"
+          node --import tsx scripts/actions-chain.ts

@@ -15,12 +15,11 @@ it('Make or Breakは非ユーモアのステージだけに疲労を付与する
  const g=make([1,3,5,8,10,18,24,27]);applySongFatigue(g.p1,songById('C'),g.p2);
  for(const id of g.p1.ids)expect(g.p1.states[id].fatigue).toBe(posOf(g.p1,id)!=='BACK'&&!hasAttr(g.p1,id,'ユーモア')?1:0);
 });
-it('指定基礎値、石森/遠藤/小坂BURSTの新境界',()=>{
- expect([27,39,40,45,48].map(id=>byId(id).base)).toEqual([3,4,5,2,3]);
- const g=make([1,2,26]);for(const [id,field,boundary] of [[1,'lastAppeal',30],[2,'fatigue',2],[26,'fatigue',6]] as const){
-  if(id===26)g.p1.formation=formationFromArray([26,1,2,8,10]);
-  for(const v of [boundary+(id===1?1:-1),boundary]){if(field==='lastAppeal')g.p2.lastAppeal=v;else g.p1.states[id].fatigue=v;expect(skillFor(id).condition!(calculationContext(g.p1,g.p2,id,g.roundSong))).toBe(v===boundary);}
- }
+it('指定基礎値と石森・遠藤・小坂の新条件の境界',()=>{
+ expect([27,39,40,45,48].map(id=>byId(id).base)).toEqual([4,4,5,2,3]);
+ const g=make([1,2,26]);g.p1.states[1].positionCounts.CENTER=2;g.p1.states[1].autoSuccessRounds=1;expect(skillFor(1).condition!(calculationContext(g.p1,g.p2,1,g.roundSong))).toBe(true);
+ g.p1.states[2].fatigueTwoEnds=2;expect(skillFor(2).condition!(calculationContext(g.p1,g.p2,2,g.roundSong))).toBe(true);
+ g.p1.formation=formationFromArray([26,1,2,8,10]);for(const value of [7,8]){g.p1.states[26].fatigue=value;expect(skillFor(26).condition!(calculationContext(g.p1,g.p2,26,g.roundSong))).toBe(value===8);}
 });
 it('谷口は8人キュートのみ、PLAIN優先、JOYFULで解除し元の属性へ戻る',()=>{
  const g=make([5,22,41],[36]);applyBurst(g,g.p1,g.p2,22);applyBurst(g,g.p1,g.p2,5);
@@ -40,8 +39,8 @@ it('村井BURSTは登場時に味方ステージ全員へ免疫を展開、BACKS
  const g=make([8,10,18,24,27,9],[36]);g.round=2;g.p1.round=g.p2.round=2;g.p1.formation=formationFromArray([8,9,18,24,27]);applyBurst(g,g.p1,g.p2,9);
  const p=preview(g).players[0];for(const id of Object.values(p.formation))expect(p.states[id].negativeShield).toBe(true);for(const id of idsBack(p))expect(p.states[id].negativeShield).toBe(false);
 });
-it('小島Bは疲労交換のみで免疫を与えず、清水の継続免疫はJOYFULで解除される',()=>{
- const g=make([4,8],[3,16]);g.targets[0].koji=8;applyBurst(g,g.p1,g.p2,4);expect(g.p1.states[8].shield).toBe(false);g.roundSong=songById('V');expect(preview(g).players[0].states[8].shield).toBe(false);
+it('小島Bは交換先へ免疫を与え、清水の継続免疫はJOYFULで解除される',()=>{
+ const g=make([4,8],[3,16]);g.targets[0].koji=8;applyBurst(g,g.p1,g.p2,4);expect(g.p1.states[8].shield).toBe(true);g.roundSong=songById('V');expect(preview(g).players[0].states[8].shield).toBe(false);
  const h=make([35,8],[3]);applyBurst(h,h.p1,h.p2,35);expect(preview(h).players[0].states[8].shield).toBe(true);h.roundSong=songById('V');expect(preview(h).players[0].states[8].shield).toBe(false);
 });
 it('的野はユーモアもAUTO/Cを無効にし、Cで自身疲労+2',()=>{
@@ -67,8 +66,8 @@ it.each([32,38,44])('チャージ%iはBURSTで最初の合法なBACKSと交換�
  const g=make([id]);g.p1.states[id].lastSpentCharge=4;const first=idsBack(g.p1)[0];applyBurst(g,g.p1,g.p2,id);expect(posOf(g.p1,id)).toBe('BACK');expect(g.p1.formation.CENTER).toBe(first);expect(g.p1.states[id].charge).toBe(4);
  const h=make([id]);for(const back of idsBack(h.p1))h.p1.states[back].lockedPos='BACK';applyBurst(h,h.p1,h.p2,id);expect(posOf(h.p1,id)).toBe('CENTER');
 });
-it('山下Bは相手の位置疲労だけ倍化、C/アザトカワイイは相手移動/両者移動に疲労+2',()=>{
- const g=make([45],[8]);applyBurst(g,g.p1,g.p2,45);g.interactiveBursts=true;executeRound(g);expect(g.p2.states[8].fatigue).toBe(6);
+it('山下Bは次回開始前に相手ステージ疲労+1、C/アザトカワイイは相手移動/両者移動に疲労+2',()=>{
+ const g=make([45],[8]);applyBurst(g,g.p1,g.p2,45);g.interactiveBursts=true;executeRound(g);expect(g.p2.states[8].fatigue).toBe(4);
  const h=make([45]);h.round=2;h.p1.round=h.p2.round=2;h.roundSong=songById('U');h.p2.formation=formationFromArray([8,24,18,10,27]);const r=preview(h);
  expect(r.players[1].states[24].fatigue).toBe(4);expect(r.players[1].states[10].fatigue).toBe(4);expect(r.players[1].states[18].fatigue).toBe(0);
 });
@@ -81,10 +80,10 @@ it('富田は配置を問わずステージ5人のBURST履歴を参照し、本�
  expect(skillFor(47).condition!(calculationContext(g.p1,g.p2,47,g.roundSong))).toBe(false);
  g.p1.states[47].burstCount=1;expect(skillFor(47).condition!(calculationContext(g.p1,g.p2,47,g.roundSong))).toBe(true);
 });
-it('富田はseed再現でステージから異なる2人を強制BURSTし、通常使用済みを消費しない',()=>{
+it('富田はseed再現でステージから異なる3人を強制BURSTし、通常使用済みを消費しない',()=>{
  const start=()=>{const g=make([47,8,10,18,24,27]);g.p1.formation=formationFromArray([8,10,18,24,27]);return g;};
  const g=start(),h=start();applyBurst(g,g.p1,g.p2,47,false,prng(123));applyBurst(h,h.p1,h.p2,47,false,prng(123));expect(g).toEqual(h);
- const chosen=g.p1.ids.filter(id=>g.p1.states[id].forcedBurstCount>0);expect(chosen).toHaveLength(2);
+ const chosen=g.p1.ids.filter(id=>g.p1.states[id].forcedBurstCount>0);expect(chosen).toHaveLength(3);
  for(const id of chosen){expect(Object.values(g.p1.formation)).toContain(id);expect(g.p1.states[id].normalUsed).toBe(false);}
  for(const id of idsBack(g.p1).filter(id=>id!==47))expect(g.p1.states[id].burstCount).toBe(0);
  expect(g.p1.states[47].burstCount).toBe(1);expect(g.p1.states[47].forcedBurstCount).toBe(0);

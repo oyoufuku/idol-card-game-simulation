@@ -320,3 +320,25 @@ GitHubの同一concurrencyグループは実行中1件＋待機1件なので、L
 通常の再開はcommitを含め完全一致が必須です。今回の構築済みmetadata保存エラーの復旧だけは、明示した `resume_compatible_commit` で旧SHAを指定できます。全試合計画hash・入力fingerprint・seed・CPU等の一致、旧Artifactの全checksum、Git差分がmetadata/自動実行補助・テスト・文書だけであることを検証します。engine・カードデータ・CPU・対戦runnerの変更があれば拒否します。復旧した新Artifactへ移行元/先commitを記録し、次段階からは再び同一commitでの通常再開に戻します。この入力は通常は空欄です。
 
 自動継続を止めたい場合は、実行中runをActions画面でCancelします。完了済みArtifactは保持期間中ダウンロードできます。再開は同じ固定ref・同じ条件で `resume_run_id` に停止したrunのIDを入れます。中止が終了直前と重なって次runが起動済みなら、そのrunもCancelしてください。
+
+## 2026-10-14：調整後の構築済み12デッキ＋RANDOM
+
+[確定差分・L3の確認](docs/simulation/reviewed-burst-20261014.md) が最新です。宮田BはR3以降・終了時の味方8人の総疲労15以下で確定。調整後の大量対戦はまだ開始していません。
+
+公開シミュレーション用リポジトリへマージ済みコードを同期した後、Actionsの **Constructed decks and RANDOM in parallel** を手動実行できます。既定は構築済み3900試合（各組合せ50、mirror込み）＋RANDOM1000試合、seed1、`charge-archetype`、`two-stage`上位100。2つのrunnerで同時に実行し、両方完了後に同じcommit/入力/試合計画を検証して集計します。`continue_to_level2` をONにするとL1→L2まで継続し、L3は開始しません。
+
+時間切れ等の場合は同じcommit・設定を選び、`resume_run_id` に前回の並行実行run IDを入力してください。両パートの完了済み試合を再利用し、未完了だけ追加します。入力が変わった場合は再開を拒否します。元Artifactは7日保存が既定です。Actions画面でCancelすると未完了となり、L1へは進みません。
+
+ローカルでWARを求める場合、12デッキの基準結果はそのまま保持し、選抜3デッキを両チームから除いた基本9デッキ同士だけでL1を評価できます。
+
+```powershell
+pnpm.cmd simulate -- --war-only --card-war --war-exclude-selection-decks --war-samples-per-card 50 --out simulation-results/調整後の出力先
+```
+
+RANDOM WARは別実行です。L1と同じ対象基準を保持するため、同じ除外フラグを付けます。RANDOMの試合は除外されません。
+
+```powershell
+pnpm.cmd simulate -- --war-only --random-card-war --war-exclude-selection-decks --war-samples-per-card 50 --out simulation-results/調整後の出力先
+```
+
+Actionsでconstructedを選んだL1/L2/L3には、この除外設定が自動で付与されます。除外対象・対象試合数は `summary.json` の `warScope` に記録します。旧カード結果とはfingerprintが変わるため、新しい出力先を使ってください。

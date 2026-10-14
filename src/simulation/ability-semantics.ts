@@ -10,9 +10,9 @@ function computeAbilitySemantics(c:Idol) {
  const ownMovement=[c.A,c.Bcond,c.C||''].some(t=>/(?:自身|味方|自チーム)[^。]*移動|自身.*ポジション種別|自身.*異なる.*シンメ/.test(t));
  const ownFixed=[c.A,c.C||''].some(t=>/前ラウンドと同じポジション|ポジションを連続で維持|自身がBACKSにいる間/.test(t))&&!ownMovement;
  const counterBurst=[c.A,c.B,c.C||'',c.Bcond].some(t=>/(?:相手|対面).*BURST|BURST中の相手/.test(t));
- const antiSkill=[...effects,c.Bcond].some(t=>/(?:相手|対面).*AUTOを無効|相手CENTER.*CENTER SKILLを無効|相手.*BURST.*(?:開始|中)|相手由来.*(?:受けない|減少を受けない)|相手AUTO.*受けない|相手側.*軽減|自身はスキル.*受けない|相手または楽曲由来.*受けない|相手・楽曲由来.*受けない/.test(t));
- const negativeProtection=effects.some(t=>/相手または楽曲由来のマイナス効果を受けない|相手・楽曲由来のAppeal減少.*疲労付与.*ポジションボーナス無効.*属性変更を受けない/.test(t));
- const partyProtection=negativeProtection&&effects.some(t=>/自身のAUTO.*(?:効果|対象).*味方ステージ5人/.test(t));
+ const antiSkill=[...effects,c.Bcond].some(t=>/マイナス無効|(?:相手|対面).*AUTOを無効|相手CENTER.*CENTER SKILLを無効|相手.*BURST.*(?:開始|中)|相手由来.*(?:受けない|減少を受けない)|相手AUTO.*受けない|相手側.*軽減|自身はスキル.*受けない|相手または楽曲由来.*受けない|相手・楽曲由来.*受けない/.test(t));
+ const negativeProtection=effects.some(t=>/マイナス無効|相手または楽曲由来のマイナス効果を受けない|相手・楽曲由来のAppeal減少.*疲労付与.*ポジションボーナス無効.*属性変更を受けない/.test(t));
+ const partyProtection=negativeProtection&&effects.some(t=>/味方ステージ5人全員.*マイナス無効|自身のAUTO.*(?:効果|対象).*味方ステージ5人/.test(t));
  const ownCool=[...effects,c.Bcond].filter(t=>!/クールとユーモア|クール・キュート・ユーモア|クールまたはユーモア/.test(t)).some(t=>/自チーム.*クール|味方CENTER.*クール|クール楽曲|楽曲属性がクール|シンメがクール/.test(t)&&!/クール以外|クールではない/.test(t));
  const multiAttribute=[...effects,c.Bcond].some(t=>/(?:自身|味方|自チーム|本来).*属性.*追加|自身.*としても扱|自チーム.*属性種類数|自チーム.*属性種類数|自チーム.*属性.*種類数|自チーム.*クールとユーモア|(?:自身|自チーム).*ポジション.*クール.*キュート.*ユーモア|登場済みの楽曲属性の種類数|3属性の楽曲|BACKS3人の属性がすべて異なる|3枠にクール・キュート・ユーモア/.test(t));
  const enemyAttributes=[...effects,c.Bcond].some(t=>/相手.*(?:単独最多属性|同一属性|属性の種類数|クール|属性をPLAIN|属性.*変更|クールとしても扱う)/.test(t));

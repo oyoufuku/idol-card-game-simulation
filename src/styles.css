@@ -392,3 +392,12 @@
 }
 @media(pointer:coarse) and (orientation:landscape) and (min-width:600px){.game-shell{--board-card-width:64px;--stage-card-width:76px}}
 @media(orientation:landscape) and (min-width:600px) and (max-width:750px){.game-shell{--board-card-width:64px;--stage-card-width:72px}}
+
+/* One printed-card template: fixed label column and separate wrapped effects. */
+.idol-card-face{grid-template-rows:9% 42% 6% minmax(0,1fr)}
+.idol-card-face .card-skill-list{display:flex;flex-direction:column;gap:0;padding:1.8cqw 2cqw;margin:0 3cqw 2cqw;overflow:hidden}
+.idol-card-face .card-skill{display:grid;grid-template-columns:14cqw minmax(0,1fr);align-items:center;column-gap:2cqw;flex:none;padding:.65cqw 0;font-size:3.45cqw;line-height:1.55;overflow:visible}
+.idol-card-face .card-skill>b{font-size:inherit;text-align:center;white-space:nowrap;min-width:0;margin:0;padding:0;background:transparent}
+.idol-card-face .card-skill-text{display:block;white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible;-webkit-line-clamp:unset}
+.card-keyword{display:inline;min-height:0!important;border:0!important;border-radius:0;padding:0!important;background:none!important;color:#126d8a;font:inherit!important;text-decoration:underline}
+.rulebook-button{margin-left:auto;font-size:11px;padding:5px 8px;min-height:28px}.shared-rule{padding:10px 0;border-bottom:1px solid #ccd6ce}.shared-rule h3{font-size:15px}.shared-rule p{font-size:13px;line-height:1.7}

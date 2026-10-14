@@ -139,3 +139,17 @@ it('metadata互換resumeも同一試合計画・engine・CPUを要求し、通�
  for(const change of [{planHash:'different'},{seed:2},{inputFingerprint:'old'}])expect(()=>validateMetadataMigration(prior,{...expected,...change},old,paths)).toThrow('contract mismatch');
  expect(()=>validateMetadataMigration(prior,expected,'c'.repeat(40),paths)).toThrow('prior commit');
 });
+
+it('RANDOM L3は既存RANDOM基準だけを選び、構築L3の既定とbaseline契約を維持する',()=>{
+ const input={analysis_level:'level3',mode:'all',resume_run_id:'123',war_detail_ids:'11,19,23,31,39,47'};
+ const standard=parseInputs(input);
+ const random=parseInputs({...input,war_skill_ablation:'RANDOM:AUTO,BURST,CENTER,ALL'});
+ expect(standard.warDetailMode).toBe('archetype');
+ expect(random.warDetailMode).toBe('random');
+ expect(warCliArgs(random,'out')).toContain('--random-card-war');
+ expect(warCliArgs(random,'out')).not.toContain('--card-war');
+ expect(warCliArgs(random,'out')).toEqual(expect.arrayContaining(['--war-skill-ablation','AUTO,BURST,CENTER,ALL']));
+ expect(warCliArgs(standard,'out')).toContain('--card-war');
+ expect(contract(random,context)).toEqual(contract(standard,context));
+ expect(()=>parseInputs({mode:'all',analysis_level:'level2',resume_run_id:'123',war_skill_ablation:'RANDOM:AUTO,BURST,CENTER,ALL'})).toThrow('LEVEL 3 only');
+});

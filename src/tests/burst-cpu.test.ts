@@ -16,7 +16,7 @@ function scenario(round=2):Game {
  const g=createGame([2,8,10,18,24,27,29,32],[1,7,14,19,20,22,25,30],['A','B','C'],['D','E','F'],'local',prng(1));
  g.round=g.p1.round=g.p2.round=round;g.roundSong=songById('A');g.playedSongs=['A'];
  for(const p of [g.p1,g.p2])for(const id of p.ids){p.states[id].normalUsed=true;p.states[id].prevPos=p.states[id].pos=posOf(p,id);}
- g.p1.states[2].normalUsed=false;g.p1.states[2].fatigue=1;
+ g.p1.states[2].normalUsed=false;g.p1.states[2].fatigue=1;g.p1.states[2].fatigueTwoEnds=1;
  g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];return g;
 }
 function lock(g:Game){for(const p of g.publicPlayers!)for(const id of p.ids)p.states[id].lockedPos=posOf(p,id);}

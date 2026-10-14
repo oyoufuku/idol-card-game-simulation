@@ -9,7 +9,7 @@ import { skillFor } from '../game/skills';
 const make=(a=[26,8,10,20,24,14,9,13],b=[8,10,18,24,27,28,30,31])=>createGame(a,b,['A','B','C'],['D','E','F'],'local',()=>.5);
 it('修正Excelの基礎値・山下C・大沼B/疲労・平岡Bをそのまま反映する',()=>{
  expect([8,40,41].map(id=>byId(id).base)).toEqual([4,5,5]);
- for(const [id,amount] of [[16,5],[30,3]]){const g=make([id,8,10,18,24,27,28,31]);applyBurst(g,g.p1,g.p2,id);expect(g.p1.states[id].burstSelfAppeal).toBe(amount);}
+ for(const [id,amount] of [[16,5],[30,5]]){const g=make([id,8,10,18,24,27,28,31]);applyBurst(g,g.p1,g.p2,id);expect(g.p1.states[id].burstSelfAppeal).toBe(amount);}
  const g=make([11,8,10,18,24,27,28,31]);expect(preview(g).p1.members[0].breakdown).toContainEqual(expect.objectContaining({sourceId:11,kind:'C',amount:5}));
 });
 it('藤吉の加算集計は位置ボーナス・位置へのC/曲補正・基礎補正を除外する',()=>{
@@ -27,8 +27,10 @@ it('守屋の集計は正の加算と相殺せず、位置ボーナス無効を�
  const r=calcBoth(g.p1,g.p2,g.roundSong);expect(r.p2.members.find(m=>m.id===8)!.skillReduction).toBe(0);
  g.p2.states[24].fatigue=5;const member=preview(g).p2.members.find(m=>m.id===24)!;expect(member.skillReduction).toBe(4);
 });
-it('宮田のR3以降の総疲労条件は12以下を境界にする',()=>{
- const g=make([31,8,10,18,24,27,28,30]);g.p1.round=3;g.p1.states[8].fatigue=12;
- expect(skillFor(31).condition!(calculationContext(g.p1,g.p2,31,g.roundSong))).toBe(true);g.p1.states[8].fatigue=13;
- expect(skillFor(31).condition!(calculationContext(g.p1,g.p2,31,g.roundSong))).toBe(false);
+it('宮田BはR3以降・味方8人の終了時総疲労15以下、AUTOは10以下を維持する',()=>{
+ const g=make([31,8,10,18,24,27,28,30]),ctx=calculationContext(g.p1,g.p2,31,g.roundSong),skill=skillFor(31);
+ g.p1.round=2;g.p1.states[8].fatigue=15;expect(skill.condition!(ctx)).toBe(false);
+ g.p1.round=3;expect(skill.condition!(ctx)).toBe(true);g.p1.states[8].fatigue=16;expect(skill.condition!(ctx)).toBe(false);
+ g.p1.states[8].fatigue=14;g.p1.states[30].fatigue=1;expect(skill.condition!(ctx)).toBe(true);g.p1.states[30].fatigue=2;expect(skill.condition!(ctx)).toBe(false);
+ g.p1.states[30].fatigue=0;g.p1.states[8].fatigue=10;expect(skill.autoAppeal!(ctx)).toBe(2);g.p1.states[8].fatigue=11;expect(skill.autoAppeal!(ctx)).toBe(0);
 });

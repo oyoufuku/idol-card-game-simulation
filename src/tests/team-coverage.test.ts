@@ -32,7 +32,7 @@ it('起用を分散しつつ9軸27チーム・8人3曲・全コアと構築条�
 });
 it('seed1では未採用を解消するが、人数一致を強制せず固定コアの偏りを残す',()=>{
  const before=teamCoverage(generateArchetypes(1,3,'legacy')),after=teamCoverage(generateArchetypes(1));
- expect(before.filter(c=>!c.teamCount).map(c=>c.id)).toEqual([17,25,33]);expect(after.every(c=>c.teamCount>0)).toBe(true);
+ expect(before.filter(c=>!c.teamCount).map(c=>c.id)).toEqual([25,33]);expect(after.every(c=>c.teamCount>0)).toBe(true);
  expect(Math.max(...after.map(c=>c.teamCount))).toBeLessThanOrEqual(8);expect(Math.min(...after.map(c=>c.teamCount))).toBeGreaterThan(0);
  expect(after.find(c=>c.id===9)).toMatchObject({teamCount:6,coreCount:6});
 });

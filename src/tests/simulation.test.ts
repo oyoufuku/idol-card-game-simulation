@@ -21,7 +21,7 @@ it('CPUは自軍Appealだけでなく妨害後の差を最大化し、相手未�
  const g=createGame([1,3,5,17,19,23,33,37],[10,14,18,25,26,27,28,30],['A','B','C'],['D','E','F'],'local',()=>.5);
  const before=structuredClone(g),a=evaluateCpuFormation(g,1,prng(1));expect(g).toEqual(before);
  // The old own-Appeal maximizer picks 24 versus 29. The shared new CPU chooses 21 versus 17.
- expect(a.total).toBe(21);expect(a.opponentTotal).toBe(17);expect(a.outcome).toBe(1);
+ expect(a.total).toBe(21);expect(a.opponentTotal).toBe(16);expect(a.outcome).toBe(1);
  const selfish=preview(g,formationFromArray([1,5,19,23,37]),g.p2.formation);expect(selfish.p1.total).toBe(24);expect(selfish.p2.total).toBe(29);
  g.p2.formation=formationFromArray([...g.p2.ids].reverse());for(const id of g.p2.ids)g.p2.states[id].pos='BACK';
  const b=evaluateCpuFormation(g,1,prng(1));expect(b).toEqual(a);

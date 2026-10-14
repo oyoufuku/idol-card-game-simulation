@@ -4,6 +4,7 @@ import {mkdtempSync,readFileSync,writeFileSync,rmSync,mkdirSync,existsSync} from
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import workbook from '../../docs/simulation/workbook-spec.json';
+import reviewed from '../../docs/simulation/balance-overrides-20261014.json';
 import {IDOLS} from '../data/idols';
 import {SONGS} from '../data/songs';
 import {INPUT_FINGERPRINT} from '../simulation/input-fingerprint';
@@ -19,7 +20,7 @@ function expectedCards(sheet:string){
 }
 it('fixtureではなく最終確定Excel抽出と回答済み裁定から48人全員の実カタログを照合する',()=>{
  const expected=expectedCards('Codex用メンバー');expect(expected).toHaveLength(48);expect(expectedCards('Codex用メンバー (修正)')).toEqual(expected);
- for(const card of IDOLS){const {skill,tags,...actual}=card;expect(actual,card.name).toEqual(expected.find(c=>c.id===card.id));expect(tags).toEqual([card.generation,card.group,...card.themeTags]);expect(skill).toBeTruthy();}
+ for(const card of IDOLS){const {skill,tags,...actual}=card;const {skill:expectedSkill,tags:expectedTags,...override}=reviewed.find(c=>c.id===card.id)!;expect(expectedSkill).toBe(skill);expect(actual,card.name).toEqual(override);expect(tags).toEqual([card.generation,card.group,...card.themeTags]);expect(skill).toBeTruthy();}
 });
 it('実CLIのgenerate-onlyは古い生成JSONを入力にせず、全48人・全チーム能力を現行データから書き直す',()=>{
  const out=mkdtempSync(join(tmpdir(),'catalog-sync-'));

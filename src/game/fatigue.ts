@@ -48,9 +48,11 @@ export function applyFatigueAndPost(p: Player, opp: Player, outcome: Outcome, cE
   SLOTS.forEach(slot => { const id = p.formation[slot],enabled=autoEnabled(p,opp,id),reduction=enabled?skillFor(id,p).fatigueReduction||0:0,multiplier=enabled?skillFor(id,p).positionMultiplier||1:1;
     if(enabled&&skillFor(id,p).fatigueReduction)p.states[id].autoTriggered=true;
     const enemyMultiplier=p.states[id].shield||p.states[id].negativeShield?1:opp.ids.reduce((n,source)=>opp.states[source].burstActive?n*(skillFor(source,opp).enemyPositionFatigueMultiplier||1):n,1);
-    const increase=Math.max(0,POSITION_FATIGUE[slot]-reduction)*multiplier*enemyMultiplier;p.states[id].fatigue+=increase;
+    const entryReduction=cEnabled&&p.enteredThisRoundIds.includes(id)?skillFor(p.formation.CENTER,p).centerEntryFatigueReduction||0:0;
+    const increase=Math.max(0,POSITION_FATIGUE[slot]-reduction-entryReduction)*multiplier*enemyMultiplier;p.states[id].fatigue+=increase;
     const prevented=Math.max(0,POSITION_FATIGUE[slot]*multiplier-Math.max(0,POSITION_FATIGUE[slot]-reduction)*multiplier);
     if(effects&&enemyMultiplier>1)for(const source of opp.ids)if(opp.states[source].burstActive&&skillFor(source,opp).enemyPositionFatigueMultiplier)effects.emit(effects.source(opp,source,'B','post'),[effects.target(p,id,'ポジション疲労増加',increase-increase/enemyMultiplier)]);
+    if(effects&&entryReduction){const saved=Math.max(0,POSITION_FATIGUE[slot]-reduction)*multiplier*enemyMultiplier-increase;if(saved)effects.emit(effects.source(p,p.formation.CENTER,'C','post'),[effects.target(p,id,'位置疲労増加軽減',-saved)]);}
     if(effects&&prevented)effects.emit(effects.source(p,id,'A','post'),[effects.target(p,id,'疲労増加軽減',-prevented)]);
   });
   idsBack(p).forEach(id => p.states[id].fatigue = clamp0(p.states[id].fatigue - 2));
