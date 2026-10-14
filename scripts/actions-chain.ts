@@ -33,7 +33,10 @@ export async function dispatchContinuation(raw:Record<string,unknown>,status:Sta
  const previous=await api('/actions/workflows/simulate.yml/runs?event=workflow_dispatch&per_page=100');
  const duplicate=previous.workflow_runs?.find((run:{display_title:string;head_sha:string})=>run.display_title===title&&run.head_sha===context.sha);
  if(duplicate)return {state:'already-dispatched',runId:duplicate.id,url:duplicate.html_url};
- await api('/actions/workflows/simulate.yml/dispatches','POST',{ref,inputs});
+ // REST workflow_dispatch accepts string values; parallel defaults include numbers.
+ // Normalize only the wire payload so the typed simulation contract stays unchanged.
+ const apiInputs=Object.fromEntries(Object.entries(inputs).map(([key,value])=>[key,String(value)]));
+ await api('/actions/workflows/simulate.yml/dispatches','POST',{ref,inputs:apiInputs});
  return {state:'dispatched',analysisLevel:inputs.analysis_level,parentRunId:context.runId,ref,sha:context.sha};
 }
 async function main(){

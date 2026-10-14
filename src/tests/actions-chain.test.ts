@@ -1,3 +1,4 @@
+import {parallelInputs} from '../../scripts/actions-parallel';
 import {expect,it,vi} from 'vitest';
 import {continuationInputs,continuationTitle,dispatchContinuation} from '../../scripts/actions-chain';
 const context={repository:'oyoufuku/idol-card-game-simulation',sha:'a'.repeat(40),runId:'123',attempt:'1'};
@@ -24,4 +25,14 @@ it('ref更新・API拒否では起動せず、同じ親runで起動済みなら�
  const denied=vi.fn().mockResolvedValue(new Response(null,{status:403}));await expect(dispatchContinuation(baseline,status,context,'main','secret',denied)).rejects.toThrow('HTTP 403');
  const duplicate=vi.fn().mockResolvedValueOnce(Response.json({sha:context.sha})).mockResolvedValueOnce(Response.json({workflow_runs:[{display_title:continuationTitle(continuationInputs(baseline,status,context)!),head_sha:context.sha,id:456,html_url:'https://github.com/run/456'}]}));
  expect(await dispatchContinuation(baseline,status,context,'tag','token',duplicate)).toMatchObject({state:'already-dispatched',runId:456});expect(duplicate).toHaveBeenCalledTimes(2);
+});
+
+it('並行実行由来の数値/boolean既定値はREST境界で文字列化し、全25入力と対戦条件を維持する',async()=>{
+ const raw=parallelInputs({seed:'1',matches_per_matchup:'50',random_matches:'1000'}),before=JSON.stringify(raw);
+ const request=vi.fn().mockResolvedValueOnce(Response.json({sha:context.sha})).mockResolvedValueOnce(Response.json({workflow_runs:[]})).mockResolvedValueOnce(new Response(null,{status:204}));
+ await dispatchContinuation(raw,status,context,'measurement-tag','token',request);
+ const body=JSON.parse(request.mock.calls[2][1].body);
+ expect(Object.keys(body.inputs)).toHaveLength(25);expect(Object.values(body.inputs).every(value=>typeof value==='string')).toBe(true);
+ expect(body.inputs).toMatchObject({workers:'0',war_workers:'0',max_new_matches:'0',continue_to_level2:'true',fast_simulation:'true',burst_round_trace:'true',cpu_strategy:'charge-archetype',archetype_selection:'constructed',analysis_level:'level1',resume_run_id:context.runId});
+ expect(JSON.stringify(raw)).toBe(before);expect(body.ref).toBe('measurement-tag');
 });

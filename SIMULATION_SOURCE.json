@@ -1,8 +1,8 @@
 {
   "sourceRepository": "oyoufuku/idol-card-game",
   "sourceRef": "main",
-  "sourceCommit": "f0cdfd600028ef3e92e6c7bbc6af5df6c0f3eafc",
-  "sourcePR": 28,
+  "sourceCommit": "805c8765f008305b7c22f48139ad217a3a4fa93b",
+  "sourcePR": 29,
   "inputFingerprint": "aad5e9eb8b5776fb01492c608db78723777b4cc82d3746c08d4d300d1a25cddb",
   "ruleVersion": "reviewed-burst-20261014-v2",
   "historyImported": false,
@@ -13,7 +13,7 @@
     "package.json": "ba58a06f1b0bf5fdafa801045509ab81f215bd91e9b08b1fe6cfa202b0e6a586",
     "pnpm-lock.yaml": "a70e2ef17d9554afa99f19e56d6a6ad318486a047e46c67102fc9d9d9e3ee70a",
     "pnpm-workspace.yaml": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353",
-    "scripts/actions-chain.ts": "eaf084642e3c810e0bfd4697e15b61dd81d7bfdd8db6ff99872cd9e7febe2e01",
+    "scripts/actions-chain.ts": "40ab8bb02a6e1ed19868f8d6c2e69e485aedfb183ab27f68365ab56b841702cf",
     "scripts/actions-parallel.ts": "eced9b0328e15ed3eac976070f0466bd32f47d441e1a68a5435a83b65d800134",
     "scripts/actions-simulation.ts": "10515fc7cb6a69ffa0a5a5fa16c0b96375d05999f262f1d1ca8ba69e19e9900e",
     "scripts/build-testplay.mjs": "40b251127baf3be0bf22537852f2476a0f2256c4939ab20238bd07f7f4f7e965",
@@ -99,7 +99,7 @@
     "src/simulation/war-worker.ts": "f73453e9e0b4f85491bcac61d3539d853c140d41ea8e5f9b2b59ba1ade62bb87",
     "src/simulation/worker.ts": "41409a11ce3d9994127411957b8463ce0c57152322157e0ac0d7d35fc1acd62a",
     "src/styles.css": "af576f76dd6044122a33f707dfdee9afdb5ba04144126dde9c68d37ca0240a16",
-    "src/tests/actions-chain.test.ts": "d7e80aacd68ff09f0fd5f1b07f28661a41a24a61fefa66fd9eb3d6e6998a7856",
+    "src/tests/actions-chain.test.ts": "1e1ea324e719d93b3e5ec44f469b143470c0dfd6646544d54677696338990bf4",
     "src/tests/actions-parallel.test.ts": "028f6519286087bb01a1d4354318976d81230d51a54f40a0ba1011c48c52b59a",
     "src/tests/actions-simulation.test.ts": "2fe561eb5dc346ff6881fd184d6e4f76250a971e391435269238eba3fd6427f7",
     "src/tests/analysis-export.test.ts": "ea18b6b4458f023d07c136681c9bd111d8ff5bfeb136fbaa8f896cb14e7e45cb",
@@ -157,5 +157,9 @@
     "src/tests/war.test.ts": "f2e62d4c422b8723d54c0a4ef0926469e68dbc787710042d36b1c3ed871427b1",
     "tsconfig.json": "f46ae6e42218f7c415e04f26e4448e1d39b6e1a28edd21218892d07ad1c8d8ed",
     "vite.config.ts": "92d7529a616b1bc69aba7aea314e693eda47a4dec5e52adf8e43dad9e4eb0694"
-  }
+  },
+  "sourcePRs": [
+    28,
+    29
+  ]
 }
