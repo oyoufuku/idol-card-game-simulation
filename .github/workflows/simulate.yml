@@ -110,7 +110,8 @@ permissions:
   actions: read
 
 concurrency:
-  group: balance-simulation-${{ github.repository }}
+  # Independent result campaigns use separate runners. Keep each campaign serial.
+  group: balance-simulation-${{ github.repository }}-${{ inputs.scenario == 'CUSTOM' && inputs.archetype_selection == 'constructed' && 'constructed' || 'standard' }}
   cancel-in-progress: false
 
 jobs:

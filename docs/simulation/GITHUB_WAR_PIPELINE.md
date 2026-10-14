@@ -4,6 +4,8 @@
 
 ## B条件
 
+GitHubの同時実行枠は、CUSTOM＋constructedの構築済みデッキと、それ以外の検証用ARCHETYPE/RANDOMで分離する。異なる系統は別runnerで並行実行でき、同じ系統は1実行ずつ進める。`cancel-in-progress: false`を維持し、進行中の結果を自動キャンセルしない。L1/L2/L3はそれぞれの基準Artifactが完了してから進める。
+
 Bは次の固定条件を使う。
 
 - balancedの9軸×3候補＝27チーム

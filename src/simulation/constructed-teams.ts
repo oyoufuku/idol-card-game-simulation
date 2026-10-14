@@ -1,11 +1,21 @@
 import {byId} from '../game/formation';
 import {SONGS} from '../data/songs';
 import type {Team} from './teams';
+import type {Attribute} from '../game/types';
 
-export const CONSTRUCTED_DECK_POLICY='constructed-decks-20261014-v4';
+export const CONSTRUCTED_DECK_POLICY='constructed-decks-20261014-v5';
 export const CONSTRUCTED_DECK_SOURCE='docs/simulation/constructed-decks-20261014.md';
 export const CONSTRUCTED_AXIS_TAGS=['クール','チャージ','バースト','フォーメーション移動','多属性','対スキル','疲労回復','疲労付与','対単一属性'] as const;
-interface Definition {name:string;theme:string;members:number[];songs:string[];plan:string;memberReasons?:Record<number,string>;songReasons:string[];caveats:string[];fixedMembers?:number[];group?:string}
+// Affiliation for the two selected decks only. MCタイム is a common game song;
+// special songs K/S remain engine-only and cannot be selected in any deck.
+export const GROUP_SONG_IDS={
+ '櫻坂46':['A','B','C','D','E','F','G','H','I','K'],
+ '日向坂46':['L','M','N','O','P','Q','R','S','T','U','V'],
+} as const;
+export function songBelongsToGroup(id:string,group:keyof typeof GROUP_SONG_IDS):boolean {
+ return (GROUP_SONG_IDS[group] as readonly string[]).includes(id);
+}
+interface Definition {name:string;theme:string;members:number[];songs:string[];plan:string;memberReasons?:Record<number,string>;songReasons:string[];caveats:string[];fixedMembers?:number[];group?:keyof typeof GROUP_SONG_IDS;allowedAttributes?:Attribute[]}
 
 // Hand-authored using B-condition L1/L2 before playing. No result files are loaded.
 // The 9-axis pool covers all 48 cards exactly once or twice; the 3 extra decks
@@ -71,8 +81,8 @@ const definitions:Definition[]=[
  {name:'疲労回復・持久戦',theme:'疲労回復',members:[13,42,39,31,2,24,4,26],songs:['J','N','T'],plan:'回復と軽減を重ね、低総疲労を得点・妨害へ変える。',songReasons:['8人全体回復で低総疲労条件を支援。相手も回復。','回復しきれない疲労の減点を軽減。','回復で低い疲労値を揃える運用を補助。同数は不発。'],memberReasons:{26:'回復で低疲労Cと位置得点を維持する得点役。'},caveats:['疲労付与に勝ち越すことはまだ未検証。','小坂の疲労倍化・BURST後疲労も管理。']},
  {name:'疲労付与・高疲労妨害',theme:'疲労付与',members:[16,21,23,42,45,37,29,41],songs:['C','D','M'],plan:'高疲労相手の妨害を保ち、自軍を巻き込む曲を減らして得点役を補う。',songReasons:['ユーモア中心の自軍に対し、非ユーモアへ疲労。','高疲労相手の減点を倍化。自軍にも作用。','付与だけで得点不足にならないようMIDDLE得点を補う。'],memberReasons:{41:'高基礎値・自己BURSTで序盤得点を補うユーモア役。増本AUTOの自軍疲労対象にならない。'},caveats:['全員の疲労を倍化するキツネと、自軍の移動にも疲労を与えるアザトカワイイは外す。','非ユーモアの味方は増本AUTOとMake or Breakの対象。']},
  {name:'対単一属性・クールメタ',theme:'対単一属性',members:[3,40,1,5,17,20,19,36],songs:['B','Q','P'],plan:'小田倉・河田を核に、対クール効果とキュート主体の楽曲を組み合わせる。',songReasons:['キュート主体の自軍に対し、クール主体の相手へ広く減少。','単独最多属性を減少。自軍キュートも対象。','PLAIN CENTER運用で相手総属性数を0にし、相手CENTER減少を狙う。'],memberReasons:{19:'クール曲のBACKS経験でBURSTする村山などへCENTER固定・B無効を狙う対策支援。',36:'河田/谷口CENTERとは別運用。PLAINで属性シナジーと魔物の属性数を妨害。'},caveats:['静寂の暴力は河田/谷口Cを止め、山下瞳月Cは止められないため外す。','藤嶌CENTERのPLAIN中は小田倉・河田の属性人数参照が不発。CENTERを使い分ける。']},
- {name:'櫻坂選抜',theme:'櫻坂46',group:'櫻坂46',members:[11,10,20,22,7,13,17,24],songs:['A','F','N'],plan:'櫻坂8人でクールの得点と3属性の妨害・回復を組み合わせる。',songReasons:['クールの得点役を支援。','休息から出場へ戻るカードを加算。','出場者の疲労減点を軽減。'],caveats:['所属による追加効果はない。複数戦術を組み合わせた選抜。']},
- {name:'日向坂選抜',theme:'日向坂46',group:'日向坂46',members:[25,26,30,35,36,39,42,46],songs:['A','B','J'],plan:'日向坂8人で位置維持・疲労管理・3属性妨害を組み合わせる。',songReasons:['クールの得点役を支援。','キュート妨害役を支援。非キュートの味方も減少。','回復し、平岡用の3種類目の楽曲属性も確保。'],caveats:['元属性でステージ/BACKS双方の3属性が成立可能。','小坂C・金村C・藤嶌Cは同時に発動しない。']},
+ {name:'櫻坂選抜',theme:'櫻坂46',group:'櫻坂46',members:[11,10,20,22,7,13,17,24],songs:['A','I','H'],plan:'山下瞳月・村山・藤吉・森田・的野のステージ出役を主体に、得点とAUTO/CENTER妨害を組み合わせる。井上・幸坂は補助。楽曲は櫻坂のみ。',songReasons:['ステージのクール3人を組み、得点役を直接支援。相手クールも加算対象。','相手CENTER SKILLを止める。山下瞳月Cはこの楽曲の無効化を受けず、主CENTERの得点を保てる。','森田のキュート・的野/井上のユーモア・クール出役で3属性を揃え、3属性を欠く相手のステージ全体を減少させる。'],memberReasons:{13:'ステージ出役を支える回復補助。BACKSに置く場合はCENTERを回復する。',17:'ステージ出役を支える妨害補助。BACKSでは相手CENTERへ減少を与える。'},caveats:['BACKS固定を主戦術にしない。CPUの配置固定など追加ルールも作らない。','静寂の暴力のラウンドは山下瞳月以外の自軍Cも無効になる。','UDAGAWA GENERATIONは自軍がステージ3属性を崩した場合も5人を減少させる。','先行時に相手を助ける何歳の頃に戻りたいのか？は選択しない。','所属による追加のゲーム効果はない。']},
+ {name:'日向坂選抜',theme:'日向坂46',group:'日向坂46',allowedAttributes:['キュート','ユーモア'],members:[40,36,39,37,41,42,46,48],songs:['Q','P','V'],plan:'キュート4人・ユーモア4人で、属性妨害・位置維持妨害・疲労管理と低BURST時の得点を組み合わせる。楽曲は日向坂のキュート/ユーモアのみ。',songReasons:['相手の単独最多属性へ減少。2属性を組み合わせ、単属性相手への対策を狙う。自軍最多属性も減少対象。','森本の追加属性で総属性数を増やし、相手CENTERへの減少を狙う。相手側の属性追加が多ければ自軍が減少対象になる。','相手BURST継続効果を解除し、松田好花の低BURST人数条件を支援。自軍の継続効果も解除される。'],memberReasons:{40:'キュートの得点役と最多属性妨害。PLAINとは別のCENTER運用。',36:'キュート2曲でAUTO・BURSTを狙い、CENTER時はPLAINで属性シナジーを崩す。',39:'山口の疲労管理と交代を利用し、低疲労AUTOと総疲労比較Cを使う。',37:'FRONT/MIDDLEなど本人の位置を維持して妨害するキュート役。',41:'ユーモアの得点役。追加属性を魔物に使い、追加キュート時は2曲のキュートでBURSTを狙う。',42:'自軍の最高疲労を回復し、相手へ付与するユーモア支援。',46:'キュート2曲を含む楽曲属性の連続を利用し、特殊楽曲への変更も狙う。',48:'JOYFUL LOVEでBURST人数が0になるラウンドのAUTO/C得点を担当。'},caveats:['元属性はキュート4人・ユーモア4人。森本の追加クールは能力通り発生する。','JOYFUL LOVEのラウンドは森本のBURST加算・宮地のBURST継続妨害・山口のBURST中AUTO強化も消える。','藤嶌CENTERのPLAIN中は河田の相手属性人数参照が不発。CENTERを使い分ける。','元属性だけで3属性のステージ/BACKSを揃える構築ではないため、清水・平岡を主役として採用しない。']},
  {name:'指定8人・妨害とBURST',theme:'指定8人',members:[7,12,19,4,1,40,41,28],songs:['B','N','J'],fixedMembers:[7,12,19,4,1,40,41,28],plan:'指定8人を固定し、CENTER妨害とBURST利用を組み合わせる。',songReasons:['キュート妨害役を支援し、森本のキュート追加時にBURSTを狙う。','疲労減点を軽減し、森本のクール追加時にBURSTを狙う。','出場者の疲労を回復。相手も回復。'],memberReasons:{28:'指定メンバー。森本にクールが追加された時にクールのシンメを狙う。'},caveats:['松田は松田里奈。','小西のクール相方は森本のランダム追加に依存し、常時AUTO成立は保証しない。','小西Bの3人シンメ経験は相方の属性を問わない。','指定8人の入れ替えcWARは欠測。スキル除外検査は別途可能。']},
 ];
 
@@ -83,11 +93,11 @@ export function isConstructedTeam(team:Team):boolean {
 export function constructedTeams():Team[]{
  return definitions.map(definition=>{
   if(definition.members.length!==8||new Set(definition.members).size!==8||definition.songs.length!==3||new Set(definition.songs).size!==3)throw new Error(`Invalid constructed deck: ${definition.name}`);
-  for(const id of definition.members){const card=byId(id);if(definition.group&&card.group!==definition.group)throw new Error(`Invalid group in constructed deck: ${definition.name}`);}
-  for(const id of definition.songs)if(!SONGS.some(song=>song.id===id&&song.selectable!==false))throw new Error(`Invalid constructed song ${id}: ${definition.name}`);
+  for(const id of definition.members){const card=byId(id);if(definition.group&&card.group!==definition.group)throw new Error(`Invalid group in constructed deck: ${definition.name}`);if(definition.allowedAttributes&&!definition.allowedAttributes.includes(card.attr))throw new Error(`Invalid attribute route: ${definition.name}`);}
+  for(const id of definition.songs){if(!SONGS.some(song=>song.id===id&&song.selectable!==false))throw new Error(`Invalid constructed song ${id}: ${definition.name}`);if(definition.group&&!songBelongsToGroup(id,definition.group))throw new Error(`Invalid song affiliation ${id}: ${definition.name}`);}
   const reasons:Record<string,string[]>={};
   for(const id of definition.members)reasons[String(id)]=[definition.memberReasons?.[id]??memberRoles[id]];
   definition.songs.forEach((id,i)=>{reasons[id]=[definition.songReasons[i]];});
-  return {selectionPolicy:CONSTRUCTED_DECK_POLICY,name:definition.name,archetype:definition.name,members:[...definition.members],songs:[...definition.songs],mainTags:[definition.theme],subTags:[],reasons,construction:{profile:'9アーキタイプ＋2選抜＋指定8人',plan:definition.plan,fixedMembers:definition.fixedMembers?[...definition.fixedMembers]:undefined,caveats:[...definition.caveats,'B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。','対戦中に結果を見て構築を変更しない。']}};
+  return {selectionPolicy:CONSTRUCTED_DECK_POLICY,name:definition.name,archetype:definition.name,members:[...definition.members],songs:[...definition.songs],mainTags:[definition.theme],subTags:[],reasons,construction:{profile:'9アーキタイプ＋2選抜＋指定8人',plan:definition.plan,fixedMembers:definition.fixedMembers?[...definition.fixedMembers]:undefined,allowedAttributes:definition.allowedAttributes?[...definition.allowedAttributes]:undefined,caveats:[...definition.caveats,'B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。','対戦中に結果を見て構築を変更しない。']}};
  });
 }

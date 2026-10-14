@@ -13,6 +13,7 @@ export function replacementEligible(team:Team,target:number,candidate:number) {
  if(isConstructedTeam(team)){
   if(team.construction?.fixedMembers?.includes(target))return false;
   if((tag==='櫻坂46'||tag==='日向坂46')&&card.group!==tag)return false;
+  if(team.construction?.allowedAttributes&&!team.construction.allowedAttributes.includes(card.attr))return false;
  }
  if(tag==='チャージ') {
   if(chargeCore().some(c=>c.id===target)||chargeSupportPolicy(card).excluded.length)return false;

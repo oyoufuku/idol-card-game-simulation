@@ -10,7 +10,7 @@ import {calculationContext} from '../game/context';
 import {skillFor} from '../game/skills';
 import {metaConstructionScore} from '../simulation/meta-teams';
 import {songFit} from '../simulation/song-fit';
-import {CONSTRUCTED_DECK_POLICY,CONSTRUCTED_AXIS_TAGS} from '../simulation/constructed-teams';
+import {CONSTRUCTED_DECK_POLICY,CONSTRUCTED_AXIS_TAGS,songBelongsToGroup} from '../simulation/constructed-teams';
 import {replacementEligible} from '../simulation/war-replacement';
 it('現行9軸27チーム、固定タグは保持、代表戦はチャージ対疲労回復',()=>{
  const teams=generateArchetypes(1);expect(teams).toHaveLength(27);expect(new Set(teams.map(t=>t.archetype)).size).toBe(9);expect(teams.some(t=>t.archetype==='フォーメーション固定軸')).toBe(false);
@@ -39,6 +39,18 @@ it('構築済みは9軸各1候補＋2所属選抜＋指定8人、9軸だけで48
  expect(multi.songs).toContain('N');expect(multi.songs).not.toContain('A');
  expect(new Set(multi.songs.map(id=>SONGS.find(s=>s.id===id)!.type)).size).toBe(3);
  expect(generateArchetypes(123,3,'constructed')).toEqual(teams);
+});
+it('櫻坂はステージ出役を支える所属曲、日向はキュート/ユーモアと所属曲で構築・WAR代替を維持',()=>{
+ const teams=generateArchetypes(1,3,'constructed'),sakura=teams.find(t=>t.mainTags[0]==='櫻坂46')!,hinata=teams.find(t=>t.mainTags[0]==='日向坂46')!;
+ expect(sakura.members).toEqual(expect.arrayContaining([13,17]));expect(sakura.songs).toEqual(['A','I','H']);expect(sakura.songs).not.toContain('F');
+ for(const t of [sakura,hinata])for(const id of t.songs)expect(songBelongsToGroup(id,t.mainTags[0] as '櫻坂46'|'日向坂46')).toBe(true);
+ expect(hinata.members.filter(id=>byId(id).attr==='キュート')).toHaveLength(4);expect(hinata.members.filter(id=>byId(id).attr==='ユーモア')).toHaveLength(4);
+ expect(hinata.songs).toEqual(['Q','P','V']);expect(hinata.songs.every(id=>SONGS.find(s=>s.id===id)!.type!=='クール')).toBe(true);
+ for(const target of hinata.members)for(const c of IDOLS.filter(c=>c.attr==='クール'))expect(replacementEligible(hinata,target,c.id)).toBe(false);
+ expect(songBelongsToGroup('J','櫻坂46')).toBe(false);expect(songBelongsToGroup('J','日向坂46')).toBe(false);
+ // The affiliation constraint is constructed-only: the independent 27 teams
+ // still use cross-group songs and cards according to their original themes.
+ expect(generateArchetypes(1)).toHaveLength(27);
 });
 it('自軍/相手のBURST・疲労・移動を区別する',()=>{
  expect(abilitySemantics(byId(19)).ownBurst).toBe(false);expect(synergy(byId(19),[],'バースト').reasons.some(r=>r.includes('自軍BURST'))).toBe(false);
