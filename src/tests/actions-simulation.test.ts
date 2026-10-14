@@ -3,7 +3,7 @@ import {expect,it} from 'vitest';
 import {mkdtempSync,mkdirSync,existsSync,cpSync,readFileSync,writeFileSync,rmSync,symlinkSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {parseInputs,contract,cliArgs,warCliArgs,validateAnalysisPrerequisites,fileHashes,validateResume,repairInterruptedTail,repairInterruptedSummary,restoredArtifactRoot,performanceReport,executeCli} from '../../scripts/actions-simulation';
+import {parseInputs,contract,cliArgs,warCliArgs,validateAnalysisPrerequisites,fileHashes,validateResume,validateMetadataMigration,repairInterruptedTail,repairInterruptedSummary,restoredArtifactRoot,performanceReport,executeCli} from '../../scripts/actions-simulation';
 const context={sha:'a'.repeat(40),repository:'oyoufuku/idol-card-game',runId:'123',attempt:'1'};
 function fixture(dir:string,attempt='1'){
  const expected=contract(parseInputs({}),context);writeFileSync(join(dir,'archetype-checkpoint.jsonl'),'{"index":0}\n');
@@ -125,4 +125,17 @@ it('時間予算でCLIを停止し、対戦を追加しないgenerate-only検証
   let reason='';const result=await executeCli(['--mode','random','--generate-only','--out',join(dir,'out')],join(dir,'run.log'),1,r=>{reason=r;});
   expect(result.stopped).toBe(true);expect(reason).toBe('time-budget');expect(existsSync(join(dir,'out/random-checkpoint.jsonl'))).toBe(false);
  }finally{rmSync(dir,{recursive:true,force:true});}
+});
+
+it('自動L2継続はall限定・L3禁止で、互換resumeは明示SHAと前runを必須にする',()=>{
+ expect(parseInputs({mode:'all',continue_to_level2:true})).toMatchObject({continueToLevel2:true,resumeCompatibleCommit:''});
+ for(const input of [{continue_to_level2:true},{mode:'all',continue_to_level2:'yes'},{mode:'all',analysis_level:'level3',resume_run_id:'123',war_detail_ids:'1',continue_to_level2:true},{resume_compatible_commit:'old'},{resume_compatible_commit:'a'.repeat(40)}])expect(()=>parseInputs(input)).toThrow();
+});
+it('metadata互換resumeも同一試合計画・engine・CPUを要求し、通常resumeのSHA検証は緩めない',()=>{
+ const expected=contract(parseInputs({}),context),prior={...expected,commitSha:'b'.repeat(40)},old=prior.commitSha;
+ const paths=['src/simulation/constructed-teams.ts','scripts/actions-chain.ts','.github/workflows/simulate.yml','src/tests/actions-chain.test.ts'];
+ expect(()=>validateMetadataMigration(prior,expected,old,paths)).not.toThrow();
+ for(const path of ['src/game/engine.ts','src/game/cpu.ts','src/data/idols.ts','src/simulation/match.ts','src/simulation/cli.ts','package.json'])expect(()=>validateMetadataMigration(prior,expected,old,[...paths,path])).toThrow('unsupported');
+ for(const change of [{planHash:'different'},{seed:2},{inputFingerprint:'old'}])expect(()=>validateMetadataMigration(prior,{...expected,...change},old,paths)).toThrow('contract mismatch');
+ expect(()=>validateMetadataMigration(prior,expected,'c'.repeat(40),paths)).toThrow('prior commit');
 });

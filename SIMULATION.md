@@ -306,3 +306,17 @@ pnpm.cmd simulate -- --mode archetype --matches-per-matchup 10 --cpu-strategy bu
 探索設定は両CPU共通で、既定は二段階100候補です。以前のCHARGEが全候補評価だった場合、この既定では探索精度が異なります。同じ精度で比較するときは以前と同じ `--cpu-search` と `--preview-candidates` を明示してください。`--cpu-search exhaustive` で両方を全候補評価できますが、BURST CPUの全候補評価は非常に重くなります。
 
 従来の `charge-archetype` はチャージ以外が通常CPUで、今回の組み合わせとは異なります。以前の結果へ追記せず、別の `--out` を使ってください。
+
+## GitHub Actionsでデッキ対戦→L1→L2を自動継続
+
+Actionsの `Balance simulation` で `mode=all`、`archetype_selection=constructed`、`scenario=CUSTOM`、`cpu_strategy=charge-archetype`、`continue_to_level2=true` を指定します。12デッキの対戦数50・RANDOM 1000・`max_new_matches=0`・`war_max_new_jobs=0` なら、baseline完了後にL1、L1完了後にL2を別runとして起動します。L2で停止し、L3は指定カードでの別指示が必要です。ARCHETYPEとRANDOMのWARは別集計です。RANDOM側は従来どおり通常CPUです。
+
+各段階は直前runのArtifactを復元して完了済み対戦を再利用し、seed・CPU・構築・探索精度・WAR標本数を引き継ぎます。アップロード成功・全件完了を確認してから次段階を起動します。未完了・失敗・時間切れでは自動継続しません。同じ親run/commitから既に起動済みなら再dispatchを避けます。
+
+GitHubの同一concurrencyグループは実行中1件＋待機1件なので、L1/L2を同時に待機登録する方式ではありません。GitHub側で完了ごとに次のrunを登録するため、Codexの定期監視は不要です。B条件など通常アーキタイプのキャンペーンとは独立して実行できます。
+
+再現性のため、開始時のcommitを指す固定タグをworkflowのrefに使うことを推奨します。自動継続前にrefのcommitを照合し、ブランチが更新されていれば停止します。ワークフローは `Actions: write` で `workflow_dispatch` を使用します。トークン値は記録しません。
+
+通常の再開はcommitを含め完全一致が必須です。今回の構築済みmetadata保存エラーの復旧だけは、明示した `resume_compatible_commit` で旧SHAを指定できます。全試合計画hash・入力fingerprint・seed・CPU等の一致、旧Artifactの全checksum、Git差分がmetadata/自動実行補助・テスト・文書だけであることを検証します。engine・カードデータ・CPU・対戦runnerの変更があれば拒否します。復旧した新Artifactへ移行元/先commitを記録し、次段階からは再び同一commitでの通常再開に戻します。この入力は通常は空欄です。
+
+自動継続を止めたい場合は、実行中runをActions画面でCancelします。完了済みArtifactは保持期間中ダウンロードできます。再開は同じ固定ref・同じ条件で `resume_run_id` に停止したrunのIDを入れます。中止が終了直前と重なって次runが起動済みなら、そのrunもCancelしてください。

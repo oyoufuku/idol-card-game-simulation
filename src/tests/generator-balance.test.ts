@@ -1,4 +1,5 @@
 import {it,expect} from 'vitest';
+import {assertFinite,runMatch} from '../simulation/match';
 import {IDOLS} from '../data/idols';
 import {SONGS} from '../data/songs';
 import {generateArchetypes,synergy,constructionScore} from '../simulation/teams';
@@ -98,3 +99,10 @@ it('谷口AUTO-2・河田AUTO-2、山下は基礎2でAUTO種類数を維持',()=
  const y=createGame([45,1,2,3,4,6,7,8],[26,27,28,18,10,14,9,13],['A','B','C'],['D','E','F'],'local',()=>.5);expect(byId(45).base).toBe(2);
  for(const kinds of [[],['CENTER','FRONT'],['CENTER','FRONT','MIDDLE','BACKS']]){y.p1.states[45].positionKinds=kinds;expect(skillFor(45).autoAppeal!(calculationContext(y.p1,y.p2,45,y.roundSong))).toBe(new Set([...kinds,'CENTER']).size);}
 });
+
+it('構築済み全12チームのmetadataはworkerへ渡してもundefinedを含まず実対戦を完了できる',()=>{
+ const teams=generateArchetypes(1,3,'constructed');expect(()=>assertFinite(teams)).not.toThrow();
+ const spec=withStrategies(archetypeSchedule(1,2,teams),'charge-archetype')[0];
+ const result=runMatch(spec,{fastSimulation:true,cpuSearch:{mode:'two-stage',previewCandidates:100}});
+ expect(()=>assertFinite(result)).not.toThrow();expect(result.rounds).toBe(7);
+},30000);

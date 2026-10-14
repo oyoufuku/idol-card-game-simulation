@@ -1,5 +1,5 @@
 name: Balance simulation
-run-name: Simulation ${{ inputs.analysis_level }} / ${{ inputs.scenario }} / ${{ inputs.mode }} / seed ${{ inputs.seed }}
+run-name: Simulation ${{ inputs.analysis_level }} / ${{ inputs.scenario }} / ${{ inputs.mode }} / seed ${{ inputs.seed }} / parent ${{ inputs.resume_run_id }}
 
 on:
   workflow_dispatch:
@@ -105,9 +105,18 @@ on:
         type: string
         default: ''
 
+      continue_to_level2:
+        description: Automatically continue completed baseline to L1 then L2; stop before L3
+        type: boolean
+        default: false
+      resume_compatible_commit:
+        description: Explicit prior SHA for verified metadata-only recovery; normally leave blank
+        type: string
+        default: ''
+
 permissions:
   contents: read
-  actions: read
+  actions: write
 
 concurrency:
   # Independent result campaigns use separate runners. Keep each campaign serial.
@@ -122,6 +131,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '24'
@@ -166,3 +176,9 @@ jobs:
           ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
         run: |
           node -e 'const fs=require("node:fs");const outcome=process.env.UPLOAD_OUTCOME;fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\nArtifact upload: **${outcome}**.\n${process.env.ARTIFACT_URL||"No artifact URL; checkpoint recovery is not confirmed."}\n`);if(outcome!=="success")console.log("::warning::Artifact upload did not succeed; do not assume results were saved.");'
+      - name: Continue completed stage through LEVEL 2
+        if: success() && inputs.continue_to_level2 && steps.upload.outcome == 'success'
+        env:
+          SIMULATION_INPUTS: ${{ toJSON(inputs) }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node --import tsx scripts/actions-chain.ts

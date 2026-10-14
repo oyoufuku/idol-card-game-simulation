@@ -13,10 +13,10 @@ export interface Config {
  matchesPerMatchup:number;randomMatches:number;seed:number;workers:number;fast:boolean;search:'exhaustive'|'two-stage';
  candidates:number;maxNewMatches:number;minutes:number;retentionDays:number;resumeRunId:string;burstRoundTrace:boolean;
  analysisLevel:'baseline'|'level1'|'level2'|'level3';warSamplesPerCard:number;warWorkers:number;warMaxNewJobs:number;
- warDetailIds:number[];warSkillAblation:string;warPairs:string;
+ warDetailIds:number[];warSkillAblation:string;warPairs:string;continueToLevel2:boolean;resumeCompatibleCommit:string;
 }
 export interface Context {sha:string;repository:string;runId:string;attempt:string}
-const keys=['scenario','mode','archetype_selection','cpu_strategy','matches_per_matchup','random_matches','seed','workers','fast_simulation','cpu_search','preview_candidates','max_new_matches','runtime_minutes','retention_days','resume_run_id','burst_round_trace','analysis_level','war_samples_per_card','war_workers','war_max_new_jobs','war_detail_ids','war_skill_ablation','war_pairs'];
+const keys=['scenario','mode','archetype_selection','cpu_strategy','matches_per_matchup','random_matches','seed','workers','fast_simulation','cpu_search','preview_candidates','max_new_matches','runtime_minutes','retention_days','resume_run_id','burst_round_trace','analysis_level','war_samples_per_card','war_workers','war_max_new_jobs','war_detail_ids','war_skill_ablation','war_pairs','continue_to_level2','resume_compatible_commit'];
 function choice<T extends string>(value:unknown,fallback:T,allowed:readonly T[],name:string):T {
  const v=value??fallback;if(typeof v!=='string'||!allowed.includes(v as T))throw new Error(`Invalid ${name}`);return v as T;
 }
@@ -47,8 +47,12 @@ export function parseInputs(raw:Record<string,unknown>,cpuCount=availableParalle
  if(analysisLevel!=='baseline'&&mode!=='all')throw new Error('WAR pipeline requires mode=all so ARCHETYPE and RANDOM stay in one analysis output');
  if(analysisLevel!=='baseline'&&!resumeRunId)throw new Error('L1/L2/L3 require resume_run_id from the preceding artifact');
  if(analysisLevel==='level3'&&!warDetailIds.length)throw new Error('LEVEL 3 requires explicit war_detail_ids');
+ const chain=raw.continue_to_level2??false;if(![true,false,'true','false'].includes(chain as boolean|string))throw new Error('Invalid continue_to_level2');
+ const continueToLevel2=chain===true||chain==='true';
+ if(continueToLevel2&&(mode!=='all'||analysisLevel==='level3'||warDetailIds.length||warPairs))throw new Error('Automatic pipeline requires mode=all and baseline/L1/L2 only');
+ const resumeCompatibleCommit=String(raw.resume_compatible_commit??'');if(resumeCompatibleCommit&&(!/^[a-f\d]{40}$/.test(resumeCompatibleCommit)||!resumeRunId))throw new Error('resume_compatible_commit requires a full commit SHA and resume_run_id');
  const configuredWarWorkers=integer(raw.war_workers,0,0,32,'war_workers');if(configuredWarWorkers>cpuCount)throw new Error('war_workers exceeds available CPUs; use 0 for auto');
- return {scenario,mode,selection,cpuStrategy,matchesPerMatchup,randomMatches:integer(raw.random_matches,1,1,50000,'random_matches'),seed:integer(raw.seed,1,0,4294967295,'seed'),workers:configuredWorkers||Math.min(cpuCount,4),fast:fast===true||fast==='true',search:choice(raw.cpu_search,'two-stage',['exhaustive','two-stage'],'cpu_search'),candidates,maxNewMatches:integer(raw.max_new_matches,2,0,50000,'max_new_matches'),minutes:integer(raw.runtime_minutes,300,1,330,'runtime_minutes'),retentionDays:integer(raw.retention_days,7,1,90,'retention_days'),resumeRunId,burstRoundTrace:burstRoundTrace===true||burstRoundTrace==='true',analysisLevel,warSamplesPerCard:integer(raw.war_samples_per_card,50,1,5000,'war_samples_per_card'),warWorkers:configuredWarWorkers||Math.min(cpuCount,4),warMaxNewJobs:integer(raw.war_max_new_jobs,0,0,500000,'war_max_new_jobs'),warDetailIds,warSkillAblation,warPairs};
+ return {scenario,mode,selection,cpuStrategy,matchesPerMatchup,randomMatches:integer(raw.random_matches,1,1,50000,'random_matches'),seed:integer(raw.seed,1,0,4294967295,'seed'),workers:configuredWorkers||Math.min(cpuCount,4),fast:fast===true||fast==='true',search:choice(raw.cpu_search,'two-stage',['exhaustive','two-stage'],'cpu_search'),candidates,maxNewMatches:integer(raw.max_new_matches,2,0,50000,'max_new_matches'),minutes:integer(raw.runtime_minutes,300,1,330,'runtime_minutes'),retentionDays:integer(raw.retention_days,7,1,90,'retention_days'),resumeRunId,burstRoundTrace:burstRoundTrace===true||burstRoundTrace==='true',analysisLevel,warSamplesPerCard:integer(raw.war_samples_per_card,50,1,5000,'war_samples_per_card'),warWorkers:configuredWarWorkers||Math.min(cpuCount,4),warMaxNewJobs:integer(raw.war_max_new_jobs,0,0,500000,'war_max_new_jobs'),warDetailIds,warSkillAblation,warPairs,continueToLevel2,resumeCompatibleCommit};
 }
 export function contract(config:Config,context:Context){
  if(!/^[a-f\d]{40}$/.test(context.sha)||!/^[-\w.]+\/[-\w.]+$/.test(context.repository)||!/^\d+$/.test(context.runId)||!/^\d+$/.test(context.attempt))throw new Error('Invalid GitHub execution context');
@@ -94,9 +98,23 @@ export function restoredArtifactRoot(base:string,runId:string){
  if(!candidates.length||candidates[0].attempt===candidates[1]?.attempt)throw new Error('Ambiguous or missing resume artifact');
  return candidates[0].path;
 }
-export function validateResume(dir:string,expected:ReturnType<typeof contract>,context:Context,runId:string){
+// This recovery exception permits only serialization/pipeline repairs, never game changes.
+export function validateMetadataMigration(prior:ReturnType<typeof contract>,expected:ReturnType<typeof contract>,compatibleCommit:string,changedPaths:string[]){
+ if(!/^[a-f\d]{40}$/.test(compatibleCommit)||prior.commitSha!==compatibleCommit)throw new Error('Resume rejected: incompatible prior commit');
+ if(JSON.stringify({...prior,commitSha:expected.commitSha})!==JSON.stringify(expected))throw new Error('Resume rejected: simulation contract mismatch');
+ const allowed=(path:string)=>['.github/workflows/simulate.yml','scripts/actions-simulation.ts','scripts/actions-chain.ts','src/simulation/constructed-teams.ts','SIMULATION.md'].includes(path)||/^src\/tests\/[^/]+\.test\.ts$/.test(path)||path.startsWith('docs/');
+ if(changedPaths.some(path=>!allowed(path)))throw new Error('Resume rejected: game/CPU or unsupported code changed');
+}
+export function validateResume(dir:string,expected:ReturnType<typeof contract>,context:Context,runId:string,compatibleCommit=''){
  const prior=JSON.parse(readFileSync(join(dir,'remote-manifest.json'),'utf8'));
- if(prior.schemaVersion!==1||prior.repository!==context.repository||prior.latestRunId!==runId||JSON.stringify(prior.contract)!==JSON.stringify(expected))throw new Error('Resume rejected: commit/inputFingerprint/seed/CPU/construction/search/fast mode/match plan mismatch');
+ if(prior.schemaVersion!==1||prior.repository!==context.repository||prior.latestRunId!==runId)throw new Error('Resume rejected: artifact identity mismatch');
+ if(JSON.stringify(prior.contract)!==JSON.stringify(expected)){
+  if(!compatibleCommit)throw new Error('Resume rejected: commit/inputFingerprint/seed/CPU/construction/search/fast mode/match plan mismatch');
+  // Fail closed if the historical commit is missing; do not infer compatibility from fingerprints alone.
+  const diff=spawnSync('git',['diff','--name-only','--no-renames',compatibleCommit,context.sha],{encoding:'utf8'});
+  if(diff.status!==0)throw new Error('Resume rejected: cannot verify compatible commit history');
+  validateMetadataMigration(prior.contract,expected,compatibleCommit,diff.stdout.trim().split('\n').filter(Boolean));
+ }
  if(!prior.files||typeof prior.files!=='object'||Array.isArray(prior.files))throw new Error('Resume rejected: missing file hashes');
  const current=fileHashes(dir);if(JSON.stringify(Object.keys(current).sort())!==JSON.stringify(Object.keys(prior.files).sort()))throw new Error('Resume rejected: artifact file list mismatch');
  for(const [path,hash] of Object.entries(prior.files)){
@@ -153,7 +171,7 @@ async function run(){
  const request=JSON.parse(readFileSync(requestPath(),'utf8')) as {config:Config;context:Context;contract:ReturnType<typeof contract>;hardware:ReturnType<typeof hardware>};
  const {config,context}=request,out=outPath(),restored=resolve(root(),'simulation-results/restored');let lineage:unknown[]=[];
  // Validate before moving or changing any saved result. Existing CLI checks every result/spec again.
- if(config.resumeRunId){const selected=restoredArtifactRoot(restored,config.resumeRunId),prior=validateResume(selected,request.contract,context,config.resumeRunId);if(existsSync(out))throw new Error('Output already exists');renameSync(selected,out);lineage=prior.lineage??[];}
+ if(config.resumeRunId){const selected=restoredArtifactRoot(restored,config.resumeRunId),prior=validateResume(selected,request.contract,context,config.resumeRunId,config.resumeCompatibleCommit);if(existsSync(out))throw new Error('Output already exists');renameSync(selected,out);lineage=prior.lineage??[];if(prior.contract.commitSha!==context.sha)lineage.push({migration:{from:prior.contract.commitSha,to:context.sha,reason:'Verified metadata-only repair; identical game contract and plan; artifact checksums validated'}});}
  else {if(existsSync(out))throw new Error('Output already exists; choose a clean workspace');mkdirSync(out,{recursive:true});}
  let reason='completed',code=0,elapsed=0,aggregateError:string|null=null;
  const log=join(out,`run-${context.runId}-${context.attempt}.log`);

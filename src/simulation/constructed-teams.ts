@@ -98,6 +98,6 @@ export function constructedTeams():Team[]{
   const reasons:Record<string,string[]>={};
   for(const id of definition.members)reasons[String(id)]=[definition.memberReasons?.[id]??memberRoles[id]];
   definition.songs.forEach((id,i)=>{reasons[id]=[definition.songReasons[i]];});
-  return {selectionPolicy:CONSTRUCTED_DECK_POLICY,name:definition.name,archetype:definition.name,members:[...definition.members],songs:[...definition.songs],mainTags:[definition.theme],subTags:[],reasons,construction:{profile:'9アーキタイプ＋2選抜＋指定8人',plan:definition.plan,fixedMembers:definition.fixedMembers?[...definition.fixedMembers]:undefined,allowedAttributes:definition.allowedAttributes?[...definition.allowedAttributes]:undefined,caveats:[...definition.caveats,'B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。','対戦中に結果を見て構築を変更しない。']}};
+  return {selectionPolicy:CONSTRUCTED_DECK_POLICY,name:definition.name,archetype:definition.name,members:[...definition.members],songs:[...definition.songs],mainTags:[definition.theme],subTags:[],reasons,construction:{profile:'9アーキタイプ＋2選抜＋指定8人',plan:definition.plan,...(definition.fixedMembers?{fixedMembers:[...definition.fixedMembers]}:{}),...(definition.allowedAttributes?{allowedAttributes:[...definition.allowedAttributes]}:{}),caveats:[...definition.caveats,'B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。','対戦中に結果を見て構築を変更しない。']}};
  });
 }
