@@ -10,6 +10,8 @@ import {calculationContext} from '../game/context';
 import {skillFor} from '../game/skills';
 import {metaConstructionScore} from '../simulation/meta-teams';
 import {songFit} from '../simulation/song-fit';
+import {CONSTRUCTED_DECK_POLICY,CONSTRUCTED_AXIS_TAGS} from '../simulation/constructed-teams';
+import {replacementEligible} from '../simulation/war-replacement';
 it('現行9軸27チーム、固定タグは保持、代表戦はチャージ対疲労回復',()=>{
  const teams=generateArchetypes(1);expect(teams).toHaveLength(27);expect(new Set(teams.map(t=>t.archetype)).size).toBe(9);expect(teams.some(t=>t.archetype==='フォーメーション固定軸')).toBe(false);
  expect(IDOLS.some(c=>c.themeTags.includes('フォーメーション固定'))).toBe(true);expect(SONGS.some(s=>s.tags?.includes('フォーメーション固定'))).toBe(true);
@@ -18,9 +20,25 @@ it('現行9軸27チーム、固定タグは保持、代表戦はチャージ対�
 });
 it('構築済み12デッキは固定8人3曲・同型込み78組×50戦で、チャージ主軸だけCHARGE CPUを使う',()=>{
  const teams=generateArchetypes(1,3,'constructed');expect(teams).toHaveLength(12);expect(new Set(teams.map(t=>t.name)).size).toBe(12);
- for(const team of teams){expect(team.members).toHaveLength(8);expect(new Set(team.members).size).toBe(8);expect(team.songs).toHaveLength(3);expect(new Set(team.songs).size).toBe(3);expect(team.selectionPolicy).toBe('constructed-decks-20261013-v1');}
+ for(const team of teams){expect(team.members).toHaveLength(8);expect(new Set(team.members).size).toBe(8);expect(team.songs).toHaveLength(3);expect(new Set(team.songs).size).toBe(3);expect(team.selectionPolicy).toBe(CONSTRUCTED_DECK_POLICY);expect(team.songs.every(id=>SONGS.some(s=>s.id===id&&s.selectable!==false))).toBe(true);for(const key of [...team.members,...team.songs])expect(team.reasons[String(key)]?.[0]).toBeTruthy();}
  const schedule=withStrategies(archetypeSchedule(1,50,teams),'charge-archetype');expect(schedule).toHaveLength(3900);
  for(const spec of schedule)expect(spec.cpuStrategies).toEqual([spec.a,spec.b].map(team=>team.mainTags.includes('チャージ')?'charge':'normal'));
+});
+it('構築済みは9軸各1候補＋2所属選抜＋指定8人、9軸だけで48人全員を1〜2回起用',()=>{
+ const teams=generateArchetypes(1,3,'constructed'),axes=teams.filter(t=>(CONSTRUCTED_AXIS_TAGS as readonly string[]).includes(t.mainTags[0]));
+ expect(axes).toHaveLength(9);expect(new Set(axes.map(t=>t.mainTags[0])).size).toBe(9);
+ const counts=IDOLS.map(c=>axes.filter(t=>t.members.includes(c.id)).length);expect(counts.every(n=>n===1||n===2)).toBe(true);expect(counts.filter(n=>n===1)).toHaveLength(24);expect(counts.filter(n=>n===2)).toHaveLength(24);
+ for(const group of ['櫻坂46','日向坂46']){const deck=teams.find(t=>t.mainTags[0]===group)!;expect(deck.members.every(id=>byId(id).group===group)).toBe(true);for(const id of deck.members)for(const candidate of IDOLS.filter(c=>c.group!==group))expect(replacementEligible(deck,id,candidate.id)).toBe(false);}
+ const fixed=teams.find(t=>t.mainTags[0]==='指定8人')!;expect(fixed.members).toEqual([7,12,19,4,1,40,41,28]);for(const id of fixed.members)for(const c of IDOLS)expect(replacementEligible(fixed,id,c.id)).toBe(false);
+ const charge=axes.find(t=>t.mainTags[0]==='チャージ')!;expect(charge.members.slice(0,3)).toEqual([32,38,44]);
+ const movement=axes.find(t=>t.mainTags[0]==='フォーメーション移動')!;expect(movement.members).toContain(24);expect(movement.members).not.toContain(11);expect(movement.members).not.toContain(42);
+ const burst=axes.find(t=>t.mainTags[0]==='バースト')!;expect(burst.members).toContain(18);expect(burst.members).not.toContain(24);
+ const antiSkill=axes.find(t=>t.mainTags[0]==='対スキル')!;expect(antiSkill.songs).toContain('V');expect(antiSkill.songs).not.toContain('G');
+ const multi=axes.find(t=>t.mainTags[0]==='多属性')!;for(const attr of ['クール','キュート','ユーモア'])expect(multi.members.filter(id=>byId(id).attr===attr).length).toBeGreaterThanOrEqual(2);
+ expect(multi.members).toEqual(expect.arrayContaining([35,46]));
+ expect(multi.songs).toContain('N');expect(multi.songs).not.toContain('A');
+ expect(new Set(multi.songs.map(id=>SONGS.find(s=>s.id===id)!.type)).size).toBe(3);
+ expect(generateArchetypes(123,3,'constructed')).toEqual(teams);
 });
 it('自軍/相手のBURST・疲労・移動を区別する',()=>{
  expect(abilitySemantics(byId(19)).ownBurst).toBe(false);expect(synergy(byId(19),[],'バースト').reasons.some(r=>r.includes('自軍BURST'))).toBe(false);

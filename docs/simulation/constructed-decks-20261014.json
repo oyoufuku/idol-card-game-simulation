@@ -1,0 +1,4985 @@
+{
+  "policy": "constructed-decks-20261014-v4",
+  "balancedGeneratorChanged": false,
+  "newMatchesExecuted": 0,
+  "validation": "9軸＋3追加。9軸の72枠で48人全員：24人は1回、24人は2回。",
+  "evidence": {
+    "baselineRunId": "38400992332",
+    "level1RunId": "38408708356",
+    "level2RunId": "38417597333",
+    "inputFingerprint": "009c6bb9532f91befc15fa2cb21fb1da602624900d0946bdd6e29ca79e6e3f93",
+    "role": "事前の手動支援・楽曲調整の参考。runtimeはこのJSONを読み込まない。",
+    "baselineAxisWinRates": {
+      "クール": 68,
+      "チャージ": 43,
+      "バースト": 65.5,
+      "フォーメーション移動": 35,
+      "多属性": 51,
+      "対スキル": 62.5,
+      "疲労回復": 46.5,
+      "疲労付与": 31.5,
+      "対単一属性": 45.5
+    }
+  },
+  "coverage": [
+    {
+      "id": 1,
+      "name": "石森璃花",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 2,
+      "name": "遠藤理子",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 3,
+      "name": "小田倉麗奈",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 4,
+      "name": "小島凪紗",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 5,
+      "name": "谷口愛季",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 6,
+      "name": "中嶋優月",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 7,
+      "name": "的野美青",
+      "axisDeckCount": 1,
+      "allDeckCount": 3
+    },
+    {
+      "id": 8,
+      "name": "向井純葉",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 9,
+      "name": "村井優",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 10,
+      "name": "村山美羽",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 11,
+      "name": "山下瞳月",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 12,
+      "name": "松田里奈",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 13,
+      "name": "井上梨名",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 14,
+      "name": "遠藤光莉",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 15,
+      "name": "大園玲",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 16,
+      "name": "大沼昌保",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 17,
+      "name": "幸坂茉里乃",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 18,
+      "name": "武元唯衣",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 19,
+      "name": "田村保乃",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 20,
+      "name": "藤吉夏鈴",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 21,
+      "name": "増本綺良",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 22,
+      "name": "森田ひかる",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 23,
+      "name": "守屋麗奈",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 24,
+      "name": "山崎天",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 25,
+      "name": "金村美玖",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 26,
+      "name": "小坂菜緒",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 27,
+      "name": "髙橋未来虹",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 28,
+      "name": "小西夏菜実",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 29,
+      "name": "正源司陽子",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 30,
+      "name": "平岡海月",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 31,
+      "name": "宮田愛萌",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 32,
+      "name": "渡邉美穂",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 33,
+      "name": "上村ひなの",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 34,
+      "name": "石塚瑶季",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 35,
+      "name": "清水理央",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 36,
+      "name": "藤嶌果歩",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 37,
+      "name": "宮地すみれ",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 38,
+      "name": "渡辺莉奈",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 39,
+      "name": "丹生明里",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 40,
+      "name": "河田陽菜",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 41,
+      "name": "森本茉莉",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 42,
+      "name": "山口陽世",
+      "axisDeckCount": 2,
+      "allDeckCount": 3
+    },
+    {
+      "id": 43,
+      "name": "竹内希来里",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 44,
+      "name": "平尾帆夏",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 45,
+      "name": "山下葉留花",
+      "axisDeckCount": 2,
+      "allDeckCount": 2
+    },
+    {
+      "id": 46,
+      "name": "濱岸ひより",
+      "axisDeckCount": 1,
+      "allDeckCount": 2
+    },
+    {
+      "id": 47,
+      "name": "富田鈴花",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    },
+    {
+      "id": 48,
+      "name": "松田好花",
+      "axisDeckCount": 1,
+      "allDeckCount": 1
+    }
+  ],
+  "decks": [
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "クール・シンメ連動",
+      "archetype": "クール・シンメ連動",
+      "members": [
+        {
+          "id": 11,
+          "name": "山下瞳月",
+          "attribute": "クール",
+          "base": 2,
+          "AUTO": "クール楽曲で自身がCENTERなら、自身のAppealを+1する。",
+          "BURST_condition": "CENTERで累計2パフォーマンスを終了する。",
+          "BURST": "BURST中、自身のAppealを+2し、相手由来の効果を受けない。",
+          "CENTER": "CENTERなら自身のAppealを+5する。このCENTER SKILLは楽曲によるCENTER SKILL無効化を受けない。"
+        },
+        {
+          "id": 10,
+          "name": "村山美羽",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+          "BURST_condition": "クール楽曲でBACKSとしてパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自チームのクールメンバーのAppealを+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 18,
+          "name": "武元唯衣",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "楽曲属性がクールなら、自身のAppealを+3する。",
+          "BURST_condition": "クール楽曲が2パフォーマンス連続で続く。",
+          "BURST": "次のパフォーマンスの楽曲属性をクールとして扱い、自身のAppealを+2する。",
+          "CENTER": null
+        },
+        {
+          "id": 14,
+          "name": "遠藤光莉",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
+          "BURST_condition": "パフォーマンス終了時、CENTER・FRONT-L・FRONT-Rの3人全員がクール。",
+          "BURST": "次のパフォーマンスの楽曲を「ジャマイカビール」に変更する。",
+          "CENTER": null
+        },
+        {
+          "id": 27,
+          "name": "髙橋未来虹",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+          "BURST_condition": "クール楽曲で、味方CENTERがクールの状態でパフォーマンス終了。",
+          "BURST": "自身の基礎Appealを永続的に+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 8,
+          "name": "向井純葉",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "ラウンド開始時点で自チームがポイントで勝っているなら、自身のAppealを+2する。",
+          "BURST_condition": "自チームが2パフォーマンス連続で勝利する。",
+          "BURST": "次のパフォーマンス中、自身のAppealを自チームの現在ポイント数だけプラスする（最大+3）。",
+          "CENTER": null
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自身がBACKSにいる間、相手側または楽曲由来の数値的なAppeal減少が味方FRONTまたはCENTERに適用される場合、その減少量を1軽減する。スキル無効化・属性変更・疲労ペナルティは対象外。",
+          "BURST_condition": "BACKSで累計2パフォーマンスを終了する。",
+          "BURST": "味方1人を選び、自身とそのメンバーの疲労値を入れ替える。",
+          "CENTER": null
+        },
+        {
+          "id": 15,
+          "name": "大園玲",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自身はスキルおよび楽曲によるAppealの増減を受けない。",
+          "BURST_condition": "R6終了時。",
+          "BURST": "BURST中は自身のAUTOを無効にし、自身が受けるスキルおよび楽曲によるAppeal増減量を2倍にする。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "A",
+          "name": "Start over!",
+          "type": "クール",
+          "tags": [
+            "クール"
+          ],
+          "effect": "ステージのクールメンバーのAppealをそれぞれ+1する。",
+          "rule": "attribute"
+        },
+        {
+          "id": "M",
+          "name": "僕なんか",
+          "type": "クール",
+          "tags": [
+            "フォーメーション固定"
+          ],
+          "effect": "MIDDLE-L・MIDDLE-Rのポジションボーナスをそれぞれ+2する。",
+          "rule": "middleBonus"
+        },
+        {
+          "id": "E",
+          "name": "何歳の頃に戻りたいのか？",
+          "type": "クール",
+          "tags": [
+            "負けポイント"
+          ],
+          "effect": "ラウンド開始時点でポイントで負けているプレイヤー側のステージメンバーのAppealをそれぞれ+1する。",
+          "rule": "losing"
+        }
+      ],
+      "mainTags": [
+        "クール"
+      ],
+      "subTags": [],
+      "reasons": {
+        "4": [
+          "BACKSから前3枠への数値減少を軽減し、疲労交換を使う。"
+        ],
+        "8": [
+          "ポイント優勢時だけ働くクール支援。無条件の加算役とは扱わない。"
+        ],
+        "10": [
+          "ステージのクール3人でAUTO、クール曲のBACKS経験で味方強化。"
+        ],
+        "11": [
+          "クール曲のCENTER AUTOと自己Cで序盤の得点を確保。"
+        ],
+        "14": [
+          "クールのシンメと前3枠を組み、特殊楽曲への変更を狙う。"
+        ],
+        "15": [
+          "相手のAppeal減少を拒否する防御支援。味方の加算も拒否する。"
+        ],
+        "18": [
+          "クール曲でAUTO、連続クール曲からBURSTを狙う。"
+        ],
+        "27": [
+          "クール3人とクールCENTERでAUTO・永続BURSTを狙う。"
+        ],
+        "A": [
+          "クール人数に応じて加算。相手クールも対象。"
+        ],
+        "M": [
+          "MIDDLEの位置加算で得点を分散。"
+        ],
+        "E": [
+          "クール曲を維持し、劣勢側を補助。優勢時は相手を助ける。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "クール利用コアを保ち、条件付き・防御支援で調整。有力支援を集中させない。",
+        "caveats": [
+          "大園は味方の加算も拒否。",
+          "森田の多属性能力をクール利用と混同しない。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "クール・シンメ連動",
+      "main_tags": [
+        "クール"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 11,
+          "tags": [
+            "センター",
+            "クール"
+          ]
+        },
+        {
+          "id": 10,
+          "tags": [
+            "クール",
+            "単一属性"
+          ]
+        },
+        {
+          "id": 18,
+          "tags": [
+            "クール",
+            "楽曲"
+          ]
+        },
+        {
+          "id": 14,
+          "tags": [
+            "クール",
+            "楽曲"
+          ]
+        },
+        {
+          "id": 27,
+          "tags": [
+            "クール",
+            "単一属性"
+          ]
+        },
+        {
+          "id": 8,
+          "tags": [
+            "Appeal上昇",
+            "勝ちポイント"
+          ]
+        },
+        {
+          "id": 4,
+          "tags": [
+            "疲労回復",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 15,
+          "tags": [
+            "対スキル",
+            "Appeal増減"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "A",
+          "tags": [
+            "クール"
+          ]
+        },
+        {
+          "id": "M",
+          "tags": [
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": "E",
+          "tags": [
+            "負けポイント"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 7,
+        "キュート": 0,
+        "ユーモア": 1
+      },
+      "average_base_appeal": 3.25,
+      "balanceReference": [
+        {
+          "id": 11,
+          "name": "山下瞳月",
+          "archetypeCwarPer100": -2,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -22,
+            18
+          ],
+          "randomCwarPer100": 18,
+          "randomSamples": 50,
+          "randomCI95": [
+            2,
+            34
+          ]
+        },
+        {
+          "id": 10,
+          "name": "村山美羽",
+          "archetypeCwarPer100": 26,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            2,
+            50
+          ],
+          "randomCwarPer100": -12,
+          "randomSamples": 50,
+          "randomCI95": [
+            -24,
+            0
+          ]
+        },
+        {
+          "id": 18,
+          "name": "武元唯衣",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -34.78260869565217,
+            12
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -14.000000000000002,
+            18
+          ]
+        },
+        {
+          "id": 14,
+          "name": "遠藤光莉",
+          "archetypeCwarPer100": -2,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -22,
+            18
+          ],
+          "randomCwarPer100": -2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18.367346938775512,
+            14.285714285714285
+          ]
+        },
+        {
+          "id": 27,
+          "name": "髙橋未来虹",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20.049999999999997,
+            22
+          ],
+          "randomCwarPer100": -6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -19.607843137254903,
+            7.8431372549019605
+          ]
+        },
+        {
+          "id": 8,
+          "name": "向井純葉",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -4,
+            38.049999999999955
+          ],
+          "randomCwarPer100": -6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18.367346938775512,
+            4.1266506602640645
+          ]
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -35.41666666666667,
+            16.666666666666664
+          ],
+          "randomCwarPer100": 1,
+          "randomSamples": 50,
+          "randomCI95": [
+            -13.006632653061224,
+            16.3265306122449
+          ]
+        },
+        {
+          "id": 15,
+          "name": "大園玲",
+          "archetypeCwarPer100": -17.391304347826086,
+          "archetypeSamples": 46,
+          "archetypeCI95": [
+            -39.130434782608695,
+            4.3478260869565215
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "チャージ・序盤安定",
+      "archetype": "チャージ・序盤安定",
+      "members": [
+        {
+          "id": 32,
+          "name": "渡邉美穂",
+          "attribute": "クール",
+          "base": 2,
+          "AUTO": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りしたパフォーマンスでは、ステージ入り時点のチャージ数だけ自身のAppealをプラスし、そのチャージを0にする。",
+          "BURST_condition": "チャージ3以上の状態からステージ入りする。",
+          "BURST": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+          "CENTER": null
+        },
+        {
+          "id": 38,
+          "name": "渡辺莉奈",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りしたパフォーマンスでは、ステージ入り時点のチャージ数だけ相手CENTERのAppealをマイナスし、そのチャージを0にする。",
+          "BURST_condition": "チャージ3以上の状態からステージ入りする。",
+          "BURST": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+          "CENTER": null
+        },
+        {
+          "id": 44,
+          "name": "平尾帆夏",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "BACKSでラウンド終了するたび自身のチャージを+1する（最大5）。次にステージ入りするパフォーマンスの開始前、ステージ入り時点のチャージ数だけ味方CENTERの疲労値を減らし、相手CENTERの疲労値を増やした後、そのチャージを0にする。",
+          "BURST_condition": "チャージ3以上の状態からステージ入りする。",
+          "BURST": "BURST解決時、自身がステージにいる場合、味方BACKS1人と位置を入れ替える。その後、最後に実消費した自身のチャージを、消費直前の値まで回復する。このパフォーマンスで未消費の場合も、最後に消費した値まで回復する。",
+          "CENTER": null
+        },
+        {
+          "id": 43,
+          "name": "竹内希来里",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "ラウンド終了時、BACKSにいる味方メンバーそれぞれのチャージを+1する。",
+          "BURST_condition": "同じ3人をBACKSに配置した状態で、2パフォーマンス連続で終了する。",
+          "BURST": "BURST中、自身のAppealを+3する。",
+          "CENTER": null
+        },
+        {
+          "id": 25,
+          "name": "金村美玖",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ自身のAppealを+1する。R1は発動しない。",
+          "BURST_condition": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+          "BURST": "BURST中、自チームのポジションボーナスを2倍にする。",
+          "CENTER": "前ラウンドと同じポジションにいる味方メンバーのAppealを+1する。R1は発動しない。"
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "attribute": "クール",
+          "base": 5,
+          "AUTO": "自身が受けるポジション由来のAppealボーナスとポジション由来の疲労増加を、各種加算・軽減を反映した後に2倍する。自身の疲労ペナルティによるAppeal減少量も2倍する。",
+          "BURST_condition": "CENTERかつ自身の疲労値が6以上でパフォーマンス終了。",
+          "BURST": "BURST中、自身のAppealを+3する。BURSTしたパフォーマンス終了後、自身の疲労値を+5する。",
+          "CENTER": "自身の疲労値が0～2なら、自チームのポジションボーナスをそれぞれ+1する。"
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身の疲労値が0～2なら、対面のAppealを-1する。",
+          "BURST_condition": "自身が2パフォーマンス連続で疲労ペナルティを受けずに終了する。",
+          "BURST": "次のパフォーマンス中、相手FRONT-LとFRONT-RのAppealをそれぞれ-1する。",
+          "CENTER": "自チーム8人の総疲労値が相手チーム8人の総疲労値より低い場合、相手FRONT-LとFRONT-RのAppealをそれぞれ-2する。"
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、相手ステージに同一属性が4人以上いる。",
+          "BURST": "次のパフォーマンス中、その属性を持つ相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERで、相手ステージの単独最多属性が3人以上かつ相手CENTERもその属性なら、その単独最多属性の人数と同じ値だけ相手CENTERのAppealをマイナスする。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "F",
+          "name": "Unhappy birthday構文",
+          "type": "ユーモア",
+          "tags": [
+            "フォーメーション移動"
+          ],
+          "effect": "そのラウンドにBACKSからステージへ移動したメンバーのAppealを+1する。R1の初期配置は移動に数えない。",
+          "rule": "entry"
+        },
+        {
+          "id": "J",
+          "name": "MCタイム",
+          "type": "ユーモア",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "両チーム8人全員の疲労値を-1する（最低0）。",
+          "rule": "recoverAll"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        }
+      ],
+      "mainTags": [
+        "チャージ"
+      ],
+      "subTags": [],
+      "reasons": {
+        "25": [
+          "本人の位置維持でAUTO/Cを使い、BURSTで自軍位置ボーナスを強化。"
+        ],
+        "26": [
+          "序盤の位置ボーナス・低疲労Cを得点源にし、疲労倍化の負担は休息・回復で管理。"
+        ],
+        "32": [
+          "固定チャージコア。BACKS蓄積を自身のAppealへ変換し、BURSTで復帰・回復。"
+        ],
+        "38": [
+          "固定チャージコア。蓄積を相手CENTERのAppeal減少へ変換する。"
+        ],
+        "39": [
+          "低疲労AUTOと総疲労比較CでFRONTを妨害。"
+        ],
+        "40": [
+          "基礎5と、相手単独最多属性・CENTERへの妨害。"
+        ],
+        "43": [
+          "ステージからBACKS3人へ追加チャージ。支援採用の例外。"
+        ],
+        "44": [
+          "固定チャージコア。投入時のCENTER疲労減少/付与と、BURST後の再蓄積。"
+        ],
+        "F": [
+          "BACKSからのコア投入に加算。"
+        ],
+        "J": [
+          "長く出場する支援の疲労を回復。相手も回復。"
+        ],
+        "N": [
+          "小坂などの疲労ペナルティを軽減。疲労値は下がらない。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "3コアを蓄積し、支援5人の序盤得点・疲労管理を厚くする。",
+        "fixedMembers": [
+          32,
+          38,
+          44
+        ],
+        "caveats": [
+          "CHARGE CPUはこのデッキだけ。",
+          "R5投入・R6復帰・R7再投入は得点状況に応じて変わる。",
+          "金村本人の位置維持はコア3人の出入りを固定しない。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "チャージ・序盤安定",
+      "main_tags": [
+        "チャージ"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 32,
+          "tags": [
+            "チャージ",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 38,
+          "tags": [
+            "チャージ",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 44,
+          "tags": [
+            "チャージ",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 43,
+          "tags": [
+            "チャージ",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 25,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 26,
+          "tags": [
+            "センター",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 39,
+          "tags": [
+            "疲労回復",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 40,
+          "tags": [
+            "対単一属性",
+            "Appeal低下"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "F",
+          "tags": [
+            "フォーメーション移動"
+          ]
+        },
+        {
+          "id": "J",
+          "tags": [
+            "疲労回復"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 3,
+        "キュート": 3,
+        "ユーモア": 2
+      },
+      "average_base_appeal": 3.625,
+      "balanceReference": [
+        {
+          "id": 32,
+          "name": "渡邉美穂",
+          "archetypeCwarPer100": null,
+          "archetypeSamples": 0,
+          "archetypeCI95": [
+            null,
+            null
+          ],
+          "randomCwarPer100": -24,
+          "randomSamples": 50,
+          "randomCI95": [
+            -36,
+            -12
+          ]
+        },
+        {
+          "id": 38,
+          "name": "渡辺莉奈",
+          "archetypeCwarPer100": null,
+          "archetypeSamples": 0,
+          "archetypeCI95": [
+            null,
+            null
+          ],
+          "randomCwarPer100": -10,
+          "randomSamples": 50,
+          "randomCI95": [
+            -22.011224489795918,
+            0
+          ]
+        },
+        {
+          "id": 44,
+          "name": "平尾帆夏",
+          "archetypeCwarPer100": -6.25,
+          "archetypeSamples": 32,
+          "archetypeCI95": [
+            -31.25,
+            15.625
+          ],
+          "randomCwarPer100": -7.000000000000001,
+          "randomSamples": 50,
+          "randomCI95": [
+            -19.816037735849054,
+            6.122448979591836
+          ]
+        },
+        {
+          "id": 43,
+          "name": "竹内希来里",
+          "archetypeCwarPer100": 8,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12,
+            28.000000000000004
+          ],
+          "randomCwarPer100": -12,
+          "randomSamples": 50,
+          "randomCI95": [
+            -26,
+            2
+          ]
+        },
+        {
+          "id": 25,
+          "name": "金村美玖",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            4,
+            34.049999999999955
+          ],
+          "randomCwarPer100": 16,
+          "randomSamples": 50,
+          "randomCI95": [
+            2,
+            32
+          ]
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "archetypeCwarPer100": -9,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -30,
+            11.024999999999977
+          ],
+          "randomCwarPer100": 19,
+          "randomSamples": 50,
+          "randomCI95": [
+            4,
+            33
+          ]
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -6,
+            34.049999999999955
+          ],
+          "randomCwarPer100": -14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            -30,
+            2.0499999999999545
+          ]
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 16,
+          "archetypeCI95": [
+            -37.5,
+            37.5
+          ],
+          "randomCwarPer100": 14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            0,
+            28.000000000000004
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "BURST・連鎖と疲労",
+      "archetype": "BURST・連鎖と疲労",
+      "members": [
+        {
+          "id": 6,
+          "name": "中嶋優月",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "両チームで現在BURST中のメンバー数の合計だけ、自身のAppealをプラスする。",
+          "BURST_condition": "パフォーマンス終了時、自チームのステージにユーモアが3人以上。",
+          "BURST": "自分以外のユーモアの味方1人をランダムに強制BURSTさせる。対象のB効果も発動する。強制BURSTは通常BURST使用済み状態を消費せず、通常BURST使用済みのメンバーも対象にできる。",
+          "CENTER": null
+        },
+        {
+          "id": 12,
+          "name": "松田里奈",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自チームの累計BURST回数（通常BURST・強制BURSTを含む）が5回以上なら、自身のAppealを+3する。",
+          "BURST_condition": "同じパフォーマンス終了処理内で、自身以外の味方2人以上がBURSTを開始する。",
+          "BURST": "次のパフォーマンス終了後、味方1人をランダムに選び、そのメンバーの通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+          "CENTER": "BURST中の味方メンバーのAppealを+2する。"
+        },
+        {
+          "id": 47,
+          "name": "富田鈴花",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自チームの累計BURST回数が相手チームより多いなら、自身のAppealを+2する。",
+          "BURST_condition": "パフォーマンス終了時、その時点の味方ステージ5人全員が、その試合中に1回以上BURSTを開始済み。富田自身の配置は条件に問わず、富田がステージにいる場合は本人も5人の条件判定に含む。",
+          "BURST": "BURST開始時点の味方ステージから富田本人と、同一BURST連鎖内ですでに発動済みのメンバーを除外し、残る候補からseed付き乱数で重複なし2人を選んで1人ずつ強制BURSTさせる。候補が2人未満なら残る候補だけを対象とする。各対象のB効果も発動し、通常BURST使用済み状態・累計BURST回数はリセットしない。",
+          "CENTER": null
+        },
+        {
+          "id": 16,
+          "name": "大沼昌保",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "対面の疲労値を+2する。",
+          "BURST_condition": "パフォーマンス終了時、対面の疲労値が6以上。",
+          "BURST": "BURST中、自身のAppealを+5する。BURSTしたパフォーマンス終了後、自身の基礎Appealを永続的に-1する（最低0）。その後、自身の通常BURST使用済み状態をリセットする。続くBURST条件判定で条件を満たした場合は、同じ終了処理内で再び通常BURSTする。",
+          "CENTER": null
+        },
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "自チームのステージにクールとユーモアが1人以上ずついるなら、対面のAppealを-1する。",
+          "BURST_condition": "CENTER・FRONT-L・FRONT-Rの3枠にクール・キュート・ユーモアが1人ずつ揃ってパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自身を本来のキュートに加えてクール・ユーモアとしても扱い、対面のAppealを-2する。",
+          "CENTER": "相手CENTERのAppealを、自チームのステージに存在する属性種類数だけマイナスする。"
+        },
+        {
+          "id": 29,
+          "name": "正源司陽子",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自身が疲労ペナルティを受けているなら、自身のAppealを+2する。",
+          "BURST_condition": "自身が疲労ペナルティを3パフォーマンス連続で受ける。",
+          "BURST": "BURST中、自身のAppealを+3する。",
+          "CENTER": "疲労ペナルティを受けている味方メンバーのAppealを+1する。"
+        },
+        {
+          "id": 34,
+          "name": "石塚瑶季",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身がFRONTなら、Appeal計算前に対面の疲労値を+1する。",
+          "BURST_condition": "FRONTで累計2パフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、相手FRONT-LとFRONT-Rのポジションボーナスを0にする。",
+          "CENTER": null
+        },
+        {
+          "id": 18,
+          "name": "武元唯衣",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "楽曲属性がクールなら、自身のAppealを+3する。",
+          "BURST_condition": "クール楽曲が2パフォーマンス連続で続く。",
+          "BURST": "次のパフォーマンスの楽曲属性をクールとして扱い、自身のAppealを+2する。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "C",
+          "name": "Make or Break",
+          "type": "ユーモア",
+          "tags": [
+            "ユーモア"
+          ],
+          "effect": "ステージのユーモア属性を持たないメンバーの疲労値をそれぞれ+1する。",
+          "rule": "nonHumorFatigue"
+        },
+        {
+          "id": "M",
+          "name": "僕なんか",
+          "type": "クール",
+          "tags": [
+            "フォーメーション固定"
+          ],
+          "effect": "MIDDLE-L・MIDDLE-Rのポジションボーナスをそれぞれ+2する。",
+          "rule": "middleBonus"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        }
+      ],
+      "mainTags": [
+        "バースト"
+      ],
+      "subTags": [],
+      "reasons": {
+        "6": [
+          "ユーモア3人から強制BURSTを起動し、現在BURST人数を得点へ変える。"
+        ],
+        "12": [
+          "同時BURSTから使用済みリセット、BURST中の味方へのC加算。"
+        ],
+        "16": [
+          "対面疲労を付与し、高疲労条件から再BURSTする。基礎値低下も伴う。"
+        ],
+        "18": [
+          "クールの3属性担当。選択曲のクール2曲でAUTOと連続クール曲BURSTを狙い、自軍BURST人数の条件を補う。"
+        ],
+        "22": [
+          "自軍3属性を使う対面/CENTER妨害と、前3枠の3属性BURST。"
+        ],
+        "29": [
+          "自軍の疲労ペナルティをAUTO/Cの条件として利用。"
+        ],
+        "34": [
+          "FRONTの疲労付与で大沼の条件を支援。"
+        ],
+        "47": [
+          "味方ステージ5人のBURST経験から2人への強制BURSTを狙う。"
+        ],
+        "C": [
+          "ユーモア中心の自軍を保ち、相手非ユーモアへ疲労。自軍も対象。"
+        ],
+        "M": [
+          "低基礎値コアのMIDDLE出場を得点で支える。"
+        ],
+        "N": [
+          "疲労減点を軽減。疲労ペナルティ判定は残り正源司の条件を維持。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "BURST連鎖コアを残し、森本・金村への集中を避けて条件成立の支援に振る。",
+        "caveats": [
+          "通常CPUを使用。",
+          "前3枠の3属性にはクール・キュート担当も必要。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "BURST・連鎖と疲労",
+      "main_tags": [
+        "バースト"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 6,
+          "tags": [
+            "バースト",
+            "ユーモア"
+          ]
+        },
+        {
+          "id": 12,
+          "tags": [
+            "バースト",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 47,
+          "tags": [
+            "バースト",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 16,
+          "tags": [
+            "疲労付与",
+            "バースト"
+          ]
+        },
+        {
+          "id": 22,
+          "tags": [
+            "多属性",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 29,
+          "tags": [
+            "対疲労付与",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 34,
+          "tags": [
+            "疲労付与",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 18,
+          "tags": [
+            "クール",
+            "楽曲"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "C",
+          "tags": [
+            "ユーモア"
+          ]
+        },
+        {
+          "id": "M",
+          "tags": [
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 2,
+        "キュート": 2,
+        "ユーモア": 4
+      },
+      "average_base_appeal": 3.5,
+      "balanceReference": [
+        {
+          "id": 6,
+          "name": "中嶋優月",
+          "archetypeCwarPer100": 28.000000000000004,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            14.000000000000002,
+            44
+          ],
+          "randomCwarPer100": 8,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6,
+            22
+          ]
+        },
+        {
+          "id": 12,
+          "name": "松田里奈",
+          "archetypeCwarPer100": 35,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            16.991666666666667,
+            54.166666666666664
+          ],
+          "randomCwarPer100": 0,
+          "randomSamples": 50,
+          "randomCI95": [
+            -13.73235294117647,
+            12.244897959183673
+          ]
+        },
+        {
+          "id": 47,
+          "name": "富田鈴花",
+          "archetypeCwarPer100": 5,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -17.715625000000003,
+            25
+          ],
+          "randomCwarPer100": -2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -16.049999999999997,
+            14.000000000000002
+          ]
+        },
+        {
+          "id": 16,
+          "name": "大沼昌保",
+          "archetypeCwarPer100": 22,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            8,
+            38
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -4,
+            22.024999999999977
+          ]
+        },
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20.833333333333336,
+            24.003448275862066
+          ],
+          "randomCwarPer100": 0,
+          "randomSamples": 50,
+          "randomCI95": [
+            -15.686274509803921,
+            14.836601307189522
+          ]
+        },
+        {
+          "id": 29,
+          "name": "正源司陽子",
+          "archetypeCwarPer100": 2,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12.5,
+            14.000000000000002
+          ],
+          "randomCwarPer100": 13,
+          "randomSamples": 50,
+          "randomCI95": [
+            -1.0204081632653061,
+            27.562244897959168
+          ]
+        },
+        {
+          "id": 34,
+          "name": "石塚瑶季",
+          "archetypeCwarPer100": -6,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -19.25,
+            6.006249999999994
+          ],
+          "randomCwarPer100": -3,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            11
+          ]
+        },
+        {
+          "id": 18,
+          "name": "武元唯衣",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -34.78260869565217,
+            12
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -14.000000000000002,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "移動・疲労軽減",
+      "archetype": "移動・疲労軽減",
+      "members": [
+        {
+          "id": 45,
+          "name": "山下葉留花",
+          "attribute": "ユーモア",
+          "base": 2,
+          "AUTO": "その試合で自身がパフォーマンスを経験したポジション種別（CENTER・FRONT・MIDDLE・BACKS）の種類数だけ、自身のAppealをプラスする。",
+          "BURST_condition": "CENTER・FRONT・MIDDLEの3種類すべてで1回以上パフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、相手チームのポジション由来の疲労増加量を2倍にする。",
+          "CENTER": "自身がCENTERにいるパフォーマンス開始前、前ラウンドからポジション種別を移動した相手ステージメンバーの疲労値を+2する。FRONT-L↔FRONT-R、MIDDLE-L↔MIDDLE-Rの左右入れ替えは移動に数えない。R1は発動しない。"
+        },
+        {
+          "id": 9,
+          "name": "村井優",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "そのラウンドに自身がBACKSからステージへ移動した場合、そのパフォーマンス中、自身は相手・楽曲由来のAppeal減少、疲労付与、ポジションボーナス無効、属性変更を受けない。通常の位置由来疲労増加と、既に発生している疲労ペナルティは残る。R1の初期配置は移動に数えない。",
+          "BURST_condition": "同一ラウンドに自チームの3人以上がBACKSからステージへ移動する。R1の初期配置は数えない。",
+          "BURST": "次のパフォーマンス中、自身のAUTOが発動する場合、その効果を味方ステージ5人全員に適用する。",
+          "CENTER": "そのラウンドにBACKSからステージへ移動した味方メンバーのAppealを+1する。"
+        },
+        {
+          "id": 28,
+          "name": "小西夏菜実",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
+          "BURST_condition": "自身が累計で異なる3人とシンメになってパフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、自身とその時点のシンメのAppealをそれぞれ+2する。",
+          "CENTER": null
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "ラウンド開始時点で自チームがポイントで負けている場合のみ、相手チームの現在ポイント数だけ自身のAppealをプラスする。",
+          "BURST_condition": "自チームが2パフォーマンス連続で敗北する。引き分けは連敗に含めず、連敗数をリセットする。",
+          "BURST": "自身の基礎Appealを永続的に+2する。複数回発動した場合は重複する。",
+          "CENTER": "自身がCENTERで自チームが敗北したとき、その時点でステージにいる味方の疲労値を-1し、その味方は次のパフォーマンスのみAppeal+1。引き分けでは発動しない。"
+        },
+        {
+          "id": 27,
+          "name": "髙橋未来虹",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+          "BURST_condition": "クール楽曲で、味方CENTERがクールの状態でパフォーマンス終了。",
+          "BURST": "自身の基礎Appealを永続的に+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "シンメの疲労値を-2する。自身がBACKSにいる場合は、シンメへの効果の代わりに味方CENTERの疲労値を-2する（最低0）。",
+          "BURST_condition": "パフォーマンス終了時、自チーム8人の総疲労値が15以上。",
+          "BURST": "自チーム8人全員の疲労値を-2する（最低0）。",
+          "CENTER": null
+        },
+        {
+          "id": 31,
+          "name": "宮田愛萌",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自チーム8人の総疲労値が10以下なら、自身のAppealを+2する。",
+          "BURST_condition": "R3以降のパフォーマンス終了時、自チーム8人の総疲労値が12以下。",
+          "BURST": "次のパフォーマンス中、自チームのステージ5人のAppealを+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 2,
+          "name": "遠藤理子",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身が受ける疲労値の増加量を1減らす（最低0）。",
+          "BURST_condition": "パフォーマンス終了時、自身の疲労値が2以上。",
+          "BURST": "次のパフォーマンス中、対面のAppealを-4する。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "F",
+          "name": "Unhappy birthday構文",
+          "type": "ユーモア",
+          "tags": [
+            "フォーメーション移動"
+          ],
+          "effect": "そのラウンドにBACKSからステージへ移動したメンバーのAppealを+1する。R1の初期配置は移動に数えない。",
+          "rule": "entry"
+        },
+        {
+          "id": "J",
+          "name": "MCタイム",
+          "type": "ユーモア",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "両チーム8人全員の疲労値を-1する（最低0）。",
+          "rule": "recoverAll"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        }
+      ],
+      "mainTags": [
+        "フォーメーション移動"
+      ],
+      "subTags": [],
+      "reasons": {
+        "2": [
+          "疲労増加を軽減し、BURSTの対面減少で持久戦を支える。"
+        ],
+        "9": [
+          "BACKSからの登場時保護と登場者へのC加算。3人同時登場後は味方への保護展開を狙う。"
+        ],
+        "13": [
+          "シンメまたはBACKSからCENTERを回復し、全体回復も使う。"
+        ],
+        "24": [
+          "CENTER固定を要求しない劣勢時の得点役。敗北時のCで出場者を回復・次回加算し、小西のクール相方にもなる。"
+        ],
+        "27": [
+          "小西・山崎・宮田とクールのシンメ候補を確保。"
+        ],
+        "28": [
+          "クールの相方を替えてAUTOと3人シンメ経験のBURSTを使う。"
+        ],
+        "31": [
+          "井上・遠藤理子と回復曲に合わせ、低総疲労を得点へ変える。"
+        ],
+        "45": [
+          "位置種別経験を得点へ変え、相手の移動・位置疲労を妨害。"
+        ],
+        "F": [
+          "実際のBACKSからの登場に加算。"
+        ],
+        "J": [
+          "移動後の疲労を回復。相手も回復。"
+        ],
+        "N": [
+          "移動・出場の疲労減点を軽減。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "移動3コアを維持し、低疲労支援と劣勢時の得点・疲労支援で補う。",
+        "fixedMembers": [
+          45,
+          9,
+          28
+        ],
+        "caveats": [
+          "山崎Cの敗北時支援と村井Cの登場者支援はCENTERを使い分ける。",
+          "移動だけを目的にせず、そのラウンドの得点も確保。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "移動・疲労軽減",
+      "main_tags": [
+        "フォーメーション移動"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 45,
+          "tags": [
+            "フォーメーション移動",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 9,
+          "tags": [
+            "フォーメーション移動",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 28,
+          "tags": [
+            "クール",
+            "フォーメーション移動"
+          ]
+        },
+        {
+          "id": 24,
+          "tags": [
+            "負けポイント",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 27,
+          "tags": [
+            "クール",
+            "単一属性"
+          ]
+        },
+        {
+          "id": 13,
+          "tags": [
+            "疲労回復",
+            "総疲労値"
+          ]
+        },
+        {
+          "id": 31,
+          "tags": [
+            "疲労回復",
+            "総疲労値"
+          ]
+        },
+        {
+          "id": 2,
+          "tags": [
+            "疲労回復",
+            "Appeal低下"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "F",
+          "tags": [
+            "フォーメーション移動"
+          ]
+        },
+        {
+          "id": "J",
+          "tags": [
+            "疲労回復"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 4,
+        "キュート": 1,
+        "ユーモア": 3
+      },
+      "average_base_appeal": 3.375,
+      "balanceReference": [
+        {
+          "id": 45,
+          "name": "山下葉留花",
+          "archetypeCwarPer100": -12.5,
+          "archetypeSamples": 24,
+          "archetypeCI95": [
+            -45.83333333333333,
+            25
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6.122448979591836,
+            18.367346938775512
+          ]
+        },
+        {
+          "id": 9,
+          "name": "村井優",
+          "archetypeCwarPer100": -22.727272727272727,
+          "archetypeSamples": 22,
+          "archetypeCI95": [
+            -45.45454545454545,
+            0
+          ],
+          "randomCwarPer100": -15,
+          "randomSamples": 50,
+          "randomCI95": [
+            -31,
+            0.024999999999977263
+          ]
+        },
+        {
+          "id": 28,
+          "name": "小西夏菜実",
+          "archetypeCwarPer100": 25,
+          "archetypeSamples": 24,
+          "archetypeCI95": [
+            -8.333333333333332,
+            58.333333333333336
+          ],
+          "randomCwarPer100": 3,
+          "randomSamples": 50,
+          "randomCI95": [
+            -11.024999999999999,
+            17
+          ]
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "archetypeCwarPer100": 8,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12,
+            28.000000000000004
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -8.004081632653062,
+            20
+          ]
+        },
+        {
+          "id": 27,
+          "name": "髙橋未来虹",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20.049999999999997,
+            22
+          ],
+          "randomCwarPer100": -6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -19.607843137254903,
+            7.8431372549019605
+          ]
+        },
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            22
+          ],
+          "randomCwarPer100": 11,
+          "randomSamples": 50,
+          "randomCI95": [
+            -3,
+            25.012755102040806
+          ]
+        },
+        {
+          "id": 31,
+          "name": "宮田愛萌",
+          "archetypeCwarPer100": 10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -8,
+            30
+          ],
+          "randomCwarPer100": -16,
+          "randomSamples": 50,
+          "randomCI95": [
+            -28.000000000000004,
+            -4
+          ]
+        },
+        {
+          "id": 2,
+          "name": "遠藤理子",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.000000000000004,
+            6
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -14.000000000000002,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "多属性・属性数活用",
+      "archetype": "多属性・属性数活用",
+      "members": [
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "自チームのステージにクールとユーモアが1人以上ずついるなら、対面のAppealを-1する。",
+          "BURST_condition": "CENTER・FRONT-L・FRONT-Rの3枠にクール・キュート・ユーモアが1人ずつ揃ってパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自身を本来のキュートに加えてクール・ユーモアとしても扱い、対面のAppealを-2する。",
+          "CENTER": "相手CENTERのAppealを、自チームのステージに存在する属性種類数だけマイナスする。"
+        },
+        {
+          "id": 30,
+          "name": "平岡海月",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "その試合で登場済みの楽曲属性の種類数だけ自身のAppealを+1する（最大+3）。",
+          "BURST_condition": "クール・キュート・ユーモアの3属性の楽曲がすべて1回以上登場する。",
+          "BURST": "次のパフォーマンス中、自身のAppealを+3する。",
+          "CENTER": null
+        },
+        {
+          "id": 35,
+          "name": "清水理央",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "自チームのステージ5人に存在する属性種類数と同じ値だけ、対面のAppealをマイナスする。",
+          "BURST_condition": "パフォーマンス終了時、自チームのBACKS3人の属性がすべて異なる。",
+          "BURST": "次のパフォーマンス中、自チームのクールまたはユーモア属性を持つメンバーは、相手由来のスキル効果を受けない。",
+          "CENTER": null
+        },
+        {
+          "id": 46,
+          "name": "濱岸ひより",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "現在の楽曲属性が前ラウンドと同じなら、自身のAppealを+2する。R1は発動しない。",
+          "BURST_condition": "自身のAUTOが累計2回発動する。",
+          "BURST": "次のパフォーマンスの楽曲を「NO WAR in the future」に変更する。",
+          "CENTER": null
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "各ラウンド開始時、本来のユーモアに加えてクールまたはキュートのどちらか1属性をランダムで追加する。そのラウンド中のみ有効。",
+          "BURST_condition": "追加された属性と現在の楽曲属性が一致した状態でパフォーマンス終了。",
+          "BURST": "自身のAppealを+2し、自身の通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+          "CENTER": null
+        },
+        {
+          "id": 15,
+          "name": "大園玲",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自身はスキルおよび楽曲によるAppealの増減を受けない。",
+          "BURST_condition": "R6終了時。",
+          "BURST": "BURST中は自身のAUTOを無効にし、自身が受けるスキルおよび楽曲によるAppeal増減量を2倍にする。",
+          "CENTER": null
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "attribute": "キュート",
+          "base": 2,
+          "AUTO": "自身がBACKSにいる間、相手CENTERのAppealを-2する。",
+          "BURST_condition": "キュート楽曲でステージ5枠のいずれかに配置され、パフォーマンスを終了する。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了までFRONT-Rに固定し、そのメンバーのAppealを-6する。",
+          "CENTER": null
+        },
+        {
+          "id": 33,
+          "name": "上村ひなの",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "対面の基礎Appealが4以上なら、その対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、相手ステージに基礎Appeal4以上のメンバーが3人以上いる。",
+          "BURST": "次のパフォーマンス中、自身のAUTOを対面1人ではなく相手ステージ全員に適用する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の基礎Appealを一時的に+1した後、Appealを-1する。CENTERを外れたら基礎Appealは元に戻る。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        },
+        {
+          "id": "P",
+          "name": "見たことのない魔物",
+          "type": "キュート",
+          "tags": [
+            "多属性"
+          ],
+          "effect": "各チームのステージ5人が現在持つ属性数の合計を比較し、合計が少ないチームのCENTERのAppealを-3する。同数なら発動しない。",
+          "rule": "attributeCount"
+        },
+        {
+          "id": "F",
+          "name": "Unhappy birthday構文",
+          "type": "ユーモア",
+          "tags": [
+            "フォーメーション移動"
+          ],
+          "effect": "そのラウンドにBACKSからステージへ移動したメンバーのAppealを+1する。R1の初期配置は移動に数えない。",
+          "rule": "entry"
+        }
+      ],
+      "mainTags": [
+        "多属性"
+      ],
+      "subTags": [],
+      "reasons": {
+        "15": [
+          "相手のAppeal減少を拒否する防御支援。味方の加算も拒否する。"
+        ],
+        "17": [
+          "BACKSから相手CENTERを妨害し、必要時はFRONT固定を使う。"
+        ],
+        "22": [
+          "自軍3属性を使う対面/CENTER妨害と、前3枠の3属性BURST。"
+        ],
+        "30": [
+          "選択曲を3属性にし、登場済み楽曲属性によるAUTOとBURSTを狙う。"
+        ],
+        "33": [
+          "高基礎値の相手を妨害。Cの基礎変更は常に有利とは限らない。"
+        ],
+        "35": [
+          "ステージ属性数で妨害し、BACKS3属性からクール/ユーモアを保護する。"
+        ],
+        "41": [
+          "高基礎値とランダム属性追加を得点・楽曲一致の自己BURSTに使う。"
+        ],
+        "46": [
+          "連続楽曲属性から特殊楽曲へ変更するユーモア役。"
+        ],
+        "N": [
+          "出場・交代で増えた疲労の減点を軽減。クール曲を確保するが、クール人数に比例して相手へ加算しない。相手も疲労軽減。"
+        ],
+        "P": [
+          "森田・森本の複数属性で総属性数を増やし、相手CENTERへの減少を狙う。"
+        ],
+        "F": [
+          "3種類目のユーモア曲を確保し、属性配置を組み直す際の登場を支援。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "ステージとBACKS双方の3属性を成立可能にし、追加属性・楽曲属性を使う。",
+        "caveats": [
+          "選択3曲は3属性を各1曲。",
+          "元属性でもステージ/BACKS双方の3属性が成立可能。",
+          "元クール2人で相手クールへの加算が上回りうるStart over!は外す。",
+          "上村Cの基礎値操作の利益は保証しない。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "多属性・属性数活用",
+      "main_tags": [
+        "多属性"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 22,
+          "tags": [
+            "多属性",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 30,
+          "tags": [
+            "楽曲",
+            "多属性"
+          ]
+        },
+        {
+          "id": 35,
+          "tags": [
+            "多属性",
+            "対スキル"
+          ]
+        },
+        {
+          "id": 46,
+          "tags": [
+            "楽曲",
+            "多属性"
+          ]
+        },
+        {
+          "id": 41,
+          "tags": [
+            "多属性",
+            "バースト"
+          ]
+        },
+        {
+          "id": 15,
+          "tags": [
+            "対スキル",
+            "Appeal増減"
+          ]
+        },
+        {
+          "id": 17,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 33,
+          "tags": [
+            "基礎値",
+            "Appeal低下"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        },
+        {
+          "id": "P",
+          "tags": [
+            "多属性"
+          ]
+        },
+        {
+          "id": "F",
+          "tags": [
+            "フォーメーション移動"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 2,
+        "キュート": 4,
+        "ユーモア": 2
+      },
+      "average_base_appeal": 3.625,
+      "balanceReference": [
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20.833333333333336,
+            24.003448275862066
+          ],
+          "randomCwarPer100": 0,
+          "randomSamples": 50,
+          "randomCI95": [
+            -15.686274509803921,
+            14.836601307189522
+          ]
+        },
+        {
+          "id": 30,
+          "name": "平岡海月",
+          "archetypeCwarPer100": 12,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -4,
+            28.000000000000004
+          ],
+          "randomCwarPer100": -9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -19.393257302921167,
+            2.0408163265306123
+          ]
+        },
+        {
+          "id": 35,
+          "name": "清水理央",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            30
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -5,
+            23
+          ]
+        },
+        {
+          "id": 46,
+          "name": "濱岸ひより",
+          "archetypeCwarPer100": 6,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -10.416666666666668,
+            22.00555555555555
+          ],
+          "randomCwarPer100": -12,
+          "randomSamples": 50,
+          "randomCI95": [
+            -28.000000000000004,
+            4
+          ]
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            2,
+            35.43124999999999
+          ],
+          "randomCwarPer100": 26,
+          "randomSamples": 50,
+          "randomCI95": [
+            12,
+            40
+          ]
+        },
+        {
+          "id": 15,
+          "name": "大園玲",
+          "archetypeCwarPer100": -17.391304347826086,
+          "archetypeSamples": 46,
+          "archetypeCI95": [
+            -39.130434782608695,
+            4.3478260869565215
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6,
+            24
+          ]
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "archetypeCwarPer100": 21,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -1,
+            43
+          ],
+          "randomCwarPer100": -2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -16,
+            12
+          ]
+        },
+        {
+          "id": 33,
+          "name": "上村ひなの",
+          "archetypeCwarPer100": -18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -36,
+            -2
+          ],
+          "randomCwarPer100": -5,
+          "randomSamples": 50,
+          "randomCI95": [
+            -20.760849056603774,
+            11.224489795918368
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "対スキル・封殺",
+      "archetype": "対スキル・封殺",
+      "members": [
+        {
+          "id": 7,
+          "name": "的野美青",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "対面の相手メンバーのAUTOを無効にする。",
+          "BURST_condition": "相手メンバーがBURSTを開始したとき。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了まで現在のポジションに固定する。",
+          "CENTER": "相手CENTERのCENTER SKILLを無効にし、自身の疲労値を+2する。"
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "対面がBURST中なら、その対面のAppealを-4する。",
+          "BURST_condition": "相手メンバーがBACKSにいる状態でBURSTを開始したとき。",
+          "BURST": "同じパフォーマンス終了処理内でBACKSからBURSTした相手が複数いる場合も1回だけ発動し、その中からランダムに1人を選ぶ。選ばれた相手を次のパフォーマンス終了までCENTERに固定し、Bスキルを無効にする。元のCENTERメンバーはBACKSへ移動する。",
+          "CENTER": "BURST中の相手メンバーのAppealを-2する。"
+        },
+        {
+          "id": 9,
+          "name": "村井優",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "そのラウンドに自身がBACKSからステージへ移動した場合、そのパフォーマンス中、自身は相手・楽曲由来のAppeal減少、疲労付与、ポジションボーナス無効、属性変更を受けない。通常の位置由来疲労増加と、既に発生している疲労ペナルティは残る。R1の初期配置は移動に数えない。",
+          "BURST_condition": "同一ラウンドに自チームの3人以上がBACKSからステージへ移動する。R1の初期配置は数えない。",
+          "BURST": "次のパフォーマンス中、自身のAUTOが発動する場合、その効果を味方ステージ5人全員に適用する。",
+          "CENTER": "そのラウンドにBACKSからステージへ移動した味方メンバーのAppealを+1する。"
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "対面の相手AUTOによるAppeal上昇値と同じ値だけ、自身のAppealも上昇する。",
+          "BURST_condition": "パフォーマンス終了時、そのパフォーマンス中に自身へ実適用されたAUTO・BURST・CENTER SKILL・楽曲によるAppeal上昇量の合計が4以上。位置ボーナス・基礎Appealは含めない。",
+          "BURST": "そのパフォーマンス中に自身へ実適用された自身のAUTOによるAppeal上昇分を、次のパフォーマンスにも引き継ぐ。",
+          "CENTER": "自チームのクールメンバーは、相手AUTOによるAppeal減少を受けない。"
+        },
+        {
+          "id": 37,
+          "name": "宮地すみれ",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ対面のAppealを-1する。R1は発動しない。",
+          "BURST_condition": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+          "BURST": "BURST中、相手チームのポジションボーナスを0にする。",
+          "CENTER": null
+        },
+        {
+          "id": 34,
+          "name": "石塚瑶季",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身がFRONTなら、Appeal計算前に対面の疲労値を+1する。",
+          "BURST_condition": "FRONTで累計2パフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、相手FRONT-LとFRONT-Rのポジションボーナスを0にする。",
+          "CENTER": null
+        },
+        {
+          "id": 48,
+          "name": "松田好花",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "そのパフォーマンスで両チーム合計のBURST中メンバーが1人以下なら、自身のAppealを+3する。R1では発動しない。",
+          "BURST_condition": "2パフォーマンス連続で両チームとも誰もBURSTしない。",
+          "BURST": "自身以外の味方1人を選び、強制BURSTさせる。対象のB効果も発動し、通常BURST使用済み状態は消費しない。",
+          "CENTER": "CENTER時、両チームにBURST中のメンバーが0人なら自身のAppealを+3する。"
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "キュート楽曲なら、対面のAppealを-2する。",
+          "BURST_condition": "自身がステージでキュート楽曲を累計2回経験する。",
+          "BURST": "次のパフォーマンス中、現在の楽曲属性を持たない相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の属性をPLAIN（属性なし）にする。PLAINは他の属性付与・変更より最優先で、クール・キュート・ユーモアの人数に数えない。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "V",
+          "name": "JOYFUL LOVE",
+          "type": "ユーモア",
+          "tags": [
+            "バースト"
+          ],
+          "effect": "パフォーマンス直前に両チームのBURST状態を解除する。通常BURST使用済み状態と累計BURST回数はリセットしない。",
+          "rule": "cancelBurst"
+        },
+        {
+          "id": "B",
+          "name": "夏の近道",
+          "type": "キュート",
+          "tags": [
+            "キュート"
+          ],
+          "effect": "ステージのキュート属性を持たないメンバーのAppealをそれぞれ-1する。",
+          "rule": "nonCute"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        }
+      ],
+      "mainTags": [
+        "対スキル"
+      ],
+      "subTags": [],
+      "reasons": {
+        "7": [
+          "対面AUTOと相手CENTER SKILLの無効化、BURST反応の位置固定。"
+        ],
+        "9": [
+          "BACKSからの登場時保護と登場者へのC加算。3人同時登場後は味方への保護展開を狙う。"
+        ],
+        "19": [
+          "相手BACKSからのBURSTへ反応し、CENTER固定・B無効で対策する。"
+        ],
+        "20": [
+          "相手AUTOの上昇参照と、クールへの相手AUTO減少の保護。"
+        ],
+        "34": [
+          "FRONTで対面に疲労を付与し、BURSTで相手FRONT位置ボーナスを無効にする。"
+        ],
+        "36": [
+          "キュート曲の妨害とPLAINによる相手属性シナジー崩し。"
+        ],
+        "37": [
+          "位置維持から対面妨害、BURSTで相手位置ボーナスを無効にする。"
+        ],
+        "48": [
+          "低BURST時の自己加算で、相手がBURSTしない局面にも得点役を確保。"
+        ],
+        "V": [
+          "両チームのBURST継続効果を解除し、相手BURST強化を対策。松田好花の低BURST人数条件も支える。"
+        ],
+        "B": [
+          "キュート妨害役を中心に、非キュート相手へ減少。"
+        ],
+        "N": [
+          "高疲労になった出場者の減点を軽減。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "AUTO・CENTER妨害と対BURSTを残し、高寄与の汎用得点支援を集中させない。",
+        "caveats": [
+          "JOYFUL LOVEのラウンドは田村AUTO/CのBURST中相手への減少と、宮地のBURST継続効果が不発。発動済みの位置固定・B無効など状態効果は残る。",
+          "夏の近道は非キュートの味方も減少。",
+          "的野・田村・藤嶌のCENTER能力は使い分ける。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "対スキル・封殺",
+      "main_tags": [
+        "対スキル"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 7,
+          "tags": [
+            "対スキル",
+            "対センター"
+          ]
+        },
+        {
+          "id": 19,
+          "tags": [
+            "対バースト",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 9,
+          "tags": [
+            "フォーメーション移動",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 20,
+          "tags": [
+            "対スキル",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 37,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 34,
+          "tags": [
+            "疲労付与",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 48,
+          "tags": [
+            "バースト",
+            "対バースト"
+          ]
+        },
+        {
+          "id": 36,
+          "tags": [
+            "キュート",
+            "楽曲"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "V",
+          "tags": [
+            "バースト"
+          ]
+        },
+        {
+          "id": "B",
+          "tags": [
+            "キュート"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 1,
+        "キュート": 4,
+        "ユーモア": 3
+      },
+      "average_base_appeal": 4,
+      "balanceReference": [
+        {
+          "id": 7,
+          "name": "的野美青",
+          "archetypeCwarPer100": 35,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            10,
+            60.124999999999886
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6.122448979591836,
+            18.388932496075334
+          ]
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            27.083333333333332
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -12.049999999999997,
+            18
+          ]
+        },
+        {
+          "id": 9,
+          "name": "村井優",
+          "archetypeCwarPer100": -22.727272727272727,
+          "archetypeSamples": 22,
+          "archetypeCI95": [
+            -45.45454545454545,
+            0
+          ],
+          "randomCwarPer100": -15,
+          "randomSamples": 50,
+          "randomCI95": [
+            -31,
+            0.024999999999977263
+          ]
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "archetypeCwarPer100": -4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.05,
+            22
+          ],
+          "randomCwarPer100": -4,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            10
+          ]
+        },
+        {
+          "id": 37,
+          "name": "宮地すみれ",
+          "archetypeCwarPer100": -13,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -36.025,
+            8.024999999999977
+          ],
+          "randomCwarPer100": -8,
+          "randomSamples": 50,
+          "randomCI95": [
+            -24,
+            6
+          ]
+        },
+        {
+          "id": 34,
+          "name": "石塚瑶季",
+          "archetypeCwarPer100": -6,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -19.25,
+            6.006249999999994
+          ],
+          "randomCwarPer100": -3,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            11
+          ]
+        },
+        {
+          "id": 48,
+          "name": "松田好花",
+          "archetypeCwarPer100": -8,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -27.77777777777778,
+            12.012499999999989
+          ],
+          "randomCwarPer100": 8,
+          "randomSamples": 50,
+          "randomCI95": [
+            -5.885294117647058,
+            22
+          ]
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "archetypeCwarPer100": -2.5,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            -27.500000000000004,
+            20
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -10,
+            14.000000000000002
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "疲労回復・持久戦",
+      "archetype": "疲労回復・持久戦",
+      "members": [
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "シンメの疲労値を-2する。自身がBACKSにいる場合は、シンメへの効果の代わりに味方CENTERの疲労値を-2する（最低0）。",
+          "BURST_condition": "パフォーマンス終了時、自チーム8人の総疲労値が15以上。",
+          "BURST": "自チーム8人全員の疲労値を-2する（最低0）。",
+          "CENTER": null
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "パフォーマンス開始前、自チームで疲労値が最も高いメンバー1人の疲労値を-1し、相手チームで疲労値が最も高いメンバー1人の疲労値を+1する。対象が複数いる場合はランダムに1人を選ぶ。",
+          "BURST_condition": "パフォーマンス終了時、自チームのメンバーの最高疲労値が5以上。",
+          "BURST": "BURST中は、自身のAUTOによる疲労値の減少量・増加量をそれぞれ1から3に変更する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス開始前、相手BACKS3人全員の疲労値を+3する。"
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身の疲労値が0～2なら、対面のAppealを-1する。",
+          "BURST_condition": "自身が2パフォーマンス連続で疲労ペナルティを受けずに終了する。",
+          "BURST": "次のパフォーマンス中、相手FRONT-LとFRONT-RのAppealをそれぞれ-1する。",
+          "CENTER": "自チーム8人の総疲労値が相手チーム8人の総疲労値より低い場合、相手FRONT-LとFRONT-RのAppealをそれぞれ-2する。"
+        },
+        {
+          "id": 31,
+          "name": "宮田愛萌",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自チーム8人の総疲労値が10以下なら、自身のAppealを+2する。",
+          "BURST_condition": "R3以降のパフォーマンス終了時、自チーム8人の総疲労値が12以下。",
+          "BURST": "次のパフォーマンス中、自チームのステージ5人のAppealを+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 2,
+          "name": "遠藤理子",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身が受ける疲労値の増加量を1減らす（最低0）。",
+          "BURST_condition": "パフォーマンス終了時、自身の疲労値が2以上。",
+          "BURST": "次のパフォーマンス中、対面のAppealを-4する。",
+          "CENTER": null
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "ラウンド開始時点で自チームがポイントで負けている場合のみ、相手チームの現在ポイント数だけ自身のAppealをプラスする。",
+          "BURST_condition": "自チームが2パフォーマンス連続で敗北する。引き分けは連敗に含めず、連敗数をリセットする。",
+          "BURST": "自身の基礎Appealを永続的に+2する。複数回発動した場合は重複する。",
+          "CENTER": "自身がCENTERで自チームが敗北したとき、その時点でステージにいる味方の疲労値を-1し、その味方は次のパフォーマンスのみAppeal+1。引き分けでは発動しない。"
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自身がBACKSにいる間、相手側または楽曲由来の数値的なAppeal減少が味方FRONTまたはCENTERに適用される場合、その減少量を1軽減する。スキル無効化・属性変更・疲労ペナルティは対象外。",
+          "BURST_condition": "BACKSで累計2パフォーマンスを終了する。",
+          "BURST": "味方1人を選び、自身とそのメンバーの疲労値を入れ替える。",
+          "CENTER": null
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "attribute": "クール",
+          "base": 5,
+          "AUTO": "自身が受けるポジション由来のAppealボーナスとポジション由来の疲労増加を、各種加算・軽減を反映した後に2倍する。自身の疲労ペナルティによるAppeal減少量も2倍する。",
+          "BURST_condition": "CENTERかつ自身の疲労値が6以上でパフォーマンス終了。",
+          "BURST": "BURST中、自身のAppealを+3する。BURSTしたパフォーマンス終了後、自身の疲労値を+5する。",
+          "CENTER": "自身の疲労値が0～2なら、自チームのポジションボーナスをそれぞれ+1する。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "J",
+          "name": "MCタイム",
+          "type": "ユーモア",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "両チーム8人全員の疲労値を-1する（最低0）。",
+          "rule": "recoverAll"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        },
+        {
+          "id": "T",
+          "name": "Right?",
+          "type": "ユーモア",
+          "tags": [
+            "疲労付与"
+          ],
+          "effect": "各チームのステージ5人について、同じ疲労値を持つ最大グループ人数を比較し、その人数が多いチームのCENTERのAppealを+3する。同数なら発動しない。",
+          "rule": "sameFatigue"
+        }
+      ],
+      "mainTags": [
+        "疲労回復"
+      ],
+      "subTags": [],
+      "reasons": {
+        "2": [
+          "疲労増加を軽減し、BURSTの対面減少で持久戦を支える。"
+        ],
+        "4": [
+          "BACKSから前3枠への数値減少を軽減し、疲労交換を使う。"
+        ],
+        "13": [
+          "シンメまたはBACKSからCENTERを回復し、全体回復も使う。"
+        ],
+        "24": [
+          "劣勢時のクール得点と敗北後の回復・次回支援。"
+        ],
+        "26": [
+          "回復で低疲労Cと位置得点を維持する得点役。"
+        ],
+        "31": [
+          "回復・軽減で低総疲労のAUTO/B条件を狙う。"
+        ],
+        "39": [
+          "低疲労AUTOと総疲労比較CでFRONTを妨害。"
+        ],
+        "42": [
+          "自軍最高疲労を回復し、相手最高疲労へ付与。BURST中は両方の量が増える。"
+        ],
+        "J": [
+          "8人全体回復で低総疲労条件を支援。相手も回復。"
+        ],
+        "N": [
+          "回復しきれない疲労の減点を軽減。"
+        ],
+        "T": [
+          "回復で低い疲労値を揃える運用を補助。同数は不発。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "回復と軽減を重ね、低総疲労を得点・妨害へ変える。",
+        "caveats": [
+          "疲労付与に勝ち越すことはまだ未検証。",
+          "小坂の疲労倍化・BURST後疲労も管理。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "疲労回復・持久戦",
+      "main_tags": [
+        "疲労回復"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 13,
+          "tags": [
+            "疲労回復",
+            "総疲労値"
+          ]
+        },
+        {
+          "id": 42,
+          "tags": [
+            "疲労回復",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 39,
+          "tags": [
+            "疲労回復",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 31,
+          "tags": [
+            "疲労回復",
+            "総疲労値"
+          ]
+        },
+        {
+          "id": 2,
+          "tags": [
+            "疲労回復",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 24,
+          "tags": [
+            "負けポイント",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 4,
+          "tags": [
+            "疲労回復",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 26,
+          "tags": [
+            "センター",
+            "フォーメーション固定"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "J",
+          "tags": [
+            "疲労回復"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        },
+        {
+          "id": "T",
+          "tags": [
+            "疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 3,
+        "キュート": 2,
+        "ユーモア": 3
+      },
+      "average_base_appeal": 3.75,
+      "balanceReference": [
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            22
+          ],
+          "randomCwarPer100": 11,
+          "randomSamples": 50,
+          "randomCI95": [
+            -3,
+            25.012755102040806
+          ]
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -2,
+            30
+          ],
+          "randomCwarPer100": 22,
+          "randomSamples": 50,
+          "randomCI95": [
+            6.246811224489796,
+            39.58333333333333
+          ]
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -6,
+            34.049999999999955
+          ],
+          "randomCwarPer100": -14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            -30,
+            2.0499999999999545
+          ]
+        },
+        {
+          "id": 31,
+          "name": "宮田愛萌",
+          "archetypeCwarPer100": 10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -8,
+            30
+          ],
+          "randomCwarPer100": -16,
+          "randomSamples": 50,
+          "randomCI95": [
+            -28.000000000000004,
+            -4
+          ]
+        },
+        {
+          "id": 2,
+          "name": "遠藤理子",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.000000000000004,
+            6
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -14.000000000000002,
+            18
+          ]
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "archetypeCwarPer100": 8,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12,
+            28.000000000000004
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -8.004081632653062,
+            20
+          ]
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -35.41666666666667,
+            16.666666666666664
+          ],
+          "randomCwarPer100": 1,
+          "randomSamples": 50,
+          "randomCI95": [
+            -13.006632653061224,
+            16.3265306122449
+          ]
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "archetypeCwarPer100": -9,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -30,
+            11.024999999999977
+          ],
+          "randomCwarPer100": 19,
+          "randomSamples": 50,
+          "randomCI95": [
+            4,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "疲労付与・高疲労妨害",
+      "archetype": "疲労付与・高疲労妨害",
+      "members": [
+        {
+          "id": 16,
+          "name": "大沼昌保",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "対面の疲労値を+2する。",
+          "BURST_condition": "パフォーマンス終了時、対面の疲労値が6以上。",
+          "BURST": "BURST中、自身のAppealを+5する。BURSTしたパフォーマンス終了後、自身の基礎Appealを永続的に-1する（最低0）。その後、自身の通常BURST使用済み状態をリセットする。続くBURST条件判定で条件を満たした場合は、同じ終了処理内で再び通常BURSTする。",
+          "CENTER": null
+        },
+        {
+          "id": 21,
+          "name": "増本綺良",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "両チームのユーモアではないメンバーの疲労値を+1する。",
+          "BURST_condition": "パフォーマンス終了時、相手チーム8人の総疲労値が20以上。",
+          "BURST": "対面の疲労値を+8する。",
+          "CENTER": null
+        },
+        {
+          "id": 23,
+          "name": "守屋麗奈",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "対面の疲労値が3以上なら、その対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、そのパフォーマンス中に対面へ実適用された、位置ボーナス以外のAppeal減少量の合計が4以上。AUTO・BURST・CENTER SKILL・楽曲・疲労ペナルティを含み、Appeal増加とは相殺しない。",
+          "BURST": "そのパフォーマンス中に対面へ実適用された自身のAUTOによるAppeal減少分を、次のパフォーマンスにも引き継ぐ。",
+          "CENTER": "疲労値が3以上の相手メンバーのAppealを-1する。"
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "パフォーマンス開始前、自チームで疲労値が最も高いメンバー1人の疲労値を-1し、相手チームで疲労値が最も高いメンバー1人の疲労値を+1する。対象が複数いる場合はランダムに1人を選ぶ。",
+          "BURST_condition": "パフォーマンス終了時、自チームのメンバーの最高疲労値が5以上。",
+          "BURST": "BURST中は、自身のAUTOによる疲労値の減少量・増加量をそれぞれ1から3に変更する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス開始前、相手BACKS3人全員の疲労値を+3する。"
+        },
+        {
+          "id": 45,
+          "name": "山下葉留花",
+          "attribute": "ユーモア",
+          "base": 2,
+          "AUTO": "その試合で自身がパフォーマンスを経験したポジション種別（CENTER・FRONT・MIDDLE・BACKS）の種類数だけ、自身のAppealをプラスする。",
+          "BURST_condition": "CENTER・FRONT・MIDDLEの3種類すべてで1回以上パフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、相手チームのポジション由来の疲労増加量を2倍にする。",
+          "CENTER": "自身がCENTERにいるパフォーマンス開始前、前ラウンドからポジション種別を移動した相手ステージメンバーの疲労値を+2する。FRONT-L↔FRONT-R、MIDDLE-L↔MIDDLE-Rの左右入れ替えは移動に数えない。R1は発動しない。"
+        },
+        {
+          "id": 37,
+          "name": "宮地すみれ",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ対面のAppealを-1する。R1は発動しない。",
+          "BURST_condition": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+          "BURST": "BURST中、相手チームのポジションボーナスを0にする。",
+          "CENTER": null
+        },
+        {
+          "id": 29,
+          "name": "正源司陽子",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自身が疲労ペナルティを受けているなら、自身のAppealを+2する。",
+          "BURST_condition": "自身が疲労ペナルティを3パフォーマンス連続で受ける。",
+          "BURST": "BURST中、自身のAppealを+3する。",
+          "CENTER": "疲労ペナルティを受けている味方メンバーのAppealを+1する。"
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "各ラウンド開始時、本来のユーモアに加えてクールまたはキュートのどちらか1属性をランダムで追加する。そのラウンド中のみ有効。",
+          "BURST_condition": "追加された属性と現在の楽曲属性が一致した状態でパフォーマンス終了。",
+          "BURST": "自身のAppealを+2し、自身の通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "C",
+          "name": "Make or Break",
+          "type": "ユーモア",
+          "tags": [
+            "ユーモア"
+          ],
+          "effect": "ステージのユーモア属性を持たないメンバーの疲労値をそれぞれ+1する。",
+          "rule": "nonHumorFatigue"
+        },
+        {
+          "id": "D",
+          "name": "桜月",
+          "type": "キュート",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を2倍にする。",
+          "rule": "doubleFatigue"
+        },
+        {
+          "id": "M",
+          "name": "僕なんか",
+          "type": "クール",
+          "tags": [
+            "フォーメーション固定"
+          ],
+          "effect": "MIDDLE-L・MIDDLE-Rのポジションボーナスをそれぞれ+2する。",
+          "rule": "middleBonus"
+        }
+      ],
+      "mainTags": [
+        "疲労付与"
+      ],
+      "subTags": [],
+      "reasons": {
+        "16": [
+          "対面疲労を付与し、高疲労条件から再BURSTする。基礎値低下も伴う。"
+        ],
+        "21": [
+          "非ユーモアへの疲労付与と相手総疲労を利用する。自軍も対象。"
+        ],
+        "23": [
+          "高疲労相手へのAUTO/C減少で、疲労付与を得点差へ変換。"
+        ],
+        "29": [
+          "自軍の疲労ペナルティをAUTO/Cの条件として利用。"
+        ],
+        "37": [
+          "位置維持から対面妨害、BURSTで相手位置ボーナスを無効にする。"
+        ],
+        "41": [
+          "高基礎値・自己BURSTで序盤得点を補うユーモア役。増本AUTOの自軍疲労対象にならない。"
+        ],
+        "42": [
+          "自軍最高疲労を回復し、相手最高疲労へ付与。BURST中は両方の量が増える。"
+        ],
+        "45": [
+          "位置種別経験を得点へ変え、相手の移動・位置疲労を妨害。"
+        ],
+        "C": [
+          "ユーモア中心の自軍に対し、非ユーモアへ疲労。"
+        ],
+        "D": [
+          "高疲労相手の減点を倍化。自軍にも作用。"
+        ],
+        "M": [
+          "付与だけで得点不足にならないようMIDDLE得点を補う。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "高疲労相手の妨害を保ち、自軍を巻き込む曲を減らして得点役を補う。",
+        "caveats": [
+          "全員の疲労を倍化するキツネと、自軍の移動にも疲労を与えるアザトカワイイは外す。",
+          "非ユーモアの味方は増本AUTOとMake or Breakの対象。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "疲労付与・高疲労妨害",
+      "main_tags": [
+        "疲労付与"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 16,
+          "tags": [
+            "疲労付与",
+            "バースト"
+          ]
+        },
+        {
+          "id": 21,
+          "tags": [
+            "ユーモア",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 23,
+          "tags": [
+            "疲労付与",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 42,
+          "tags": [
+            "疲労回復",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 45,
+          "tags": [
+            "フォーメーション移動",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 37,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 29,
+          "tags": [
+            "対疲労付与",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 41,
+          "tags": [
+            "多属性",
+            "バースト"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "C",
+          "tags": [
+            "ユーモア"
+          ]
+        },
+        {
+          "id": "D",
+          "tags": [
+            "疲労回復"
+          ]
+        },
+        {
+          "id": "M",
+          "tags": [
+            "フォーメーション固定"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 1,
+        "キュート": 2,
+        "ユーモア": 5
+      },
+      "average_base_appeal": 3.625,
+      "balanceReference": [
+        {
+          "id": 16,
+          "name": "大沼昌保",
+          "archetypeCwarPer100": 22,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            8,
+            38
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -4,
+            22.024999999999977
+          ]
+        },
+        {
+          "id": 21,
+          "name": "増本綺良",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.854166666666664,
+            8.333333333333332
+          ],
+          "randomCwarPer100": -7.000000000000001,
+          "randomSamples": 50,
+          "randomCI95": [
+            -22,
+            8
+          ]
+        },
+        {
+          "id": 23,
+          "name": "守屋麗奈",
+          "archetypeCwarPer100": -1,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -21.31076388888889,
+            21.171874999999982
+          ],
+          "randomCwarPer100": -4,
+          "randomSamples": 50,
+          "randomCI95": [
+            -20,
+            12
+          ]
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -2,
+            30
+          ],
+          "randomCwarPer100": 22,
+          "randomSamples": 50,
+          "randomCI95": [
+            6.246811224489796,
+            39.58333333333333
+          ]
+        },
+        {
+          "id": 45,
+          "name": "山下葉留花",
+          "archetypeCwarPer100": -12.5,
+          "archetypeSamples": 24,
+          "archetypeCI95": [
+            -45.83333333333333,
+            25
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6.122448979591836,
+            18.367346938775512
+          ]
+        },
+        {
+          "id": 37,
+          "name": "宮地すみれ",
+          "archetypeCwarPer100": -13,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -36.025,
+            8.024999999999977
+          ],
+          "randomCwarPer100": -8,
+          "randomSamples": 50,
+          "randomCI95": [
+            -24,
+            6
+          ]
+        },
+        {
+          "id": 29,
+          "name": "正源司陽子",
+          "archetypeCwarPer100": 2,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12.5,
+            14.000000000000002
+          ],
+          "randomCwarPer100": 13,
+          "randomSamples": 50,
+          "randomCI95": [
+            -1.0204081632653061,
+            27.562244897959168
+          ]
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            2,
+            35.43124999999999
+          ],
+          "randomCwarPer100": 26,
+          "randomSamples": 50,
+          "randomCI95": [
+            12,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "対単一属性・クールメタ",
+      "archetype": "対単一属性・クールメタ",
+      "members": [
+        {
+          "id": 3,
+          "name": "小田倉麗奈",
+          "attribute": "キュート",
+          "base": 2,
+          "AUTO": "相手ステージのクール人数と同じ値だけ、対面のAppealをマイナスする。",
+          "BURST_condition": "パフォーマンス終了時、相手ステージに存在する属性の種類数が2以下。",
+          "BURST": "次のパフォーマンス中、相手メンバー全員をクールとしても扱う。",
+          "CENTER": null
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、相手ステージに同一属性が4人以上いる。",
+          "BURST": "次のパフォーマンス中、その属性を持つ相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERで、相手ステージの単独最多属性が3人以上かつ相手CENTERもその属性なら、その単独最多属性の人数と同じ値だけ相手CENTERのAppealをマイナスする。"
+        },
+        {
+          "id": 1,
+          "name": "石森璃花",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "対面の相手メンバーがクールなら、その対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、そのラウンドの相手チーム総Appealが30以下。",
+          "BURST": "次のパフォーマンス中、相手チーム全員のAppealを-1する。",
+          "CENTER": null
+        },
+        {
+          "id": 5,
+          "name": "谷口愛季",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "自チームのFRONT-LとFRONT-Rがともにキュートなら、対面のAppealを-2する。",
+          "BURST_condition": "キュート楽曲でCENTERとしてパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自チーム8人全員の属性をキュートのみに上書きする。元の属性および他の追加属性はその間失われ、効果終了後に元の属性状態へ戻る。PLAINが適用される場合はPLAINを優先する。",
+          "CENTER": "両チームのキュートではないメンバーのAppealを-1する。自チームも対象。"
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "attribute": "キュート",
+          "base": 2,
+          "AUTO": "自身がBACKSにいる間、相手CENTERのAppealを-2する。",
+          "BURST_condition": "キュート楽曲でステージ5枠のいずれかに配置され、パフォーマンスを終了する。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了までFRONT-Rに固定し、そのメンバーのAppealを-6する。",
+          "CENTER": null
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "対面の相手AUTOによるAppeal上昇値と同じ値だけ、自身のAppealも上昇する。",
+          "BURST_condition": "パフォーマンス終了時、そのパフォーマンス中に自身へ実適用されたAUTO・BURST・CENTER SKILL・楽曲によるAppeal上昇量の合計が4以上。位置ボーナス・基礎Appealは含めない。",
+          "BURST": "そのパフォーマンス中に自身へ実適用された自身のAUTOによるAppeal上昇分を、次のパフォーマンスにも引き継ぐ。",
+          "CENTER": "自チームのクールメンバーは、相手AUTOによるAppeal減少を受けない。"
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "対面がBURST中なら、その対面のAppealを-4する。",
+          "BURST_condition": "相手メンバーがBACKSにいる状態でBURSTを開始したとき。",
+          "BURST": "同じパフォーマンス終了処理内でBACKSからBURSTした相手が複数いる場合も1回だけ発動し、その中からランダムに1人を選ぶ。選ばれた相手を次のパフォーマンス終了までCENTERに固定し、Bスキルを無効にする。元のCENTERメンバーはBACKSへ移動する。",
+          "CENTER": "BURST中の相手メンバーのAppealを-2する。"
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "キュート楽曲なら、対面のAppealを-2する。",
+          "BURST_condition": "自身がステージでキュート楽曲を累計2回経験する。",
+          "BURST": "次のパフォーマンス中、現在の楽曲属性を持たない相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の属性をPLAIN（属性なし）にする。PLAINは他の属性付与・変更より最優先で、クール・キュート・ユーモアの人数に数えない。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "B",
+          "name": "夏の近道",
+          "type": "キュート",
+          "tags": [
+            "キュート"
+          ],
+          "effect": "ステージのキュート属性を持たないメンバーのAppealをそれぞれ-1する。",
+          "rule": "nonCute"
+        },
+        {
+          "id": "Q",
+          "name": "One choice",
+          "type": "キュート",
+          "tags": [
+            "対単一属性"
+          ],
+          "effect": "各チームのステージで単独最多となる属性がある場合、その属性を持つステージメンバー全員のAppealを-1する。同数最多ならそのチームでは発動しない。",
+          "rule": "majority"
+        },
+        {
+          "id": "P",
+          "name": "見たことのない魔物",
+          "type": "キュート",
+          "tags": [
+            "多属性"
+          ],
+          "effect": "各チームのステージ5人が現在持つ属性数の合計を比較し、合計が少ないチームのCENTERのAppealを-3する。同数なら発動しない。",
+          "rule": "attributeCount"
+        }
+      ],
+      "mainTags": [
+        "対単一属性"
+      ],
+      "subTags": [],
+      "reasons": {
+        "1": [
+          "対面クールへのAUTO減少と、低い相手総Appealを条件にした全体妨害。"
+        ],
+        "3": [
+          "相手クール人数を参照し、BURSTで相手へクール追加。"
+        ],
+        "5": [
+          "キュートFRONT条件と、非キュートへのCENTER妨害。"
+        ],
+        "17": [
+          "BACKSから相手CENTERを妨害し、必要時はFRONT固定を使う。"
+        ],
+        "19": [
+          "クール曲のBACKS経験でBURSTする村山などへCENTER固定・B無効を狙う対策支援。"
+        ],
+        "20": [
+          "相手AUTOの上昇参照と、クールへの相手AUTO減少の保護。"
+        ],
+        "36": [
+          "河田/谷口CENTERとは別運用。PLAINで属性シナジーと魔物の属性数を妨害。"
+        ],
+        "40": [
+          "基礎5と、相手単独最多属性・CENTERへの妨害。"
+        ],
+        "B": [
+          "キュート主体の自軍に対し、クール主体の相手へ広く減少。"
+        ],
+        "Q": [
+          "単独最多属性を減少。自軍キュートも対象。"
+        ],
+        "P": [
+          "PLAIN CENTER運用で相手総属性数を0にし、相手CENTER減少を狙う。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "小田倉・河田を核に、対クール効果とキュート主体の楽曲を組み合わせる。",
+        "caveats": [
+          "静寂の暴力は河田/谷口Cを止め、山下瞳月Cは止められないため外す。",
+          "藤嶌CENTERのPLAIN中は小田倉・河田の属性人数参照が不発。CENTERを使い分ける。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "対単一属性・クールメタ",
+      "main_tags": [
+        "対単一属性"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 3,
+          "tags": [
+            "対クール",
+            "対単一属性"
+          ]
+        },
+        {
+          "id": 40,
+          "tags": [
+            "対単一属性",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 1,
+          "tags": [
+            "Appeal低下",
+            "総Appeal値"
+          ]
+        },
+        {
+          "id": 5,
+          "tags": [
+            "キュート",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 17,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 20,
+          "tags": [
+            "対スキル",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 19,
+          "tags": [
+            "対バースト",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 36,
+          "tags": [
+            "キュート",
+            "楽曲"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "B",
+          "tags": [
+            "キュート"
+          ]
+        },
+        {
+          "id": "Q",
+          "tags": [
+            "対単一属性"
+          ]
+        },
+        {
+          "id": "P",
+          "tags": [
+            "多属性"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 1,
+        "キュート": 7,
+        "ユーモア": 0
+      },
+      "average_base_appeal": 3.625,
+      "balanceReference": [
+        {
+          "id": 3,
+          "name": "小田倉麗奈",
+          "archetypeCwarPer100": null,
+          "archetypeSamples": 0,
+          "archetypeCI95": [
+            null,
+            null
+          ],
+          "randomCwarPer100": -11,
+          "randomSamples": 50,
+          "randomCI95": [
+            -24.489795918367346,
+            2
+          ]
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 16,
+          "archetypeCI95": [
+            -37.5,
+            37.5
+          ],
+          "randomCwarPer100": 14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            0,
+            28.000000000000004
+          ]
+        },
+        {
+          "id": 1,
+          "name": "石森璃花",
+          "archetypeCwarPer100": -14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -30,
+            0.049999999999954525
+          ],
+          "randomCwarPer100": -6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            6.003061224489793
+          ]
+        },
+        {
+          "id": 5,
+          "name": "谷口愛季",
+          "archetypeCwarPer100": 24,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            4.166666666666666,
+            44
+          ],
+          "randomCwarPer100": 14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            -2,
+            30
+          ]
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "archetypeCwarPer100": 21,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -1,
+            43
+          ],
+          "randomCwarPer100": -2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -16,
+            12
+          ]
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "archetypeCwarPer100": -4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.05,
+            22
+          ],
+          "randomCwarPer100": -4,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            10
+          ]
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            27.083333333333332
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -12.049999999999997,
+            18
+          ]
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "archetypeCwarPer100": -2.5,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            -27.500000000000004,
+            20
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -10,
+            14.000000000000002
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "櫻坂選抜",
+      "archetype": "櫻坂選抜",
+      "members": [
+        {
+          "id": 11,
+          "name": "山下瞳月",
+          "attribute": "クール",
+          "base": 2,
+          "AUTO": "クール楽曲で自身がCENTERなら、自身のAppealを+1する。",
+          "BURST_condition": "CENTERで累計2パフォーマンスを終了する。",
+          "BURST": "BURST中、自身のAppealを+2し、相手由来の効果を受けない。",
+          "CENTER": "CENTERなら自身のAppealを+5する。このCENTER SKILLは楽曲によるCENTER SKILL無効化を受けない。"
+        },
+        {
+          "id": 10,
+          "name": "村山美羽",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "自チームのステージにクールが3人以上なら、自身のAppealを+2する。",
+          "BURST_condition": "クール楽曲でBACKSとしてパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自チームのクールメンバーのAppealを+1する。",
+          "CENTER": null
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "対面の相手AUTOによるAppeal上昇値と同じ値だけ、自身のAppealも上昇する。",
+          "BURST_condition": "パフォーマンス終了時、そのパフォーマンス中に自身へ実適用されたAUTO・BURST・CENTER SKILL・楽曲によるAppeal上昇量の合計が4以上。位置ボーナス・基礎Appealは含めない。",
+          "BURST": "そのパフォーマンス中に自身へ実適用された自身のAUTOによるAppeal上昇分を、次のパフォーマンスにも引き継ぐ。",
+          "CENTER": "自チームのクールメンバーは、相手AUTOによるAppeal減少を受けない。"
+        },
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "自チームのステージにクールとユーモアが1人以上ずついるなら、対面のAppealを-1する。",
+          "BURST_condition": "CENTER・FRONT-L・FRONT-Rの3枠にクール・キュート・ユーモアが1人ずつ揃ってパフォーマンス終了。",
+          "BURST": "次のパフォーマンス中、自身を本来のキュートに加えてクール・ユーモアとしても扱い、対面のAppealを-2する。",
+          "CENTER": "相手CENTERのAppealを、自チームのステージに存在する属性種類数だけマイナスする。"
+        },
+        {
+          "id": 7,
+          "name": "的野美青",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "対面の相手メンバーのAUTOを無効にする。",
+          "BURST_condition": "相手メンバーがBURSTを開始したとき。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了まで現在のポジションに固定する。",
+          "CENTER": "相手CENTERのCENTER SKILLを無効にし、自身の疲労値を+2する。"
+        },
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "シンメの疲労値を-2する。自身がBACKSにいる場合は、シンメへの効果の代わりに味方CENTERの疲労値を-2する（最低0）。",
+          "BURST_condition": "パフォーマンス終了時、自チーム8人の総疲労値が15以上。",
+          "BURST": "自チーム8人全員の疲労値を-2する（最低0）。",
+          "CENTER": null
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "attribute": "キュート",
+          "base": 2,
+          "AUTO": "自身がBACKSにいる間、相手CENTERのAppealを-2する。",
+          "BURST_condition": "キュート楽曲でステージ5枠のいずれかに配置され、パフォーマンスを終了する。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了までFRONT-Rに固定し、そのメンバーのAppealを-6する。",
+          "CENTER": null
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "ラウンド開始時点で自チームがポイントで負けている場合のみ、相手チームの現在ポイント数だけ自身のAppealをプラスする。",
+          "BURST_condition": "自チームが2パフォーマンス連続で敗北する。引き分けは連敗に含めず、連敗数をリセットする。",
+          "BURST": "自身の基礎Appealを永続的に+2する。複数回発動した場合は重複する。",
+          "CENTER": "自身がCENTERで自チームが敗北したとき、その時点でステージにいる味方の疲労値を-1し、その味方は次のパフォーマンスのみAppeal+1。引き分けでは発動しない。"
+        }
+      ],
+      "songs": [
+        {
+          "id": "A",
+          "name": "Start over!",
+          "type": "クール",
+          "tags": [
+            "クール"
+          ],
+          "effect": "ステージのクールメンバーのAppealをそれぞれ+1する。",
+          "rule": "attribute"
+        },
+        {
+          "id": "F",
+          "name": "Unhappy birthday構文",
+          "type": "ユーモア",
+          "tags": [
+            "フォーメーション移動"
+          ],
+          "effect": "そのラウンドにBACKSからステージへ移動したメンバーのAppealを+1する。R1の初期配置は移動に数えない。",
+          "rule": "entry"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        }
+      ],
+      "mainTags": [
+        "櫻坂46"
+      ],
+      "subTags": [],
+      "reasons": {
+        "7": [
+          "対面AUTOと相手CENTER SKILLの無効化、BURST反応の位置固定。"
+        ],
+        "10": [
+          "ステージのクール3人でAUTO、クール曲のBACKS経験で味方強化。"
+        ],
+        "11": [
+          "クール曲のCENTER AUTOと自己Cで序盤の得点を確保。"
+        ],
+        "13": [
+          "シンメまたはBACKSからCENTERを回復し、全体回復も使う。"
+        ],
+        "17": [
+          "BACKSから相手CENTERを妨害し、必要時はFRONT固定を使う。"
+        ],
+        "20": [
+          "相手AUTOの上昇参照と、クールへの相手AUTO減少の保護。"
+        ],
+        "22": [
+          "自軍3属性を使う対面/CENTER妨害と、前3枠の3属性BURST。"
+        ],
+        "24": [
+          "劣勢時のクール得点と敗北後の回復・次回支援。"
+        ],
+        "A": [
+          "クールの得点役を支援。"
+        ],
+        "F": [
+          "休息から出場へ戻るカードを加算。"
+        ],
+        "N": [
+          "出場者の疲労減点を軽減。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "櫻坂8人でクールの得点と3属性の妨害・回復を組み合わせる。",
+        "caveats": [
+          "所属による追加効果はない。複数戦術を組み合わせた選抜。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "櫻坂選抜",
+      "main_tags": [
+        "櫻坂46"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 11,
+          "tags": [
+            "センター",
+            "クール"
+          ]
+        },
+        {
+          "id": 10,
+          "tags": [
+            "クール",
+            "単一属性"
+          ]
+        },
+        {
+          "id": 20,
+          "tags": [
+            "対スキル",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 22,
+          "tags": [
+            "多属性",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 7,
+          "tags": [
+            "対スキル",
+            "対センター"
+          ]
+        },
+        {
+          "id": 13,
+          "tags": [
+            "疲労回復",
+            "総疲労値"
+          ]
+        },
+        {
+          "id": 17,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 24,
+          "tags": [
+            "負けポイント",
+            "Appeal上昇"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "A",
+          "tags": [
+            "クール"
+          ]
+        },
+        {
+          "id": "F",
+          "tags": [
+            "フォーメーション移動"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 4,
+        "キュート": 2,
+        "ユーモア": 2
+      },
+      "average_base_appeal": 3.5,
+      "balanceReference": [
+        {
+          "id": 11,
+          "name": "山下瞳月",
+          "archetypeCwarPer100": -2,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -22,
+            18
+          ],
+          "randomCwarPer100": 18,
+          "randomSamples": 50,
+          "randomCI95": [
+            2,
+            34
+          ]
+        },
+        {
+          "id": 10,
+          "name": "村山美羽",
+          "archetypeCwarPer100": 26,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            2,
+            50
+          ],
+          "randomCwarPer100": -12,
+          "randomSamples": 50,
+          "randomCI95": [
+            -24,
+            0
+          ]
+        },
+        {
+          "id": 20,
+          "name": "藤吉夏鈴",
+          "archetypeCwarPer100": -4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -28.05,
+            22
+          ],
+          "randomCwarPer100": -4,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            10
+          ]
+        },
+        {
+          "id": 22,
+          "name": "森田ひかる",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20.833333333333336,
+            24.003448275862066
+          ],
+          "randomCwarPer100": 0,
+          "randomSamples": 50,
+          "randomCI95": [
+            -15.686274509803921,
+            14.836601307189522
+          ]
+        },
+        {
+          "id": 7,
+          "name": "的野美青",
+          "archetypeCwarPer100": 35,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            10,
+            60.124999999999886
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6.122448979591836,
+            18.388932496075334
+          ]
+        },
+        {
+          "id": 13,
+          "name": "井上梨名",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            22
+          ],
+          "randomCwarPer100": 11,
+          "randomSamples": 50,
+          "randomCI95": [
+            -3,
+            25.012755102040806
+          ]
+        },
+        {
+          "id": 17,
+          "name": "幸坂茉里乃",
+          "archetypeCwarPer100": 21,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -1,
+            43
+          ],
+          "randomCwarPer100": -2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -16,
+            12
+          ]
+        },
+        {
+          "id": 24,
+          "name": "山崎天",
+          "archetypeCwarPer100": 8,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -12,
+            28.000000000000004
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -8.004081632653062,
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "日向坂選抜",
+      "archetype": "日向坂選抜",
+      "members": [
+        {
+          "id": 25,
+          "name": "金村美玖",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "前ラウンドと同じポジションでパフォーマンスする場合、そのポジションを連続で維持した回数だけ自身のAppealを+1する。R1は発動しない。",
+          "BURST_condition": "同一ポジションで累計3回以上パフォーマンスを終了したポジションがある。",
+          "BURST": "BURST中、自チームのポジションボーナスを2倍にする。",
+          "CENTER": "前ラウンドと同じポジションにいる味方メンバーのAppealを+1する。R1は発動しない。"
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "attribute": "クール",
+          "base": 5,
+          "AUTO": "自身が受けるポジション由来のAppealボーナスとポジション由来の疲労増加を、各種加算・軽減を反映した後に2倍する。自身の疲労ペナルティによるAppeal減少量も2倍する。",
+          "BURST_condition": "CENTERかつ自身の疲労値が6以上でパフォーマンス終了。",
+          "BURST": "BURST中、自身のAppealを+3する。BURSTしたパフォーマンス終了後、自身の疲労値を+5する。",
+          "CENTER": "自身の疲労値が0～2なら、自チームのポジションボーナスをそれぞれ+1する。"
+        },
+        {
+          "id": 30,
+          "name": "平岡海月",
+          "attribute": "クール",
+          "base": 3,
+          "AUTO": "その試合で登場済みの楽曲属性の種類数だけ自身のAppealを+1する（最大+3）。",
+          "BURST_condition": "クール・キュート・ユーモアの3属性の楽曲がすべて1回以上登場する。",
+          "BURST": "次のパフォーマンス中、自身のAppealを+3する。",
+          "CENTER": null
+        },
+        {
+          "id": 35,
+          "name": "清水理央",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "自チームのステージ5人に存在する属性種類数と同じ値だけ、対面のAppealをマイナスする。",
+          "BURST_condition": "パフォーマンス終了時、自チームのBACKS3人の属性がすべて異なる。",
+          "BURST": "次のパフォーマンス中、自チームのクールまたはユーモア属性を持つメンバーは、相手由来のスキル効果を受けない。",
+          "CENTER": null
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "キュート楽曲なら、対面のAppealを-2する。",
+          "BURST_condition": "自身がステージでキュート楽曲を累計2回経験する。",
+          "BURST": "次のパフォーマンス中、現在の楽曲属性を持たない相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス中のみ、相手メンバー全員の属性をPLAIN（属性なし）にする。PLAINは他の属性付与・変更より最優先で、クール・キュート・ユーモアの人数に数えない。"
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "自身の疲労値が0～2なら、対面のAppealを-1する。",
+          "BURST_condition": "自身が2パフォーマンス連続で疲労ペナルティを受けずに終了する。",
+          "BURST": "次のパフォーマンス中、相手FRONT-LとFRONT-RのAppealをそれぞれ-1する。",
+          "CENTER": "自チーム8人の総疲労値が相手チーム8人の総疲労値より低い場合、相手FRONT-LとFRONT-RのAppealをそれぞれ-2する。"
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "パフォーマンス開始前、自チームで疲労値が最も高いメンバー1人の疲労値を-1し、相手チームで疲労値が最も高いメンバー1人の疲労値を+1する。対象が複数いる場合はランダムに1人を選ぶ。",
+          "BURST_condition": "パフォーマンス終了時、自チームのメンバーの最高疲労値が5以上。",
+          "BURST": "BURST中は、自身のAUTOによる疲労値の減少量・増加量をそれぞれ1から3に変更する。",
+          "CENTER": "自身がCENTERにいるパフォーマンス開始前、相手BACKS3人全員の疲労値を+3する。"
+        },
+        {
+          "id": 46,
+          "name": "濱岸ひより",
+          "attribute": "ユーモア",
+          "base": 4,
+          "AUTO": "現在の楽曲属性が前ラウンドと同じなら、自身のAppealを+2する。R1は発動しない。",
+          "BURST_condition": "自身のAUTOが累計2回発動する。",
+          "BURST": "次のパフォーマンスの楽曲を「NO WAR in the future」に変更する。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "A",
+          "name": "Start over!",
+          "type": "クール",
+          "tags": [
+            "クール"
+          ],
+          "effect": "ステージのクールメンバーのAppealをそれぞれ+1する。",
+          "rule": "attribute"
+        },
+        {
+          "id": "B",
+          "name": "夏の近道",
+          "type": "キュート",
+          "tags": [
+            "キュート"
+          ],
+          "effect": "ステージのキュート属性を持たないメンバーのAppealをそれぞれ-1する。",
+          "rule": "nonCute"
+        },
+        {
+          "id": "J",
+          "name": "MCタイム",
+          "type": "ユーモア",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "両チーム8人全員の疲労値を-1する（最低0）。",
+          "rule": "recoverAll"
+        }
+      ],
+      "mainTags": [
+        "日向坂46"
+      ],
+      "subTags": [],
+      "reasons": {
+        "25": [
+          "本人の位置維持でAUTO/Cを使い、BURSTで自軍位置ボーナスを強化。"
+        ],
+        "26": [
+          "序盤の位置ボーナス・低疲労Cを得点源にし、疲労倍化の負担は休息・回復で管理。"
+        ],
+        "30": [
+          "選択曲を3属性にし、登場済み楽曲属性によるAUTOとBURSTを狙う。"
+        ],
+        "35": [
+          "ステージ属性数で妨害し、BACKS3属性からクール/ユーモアを保護する。"
+        ],
+        "36": [
+          "キュート曲の妨害とPLAINによる相手属性シナジー崩し。"
+        ],
+        "39": [
+          "低疲労AUTOと総疲労比較CでFRONTを妨害。"
+        ],
+        "42": [
+          "自軍最高疲労を回復し、相手最高疲労へ付与。BURST中は両方の量が増える。"
+        ],
+        "46": [
+          "連続楽曲属性から特殊楽曲へ変更するユーモア役。"
+        ],
+        "A": [
+          "クールの得点役を支援。"
+        ],
+        "B": [
+          "キュート妨害役を支援。非キュートの味方も減少。"
+        ],
+        "J": [
+          "回復し、平岡用の3種類目の楽曲属性も確保。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "日向坂8人で位置維持・疲労管理・3属性妨害を組み合わせる。",
+        "caveats": [
+          "元属性でステージ/BACKS双方の3属性が成立可能。",
+          "小坂C・金村C・藤嶌Cは同時に発動しない。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "日向坂選抜",
+      "main_tags": [
+        "日向坂46"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 25,
+          "tags": [
+            "フォーメーション固定",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 26,
+          "tags": [
+            "センター",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 30,
+          "tags": [
+            "楽曲",
+            "多属性"
+          ]
+        },
+        {
+          "id": 35,
+          "tags": [
+            "多属性",
+            "対スキル"
+          ]
+        },
+        {
+          "id": 36,
+          "tags": [
+            "キュート",
+            "楽曲"
+          ]
+        },
+        {
+          "id": 39,
+          "tags": [
+            "疲労回復",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 42,
+          "tags": [
+            "疲労回復",
+            "疲労付与"
+          ]
+        },
+        {
+          "id": 46,
+          "tags": [
+            "楽曲",
+            "多属性"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "A",
+          "tags": [
+            "クール"
+          ]
+        },
+        {
+          "id": "B",
+          "tags": [
+            "キュート"
+          ]
+        },
+        {
+          "id": "J",
+          "tags": [
+            "疲労回復"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 3,
+        "キュート": 3,
+        "ユーモア": 2
+      },
+      "average_base_appeal": 3.875,
+      "balanceReference": [
+        {
+          "id": 25,
+          "name": "金村美玖",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            4,
+            34.049999999999955
+          ],
+          "randomCwarPer100": 16,
+          "randomSamples": 50,
+          "randomCI95": [
+            2,
+            32
+          ]
+        },
+        {
+          "id": 26,
+          "name": "小坂菜緒",
+          "archetypeCwarPer100": -9,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -30,
+            11.024999999999977
+          ],
+          "randomCwarPer100": 19,
+          "randomSamples": 50,
+          "randomCI95": [
+            4,
+            33
+          ]
+        },
+        {
+          "id": 30,
+          "name": "平岡海月",
+          "archetypeCwarPer100": 12,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -4,
+            28.000000000000004
+          ],
+          "randomCwarPer100": -9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -19.393257302921167,
+            2.0408163265306123
+          ]
+        },
+        {
+          "id": 35,
+          "name": "清水理央",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            30
+          ],
+          "randomCwarPer100": 9,
+          "randomSamples": 50,
+          "randomCI95": [
+            -5,
+            23
+          ]
+        },
+        {
+          "id": 36,
+          "name": "藤嶌果歩",
+          "archetypeCwarPer100": -2.5,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            -27.500000000000004,
+            20
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -10,
+            14.000000000000002
+          ]
+        },
+        {
+          "id": 39,
+          "name": "丹生明里",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -6,
+            34.049999999999955
+          ],
+          "randomCwarPer100": -14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            -30,
+            2.0499999999999545
+          ]
+        },
+        {
+          "id": 42,
+          "name": "山口陽世",
+          "archetypeCwarPer100": 14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -2,
+            30
+          ],
+          "randomCwarPer100": 22,
+          "randomSamples": 50,
+          "randomCI95": [
+            6.246811224489796,
+            39.58333333333333
+          ]
+        },
+        {
+          "id": 46,
+          "name": "濱岸ひより",
+          "archetypeCwarPer100": 6,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -10.416666666666668,
+            22.00555555555555
+          ],
+          "randomCwarPer100": -12,
+          "randomSamples": 50,
+          "randomCI95": [
+            -28.000000000000004,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "selectionPolicy": "constructed-decks-20261014-v4",
+      "name": "指定8人・妨害とBURST",
+      "archetype": "指定8人・妨害とBURST",
+      "members": [
+        {
+          "id": 7,
+          "name": "的野美青",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "対面の相手メンバーのAUTOを無効にする。",
+          "BURST_condition": "相手メンバーがBURSTを開始したとき。",
+          "BURST": "相手メンバー1人を選び、次のパフォーマンス終了まで現在のポジションに固定する。",
+          "CENTER": "相手CENTERのCENTER SKILLを無効にし、自身の疲労値を+2する。"
+        },
+        {
+          "id": 12,
+          "name": "松田里奈",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自チームの累計BURST回数（通常BURST・強制BURSTを含む）が5回以上なら、自身のAppealを+3する。",
+          "BURST_condition": "同じパフォーマンス終了処理内で、自身以外の味方2人以上がBURSTを開始する。",
+          "BURST": "次のパフォーマンス終了後、味方1人をランダムに選び、そのメンバーの通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+          "CENTER": "BURST中の味方メンバーのAppealを+2する。"
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "attribute": "キュート",
+          "base": 4,
+          "AUTO": "対面がBURST中なら、その対面のAppealを-4する。",
+          "BURST_condition": "相手メンバーがBACKSにいる状態でBURSTを開始したとき。",
+          "BURST": "同じパフォーマンス終了処理内でBACKSからBURSTした相手が複数いる場合も1回だけ発動し、その中からランダムに1人を選ぶ。選ばれた相手を次のパフォーマンス終了までCENTERに固定し、Bスキルを無効にする。元のCENTERメンバーはBACKSへ移動する。",
+          "CENTER": "BURST中の相手メンバーのAppealを-2する。"
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "attribute": "ユーモア",
+          "base": 3,
+          "AUTO": "自身がBACKSにいる間、相手側または楽曲由来の数値的なAppeal減少が味方FRONTまたはCENTERに適用される場合、その減少量を1軽減する。スキル無効化・属性変更・疲労ペナルティは対象外。",
+          "BURST_condition": "BACKSで累計2パフォーマンスを終了する。",
+          "BURST": "味方1人を選び、自身とそのメンバーの疲労値を入れ替える。",
+          "CENTER": null
+        },
+        {
+          "id": 1,
+          "name": "石森璃花",
+          "attribute": "キュート",
+          "base": 3,
+          "AUTO": "対面の相手メンバーがクールなら、その対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、そのラウンドの相手チーム総Appealが30以下。",
+          "BURST": "次のパフォーマンス中、相手チーム全員のAppealを-1する。",
+          "CENTER": null
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "attribute": "キュート",
+          "base": 5,
+          "AUTO": "対面が相手ステージの単独最多属性に属し、その単独最多属性の人数が3人以上なら、対面のAppealを-2する。",
+          "BURST_condition": "パフォーマンス終了時、相手ステージに同一属性が4人以上いる。",
+          "BURST": "次のパフォーマンス中、その属性を持つ相手メンバー全員のAppealを-1する。",
+          "CENTER": "自身がCENTERで、相手ステージの単独最多属性が3人以上かつ相手CENTERもその属性なら、その単独最多属性の人数と同じ値だけ相手CENTERのAppealをマイナスする。"
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "attribute": "ユーモア",
+          "base": 5,
+          "AUTO": "各ラウンド開始時、本来のユーモアに加えてクールまたはキュートのどちらか1属性をランダムで追加する。そのラウンド中のみ有効。",
+          "BURST_condition": "追加された属性と現在の楽曲属性が一致した状態でパフォーマンス終了。",
+          "BURST": "自身のAppealを+2し、自身の通常BURST使用済み状態をリセットする。累計BURST回数は減らさない。",
+          "CENTER": null
+        },
+        {
+          "id": 28,
+          "name": "小西夏菜実",
+          "attribute": "クール",
+          "base": 4,
+          "AUTO": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
+          "BURST_condition": "自身が累計で異なる3人とシンメになってパフォーマンスを終了する。",
+          "BURST": "次のパフォーマンス中、自身とその時点のシンメのAppealをそれぞれ+2する。",
+          "CENTER": null
+        }
+      ],
+      "songs": [
+        {
+          "id": "B",
+          "name": "夏の近道",
+          "type": "キュート",
+          "tags": [
+            "キュート"
+          ],
+          "effect": "ステージのキュート属性を持たないメンバーのAppealをそれぞれ-1する。",
+          "rule": "nonCute"
+        },
+        {
+          "id": "N",
+          "name": "君はハニーデュー",
+          "type": "クール",
+          "tags": [
+            "対疲労付与"
+          ],
+          "effect": "疲労ペナルティによるAppeal減少量を1軽減する（最低0）。減少量が0になっても、そのメンバーは疲労ペナルティを受けているものとして扱う。",
+          "rule": "fatigueRelief"
+        },
+        {
+          "id": "J",
+          "name": "MCタイム",
+          "type": "ユーモア",
+          "tags": [
+            "疲労回復"
+          ],
+          "effect": "両チーム8人全員の疲労値を-1する（最低0）。",
+          "rule": "recoverAll"
+        }
+      ],
+      "mainTags": [
+        "指定8人"
+      ],
+      "subTags": [],
+      "reasons": {
+        "1": [
+          "対面クールへのAUTO減少と、低い相手総Appealを条件にした全体妨害。"
+        ],
+        "4": [
+          "BACKSから前3枠への数値減少を軽減し、疲労交換を使う。"
+        ],
+        "7": [
+          "対面AUTOと相手CENTER SKILLの無効化、BURST反応の位置固定。"
+        ],
+        "12": [
+          "同時BURSTから使用済みリセット、BURST中の味方へのC加算。"
+        ],
+        "19": [
+          "相手BACKSからのBURSTへ反応し、CENTER固定・B無効で対策する。"
+        ],
+        "28": [
+          "指定メンバー。森本にクールが追加された時にクールのシンメを狙う。"
+        ],
+        "40": [
+          "基礎5と、相手単独最多属性・CENTERへの妨害。"
+        ],
+        "41": [
+          "高基礎値とランダム属性追加を得点・楽曲一致の自己BURSTに使う。"
+        ],
+        "B": [
+          "キュート妨害役を支援し、森本のキュート追加時にBURSTを狙う。"
+        ],
+        "N": [
+          "疲労減点を軽減し、森本のクール追加時にBURSTを狙う。"
+        ],
+        "J": [
+          "出場者の疲労を回復。相手も回復。"
+        ]
+      },
+      "construction": {
+        "profile": "9アーキタイプ＋2選抜＋指定8人",
+        "plan": "指定8人を固定し、CENTER妨害とBURST利用を組み合わせる。",
+        "fixedMembers": [
+          7,
+          12,
+          19,
+          4,
+          1,
+          40,
+          41,
+          28
+        ],
+        "caveats": [
+          "松田は松田里奈。",
+          "小西のクール相方は森本のランダム追加に依存し、常時AUTO成立は保証しない。",
+          "小西Bの3人シンメ経験は相方の属性を問わない。",
+          "指定8人の入れ替えcWARは欠測。スキル除外検査は別途可能。",
+          "B条件L1/L2を事前の手動支援調整に使用。調整後の勝率は未検証。",
+          "対戦中に結果を見て構築を変更しない。"
+        ]
+      },
+      "archetype_name": "指定8人・妨害とBURST",
+      "main_tags": [
+        "指定8人"
+      ],
+      "sub_tags": [],
+      "member_tags": [
+        {
+          "id": 7,
+          "tags": [
+            "対スキル",
+            "対センター"
+          ]
+        },
+        {
+          "id": 12,
+          "tags": [
+            "バースト",
+            "Appeal上昇"
+          ]
+        },
+        {
+          "id": 19,
+          "tags": [
+            "対バースト",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 4,
+          "tags": [
+            "疲労回復",
+            "フォーメーション固定"
+          ]
+        },
+        {
+          "id": 1,
+          "tags": [
+            "Appeal低下",
+            "総Appeal値"
+          ]
+        },
+        {
+          "id": 40,
+          "tags": [
+            "対単一属性",
+            "Appeal低下"
+          ]
+        },
+        {
+          "id": 41,
+          "tags": [
+            "多属性",
+            "バースト"
+          ]
+        },
+        {
+          "id": 28,
+          "tags": [
+            "クール",
+            "フォーメーション移動"
+          ]
+        }
+      ],
+      "song_tags": [
+        {
+          "id": "B",
+          "tags": [
+            "キュート"
+          ]
+        },
+        {
+          "id": "N",
+          "tags": [
+            "対疲労付与"
+          ]
+        },
+        {
+          "id": "J",
+          "tags": [
+            "疲労回復"
+          ]
+        }
+      ],
+      "attribute_composition": {
+        "クール": 1,
+        "キュート": 3,
+        "ユーモア": 4
+      },
+      "average_base_appeal": 4,
+      "balanceReference": [
+        {
+          "id": 7,
+          "name": "的野美青",
+          "archetypeCwarPer100": 35,
+          "archetypeSamples": 40,
+          "archetypeCI95": [
+            10,
+            60.124999999999886
+          ],
+          "randomCwarPer100": 6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -6.122448979591836,
+            18.388932496075334
+          ]
+        },
+        {
+          "id": 12,
+          "name": "松田里奈",
+          "archetypeCwarPer100": 35,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            16.991666666666667,
+            54.166666666666664
+          ],
+          "randomCwarPer100": 0,
+          "randomSamples": 50,
+          "randomCI95": [
+            -13.73235294117647,
+            12.244897959183673
+          ]
+        },
+        {
+          "id": 19,
+          "name": "田村保乃",
+          "archetypeCwarPer100": 4,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -20,
+            27.083333333333332
+          ],
+          "randomCwarPer100": 2,
+          "randomSamples": 50,
+          "randomCI95": [
+            -12.049999999999997,
+            18
+          ]
+        },
+        {
+          "id": 4,
+          "name": "小島凪紗",
+          "archetypeCwarPer100": -10,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -35.41666666666667,
+            16.666666666666664
+          ],
+          "randomCwarPer100": 1,
+          "randomSamples": 50,
+          "randomCI95": [
+            -13.006632653061224,
+            16.3265306122449
+          ]
+        },
+        {
+          "id": 1,
+          "name": "石森璃花",
+          "archetypeCwarPer100": -14.000000000000002,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            -30,
+            0.049999999999954525
+          ],
+          "randomCwarPer100": -6,
+          "randomSamples": 50,
+          "randomCI95": [
+            -18,
+            6.003061224489793
+          ]
+        },
+        {
+          "id": 40,
+          "name": "河田陽菜",
+          "archetypeCwarPer100": 0,
+          "archetypeSamples": 16,
+          "archetypeCI95": [
+            -37.5,
+            37.5
+          ],
+          "randomCwarPer100": 14.000000000000002,
+          "randomSamples": 50,
+          "randomCI95": [
+            0,
+            28.000000000000004
+          ]
+        },
+        {
+          "id": 41,
+          "name": "森本茉莉",
+          "archetypeCwarPer100": 18,
+          "archetypeSamples": 50,
+          "archetypeCI95": [
+            2,
+            35.43124999999999
+          ],
+          "randomCwarPer100": 26,
+          "randomSamples": 50,
+          "randomCI95": [
+            12,
+            40
+          ]
+        },
+        {
+          "id": 28,
+          "name": "小西夏菜実",
+          "archetypeCwarPer100": 25,
+          "archetypeSamples": 24,
+          "archetypeCI95": [
+            -8.333333333333332,
+            58.333333333333336
+          ],
+          "randomCwarPer100": 3,
+          "randomSamples": 50,
+          "randomCI95": [
+            -11.024999999999999,
+            17
+          ]
+        }
+      ]
+    }
+  ]
+}

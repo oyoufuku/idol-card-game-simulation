@@ -292,7 +292,7 @@ pnpm.cmd simulate -- --mode archetype --generate-only --seed 1 --archetype-selec
 
 `--archetype-selection legacy` で以前の生成方式を比較できます。RANDOM構築は変更していません。カード性能は田村Bの確定変更を含む現行データ共通なので、legacyは旧カード性能の復元ではありません。田村変更前のcheckpointは入力fingerprint不一致で拒否します。新しい出力先で実行してください。再開時は同じ設定＋`--resume`を使い、追加なしの確認には`--max-new-matches 0`を指定します。
 
-ブラウザは開始画面の「CPU・おすすめ配置の思考」で「BURSTを考慮」を選びます。検証用27チームを維持し、構築済み12デッキは[別枠の提案](docs/simulation/constructed-decks-20261013.md)で、役割と旧WARを参考に強さを近づけます。まだ12デッキをUIへ登録していません。
+ブラウザは開始画面の「CPU・おすすめ配置の思考」で「BURSTを考慮」を選びます。検証用27チームを維持し、CLIの構築済み12デッキは[9軸各1＋所属選抜2＋指定8人](docs/simulation/constructed-decks-20261014.md)です。B条件のL1/L2を手動調整の参考にし、9軸だけで48人全員を1〜2回ずつ起用します。新構築の勝率は未検証です。12デッキはUIへ未登録です。
 
 
 ## チャージ軸だけCHARGE、その他はBURST CPU

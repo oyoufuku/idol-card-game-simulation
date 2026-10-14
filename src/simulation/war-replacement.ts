@@ -5,10 +5,15 @@ import { chargeCore,chargeSupportPolicy } from './charge-team-policy';
 import {usesTheme} from './ability-semantics';
 import { META_ARCHETYPE,META_PROFILES,metaConstructionScore } from './meta-teams';
 import { prng,seedFor } from './random';
+import {isConstructedTeam} from './constructed-teams';
 export interface Replacement {id:number|null;tier:string;reason:string;candidates:number[]}
 export function replacementEligible(team:Team,target:number,candidate:number) {
  if(team.members.includes(candidate)||!team.members.includes(target))return false;
  const rest=team.members.filter(id=>id!==target).map(byId),card=byId(candidate),tag=team.mainTags[0];
+ if(isConstructedTeam(team)){
+  if(team.construction?.fixedMembers?.includes(target))return false;
+  if((tag==='櫻坂46'||tag==='日向坂46')&&card.group!==tag)return false;
+ }
  if(tag==='チャージ') {
   if(chargeCore().some(c=>c.id===target)||chargeSupportPolicy(card).excluded.length)return false;
   if(![...rest,card].some(c=>c.C))return false;
@@ -18,7 +23,7 @@ export function replacementEligible(team:Team,target:number,candidate:number) {
   if(team.construction?.profile===META_PROFILES[1]&&new Set([...rest,card].map(c=>c.attr)).size<3)return false;
   if(team.construction?.profile===META_PROFILES[1]&&/PLAIN/.test(byId(target).C||'')&&!/PLAIN/.test(card.C||''))return false;
  } else if(tag){
-  const originalRequired=team.members.map(byId).filter(c=>c.themeTags.includes(tag)&&usesTheme(c,tag)).length,required=team.selectionPolicy==='constructed-decks-20261013-v1'?originalRequired:3;
+  const originalRequired=team.members.map(byId).filter(c=>c.themeTags.includes(tag)&&usesTheme(c,tag)).length,required=isConstructedTeam(team)?originalRequired:3;
   if([...rest,card].filter(c=>c.themeTags.includes(tag)&&usesTheme(c,tag)).length<required)return false;
  }
  if(tag==='多属性'&&new Set([...rest,card].map(c=>c.attr)).size<3)return false;
