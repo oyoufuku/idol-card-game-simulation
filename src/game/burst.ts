@@ -18,6 +18,7 @@ export function getTarget(game: Game, p: Player, opp: Player, kind: keyof Target
   return game.targets[p === game.p1 ? 0 : 1][kind]??(kind==='chargeBack'&&source!==undefined?chargeBackCandidates(p,source)[0]??0:0);
 }
 export function applyBurst(game: Game, p: Player, opp: Player, id: number, forced = false, random = Math.random) {
+  if(game.round>=7&&game.roundResolved)return;
   if (game.burstTask) {
     game.burstChildren!.push({side:p===game.p1?0:1,id,forced,seen:game.burstTask.seen,phase:'burst'});
     return;
@@ -132,6 +133,9 @@ export function checkBurstConditions(game: Game, p: Player, opp: Player, outcome
   if (outcome === 'win') { p.winsStreak++; p.lossStreak = 0; }
   else if (outcome === 'loss') { p.lossStreak++; p.winsStreak = 0; }
   else { p.winsStreak = 0; p.lossStreak = 0; }
+  // R7 has no subsequent performance: no normal condition evaluation, READY
+  // count, or source BURST from which forced/reaction chains could start.
+  if(game.round>=7)return [];
   const eligible:number[]=[];
   p.ids.forEach(id => {
     const st = p.states[id];

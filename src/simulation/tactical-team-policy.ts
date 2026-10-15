@@ -19,7 +19,7 @@ export const TACTICAL_PROFILES:Record<string,Profile[]>={
  ],
  'チャージ':[
   {name:'蓄積中の序盤安定',anchor:11,support:[43,39,40,25,11,22,24]},
-  {name:'投入時のCENTER疲労妨害',anchor:26,support:[43,23,34,26,22,11,20,7]},
+  {name:'投入時の最高疲労回復・付与',anchor:26,support:[43,23,34,26,22,11,20,7]},
   {name:'位置維持支援と妨害',anchor:25,support:[43,39,25,11,23,22,37,7]},
  ],
  'バースト':[

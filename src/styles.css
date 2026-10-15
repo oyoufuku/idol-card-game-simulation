@@ -187,10 +187,14 @@
 .burst-art-foil{position:absolute;inset:0;background:linear-gradient(120deg,transparent 10%,#ffffff77 28%,#fae8be44 42%,#c5e8fb33 55%,transparent 75%);opacity:.7}
 .burst-full-art{border-color:transparent;box-shadow:0 0 0 1px #ecd487,0 0 12px var(--aura-soft),inset 0 0 0 1px #ffffffb3}
 .burst-full-art>.card-nameplate,.burst-full-art>.card-picture,.burst-full-art>.card-identity,.burst-full-art>.card-skill-list{position:relative;z-index:1}
-.burst-full-art .card-nameplate{background:#ffffffe3;border-radius:5px;margin:2px 3px 4px;padding:4px}
+.burst-full-art .card-nameplate{background:transparent;border-radius:5px;margin:2px 3px 4px;padding:4px}
 .burst-full-art .card-picture{background:transparent;border:0}
-.burst-full-art .card-identity{background:#ffffffe0;margin:3px;border-radius:4px}
-.burst-full-art .card-skill-list{background:#ffffffdb;box-shadow:0 1px 4px #1a332b18}
+.burst-full-art .card-identity{background:transparent;margin:3px;border-radius:4px}
+.burst-full-art .card-skill-list{background:transparent;box-shadow:none}
+.burst-full-art .card-nameplate,.burst-full-art .card-identity,.burst-full-art .card-skill-list{color:#fff;text-shadow:0 1px 2px #102019,0 0 3px #102019,0 0 1px #102019}
+.burst-full-art .card-base,.burst-full-art .card-skill>b{color:inherit;background:transparent}
+.burst-full-art .card-skill{border:0}
+.burst-full-art .card-keyword{color:#c2f1ff}
 .full-art-label{align-self:end;justify-self:end;font-size:8px!important;letter-spacing:.1em;font-family:inherit!important;font-weight:850;opacity:1!important;padding:2px 4px;background:#263e34de;color:#fff6cb!important;border:1px solid #efd18b;border-radius:4px}
 .expanded-card .full-art-label{font-size:12px!important;padding:4px 7px}
 @media(prefers-reduced-motion:no-preference){.burst-art-foil{animation:art-foil 4s ease-in-out infinite}}
@@ -347,12 +351,13 @@
 
 /* Five stage cards and three reserves share a size and fit side by side on landscape screens. */
 @media(orientation:landscape) and (min-width:600px){
-  .game-shell{--board-card-width:80px;--stage-card-width:96px}
+  .game-shell{--board-card-width:80px;--stage-card-base-width:96px;--stage-card-width:calc(var(--stage-card-base-width)*1.1)}
   .game-shell .card-board{display:grid;grid-template-columns:minmax(0,1fr) max-content;grid-template-rows:auto auto;gap:4px 12px;width:100%;max-width:none;margin:0 auto;align-items:start}
   .game-shell .card-board{grid-template-rows:auto}
   .game-shell .placement-help{display:none}
   .game-shell .placement-help button{min-height:24px;padding:2px 8px}
-  .game-shell .formation-stage{--board-card-width:var(--stage-card-width);grid-column:1;grid-row:1;grid-template-columns:repeat(5,minmax(var(--board-card-width),1fr));gap:4px;padding:3px 4px 5px}
+  /* Fixed-width columns keep the enlarged cards together; halve the former distributed space. */
+  .game-shell .formation-stage{--board-card-width:var(--stage-card-width);grid-column:1;grid-row:1;grid-template-columns:repeat(5,var(--board-card-width));gap:4px max(2px,calc(10% - var(--stage-card-base-width)/2));justify-content:center;padding:3px 4px 5px}
   .game-shell .reserve-cards,.game-shell .opponent-backs{grid-column:2;grid-row:1;margin:0;min-width:0}
   .game-shell .backs-row{grid-template-columns:repeat(3,var(--board-card-width));gap:4px;padding:0;width:max-content;margin:0}
   .game-shell .backs-row .card-wrap:nth-child(n){grid-column:auto}
@@ -390,8 +395,8 @@
   .game-shell .stage-title .action-dock{position:static;bottom:auto;margin:0;padding:0;border:0;background:none;backdrop-filter:none}
   .game-shell .stage-title .action-dock .primary{width:auto;gap:6px}
 }
-@media(pointer:coarse) and (orientation:landscape) and (min-width:600px){.game-shell{--board-card-width:64px;--stage-card-width:76px}}
-@media(orientation:landscape) and (min-width:600px) and (max-width:750px){.game-shell{--board-card-width:64px;--stage-card-width:72px}}
+@media(pointer:coarse) and (orientation:landscape) and (min-width:600px){.game-shell{--board-card-width:64px;--stage-card-base-width:76px}}
+@media(orientation:landscape) and (min-width:600px) and (max-width:750px){.game-shell{--board-card-width:64px;--stage-card-base-width:72px}}
 
 /* One printed-card template: fixed label column and separate wrapped effects. */
 .idol-card-face{grid-template-rows:9% 42% 6% minmax(0,1fr)}
@@ -401,3 +406,10 @@
 .idol-card-face .card-skill-text{display:block;white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible;-webkit-line-clamp:unset}
 .card-keyword{display:inline;min-height:0!important;border:0!important;border-radius:0;padding:0!important;background:none!important;color:#126d8a;font:inherit!important;text-decoration:underline}
 .rulebook-button{margin-left:auto;font-size:11px;padding:5px 8px;min-height:28px}.shared-rule{padding:10px 0;border-bottom:1px solid #ccd6ce}.shared-rule h3{font-size:15px}.shared-rule p{font-size:13px;line-height:1.7}
+
+/* Fullscreen is explicitly requested by the player; browser controls may also exit it. */
+.fullscreen-control{position:relative;flex-shrink:0;margin-left:auto;margin-right:8px}
+.fullscreen-toggle{min-height:28px;padding:3px 8px;font-size:11px;white-space:nowrap}
+.brand>.fullscreen-control+.playback-settings-panel{margin-left:0}
+.fullscreen-feedback{position:absolute;top:calc(100% + 6px);right:0;z-index:50;display:flex;align-items:flex-start;gap:6px;width:min(280px,75vw);padding:10px;border:1px solid #cdd6ce;border-radius:10px;background:#fff;box-shadow:0 3px 12px #09241e26;font-size:12px;line-height:1.6}
+.fullscreen-feedback button{flex-shrink:0;min-height:24px;padding:0 6px}

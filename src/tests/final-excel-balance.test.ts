@@ -44,7 +44,7 @@ it('中嶋はステージのユーモア3人で成立し、味方ユーモアだ
 });
 it('最新の髙橋・小西・濱岸・松田好花と村井の保護を文面だけでなく実計算で確認する',()=>{
  const g=make([27,28,18,10,24,46,48,9]);g.p1.formation=formationFromArray([48,28,18,27,24]);g.round=2;g.p1.round=2;g.p2.round=2;
- g.p1.songHistory=['クール'];const r=preview(g);expect(r.p1.members.find(m=>m.id===48)!.autoGain).toBe(3);expect(r.p1.members.find(m=>m.id===27)!.autoGain).toBe(2);
+ g.p1.songHistory=['クール'];const r=preview(g);expect(r.p1.members.find(m=>m.id===48)!.autoGain).toBe(2);expect(r.p1.members.find(m=>m.id===27)!.autoGain).toBe(2);
  expect(r.p1.members.find(m=>m.id===28)!.details.join('|')).toContain('小西夏菜実A+1');
  expect(skillFor(46).autoAppeal!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(2);g.roundSong=songById('B');expect(skillFor(46).autoAppeal!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(0);
  g.p1.states[46].repeatedSongAutos=1;expect(skillFor(46).condition!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(false);g.p1.states[46].repeatedSongAutos=2;expect(skillFor(46).condition!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(true);

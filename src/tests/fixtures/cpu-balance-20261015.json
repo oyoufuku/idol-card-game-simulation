@@ -1,0 +1,232 @@
+[
+  {
+    "round": 1,
+    "strategy": "normal",
+    "calls": 25,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 9,
+        "FRONT-R": 44,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 43
+      },
+      "total": 20,
+      "opponentTotal": 25,
+      "points": 0,
+      "outcome": -1,
+      "difference": -5,
+      "fatigue": 9,
+      "checked": 120
+    }
+  },
+  {
+    "round": 1,
+    "strategy": "charge",
+    "calls": 14,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 9,
+        "FRONT-R": 44,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 43
+      },
+      "total": 20,
+      "opponentTotal": 25,
+      "points": 0,
+      "outcome": -1,
+      "difference": -5,
+      "fatigue": 9,
+      "utility": -14.37,
+      "futureValue": 3.6,
+      "recoverable": true,
+      "finalOutcome": -1,
+      "checked": 120
+    }
+  },
+  {
+    "round": 4,
+    "strategy": "normal",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 21,
+      "opponentTotal": 21,
+      "points": 0,
+      "outcome": 0,
+      "difference": 0,
+      "fatigue": 15,
+      "checked": 120
+    }
+  },
+  {
+    "round": 4,
+    "strategy": "charge",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 21,
+      "opponentTotal": 21,
+      "points": 0,
+      "outcome": 0,
+      "difference": 0,
+      "fatigue": 15,
+      "utility": 3.3,
+      "futureValue": 4.5,
+      "recoverable": true,
+      "finalOutcome": 0,
+      "checked": 120
+    }
+  },
+  {
+    "round": 5,
+    "strategy": "normal",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 23,
+      "opponentTotal": 17,
+      "points": 1,
+      "outcome": 1,
+      "difference": 6,
+      "fatigue": 15,
+      "checked": 120
+    }
+  },
+  {
+    "round": 5,
+    "strategy": "charge",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 23,
+      "opponentTotal": 17,
+      "points": 1,
+      "outcome": 1,
+      "difference": 6,
+      "fatigue": 15,
+      "utility": 19.2,
+      "futureValue": 2.6999999999999997,
+      "recoverable": true,
+      "finalOutcome": 1,
+      "checked": 120
+    }
+  },
+  {
+    "round": 6,
+    "strategy": "normal",
+    "calls": 25,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 9,
+        "FRONT-R": 44,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 43
+      },
+      "total": 20,
+      "opponentTotal": 26,
+      "points": 0,
+      "outcome": -1,
+      "difference": -6,
+      "fatigue": 17,
+      "checked": 120
+    }
+  },
+  {
+    "round": 6,
+    "strategy": "charge",
+    "calls": 10,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 43,
+        "FRONT-R": 17,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 9
+      },
+      "total": 19,
+      "opponentTotal": 28,
+      "points": 0,
+      "outcome": -1,
+      "difference": -9,
+      "fatigue": 17,
+      "utility": -11.41,
+      "futureValue": 9,
+      "recoverable": true,
+      "finalOutcome": -1,
+      "checked": 120
+    }
+  },
+  {
+    "round": 7,
+    "strategy": "normal",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 23,
+      "opponentTotal": 17,
+      "points": 2,
+      "outcome": 1,
+      "difference": 6,
+      "fatigue": 15,
+      "checked": 120
+    }
+  },
+  {
+    "round": 7,
+    "strategy": "charge",
+    "calls": 5,
+    "evaluation": {
+      "formation": {
+        "CENTER": 45,
+        "FRONT-L": 38,
+        "FRONT-R": 32,
+        "MIDDLE-L": 13,
+        "MIDDLE-R": 44
+      },
+      "total": 23,
+      "opponentTotal": 17,
+      "points": 2,
+      "outcome": 1,
+      "difference": 6,
+      "fatigue": 15,
+      "utility": 28.5,
+      "futureValue": 0,
+      "recoverable": true,
+      "finalOutcome": 1,
+      "checked": 120
+    }
+  }
+]

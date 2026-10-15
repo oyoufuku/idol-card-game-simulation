@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {SharedRulebook} from './components/SharedRulebook';
+import { FullscreenButton } from './components/FullscreenButton';
 import type { Game } from './game/types';
 import { burstTargetKind, burstTargetOptions, resolveNextBurst } from './game/burst';
 import { effectsFor } from './game/effects';
@@ -68,7 +69,7 @@ export default function App() {
   const attributePlayers = prediction && 'players' in prediction ? prediction.players : undefined;
   const inspectedAppeal = inspect && prediction?.[inspect.side === 0 ? 'p1' : 'p2']?.members.find(m => m.id === inspect.id);
   return <main className={`${game ? 'game-shell' : 'setup-shell'}${autoAdvance?'':' manual-playback-mode'}${playback.active?' skill-playback-mode':''}`} onKeyDown={e => { if (e.key === 'Escape' && inspect?.kind === 'card') setInspect(null); }}>
-    <header className="brand"><div><span className="eyebrow">IDOL CARD GAME</span><h1>ステージを、つくろう。</h1><SharedRulebook/></div><details className="playback-settings-panel"><summary>演出設定</summary><PlaybackSettings autoAdvance={autoAdvance} onChange={setAutoAdvance}/><small>OFF：メッセージ・BURSTは「次へ」で進みます。</small></details><span className="version">v0.8</span></header>
+    <header className="brand"><div><span className="eyebrow">IDOL CARD GAME</span><h1>ステージを、つくろう。</h1><SharedRulebook/></div><FullscreenButton/><details className="playback-settings-panel"><summary>演出設定</summary><PlaybackSettings autoAdvance={autoAdvance} onChange={setAutoAdvance}/><small>OFF：メッセージ・BURSTは「次へ」で進みます。</small></details><span className="version">v0.8</span></header>
     <p className="orientation-hint">スマートフォンは横向きにすると、カードと操作パネルを並べて表示できます。</p>
     {!game ? <><p className="intro">8人のアイドルと3枚の楽曲で、7ラウンドのステージへ。</p><Setup onStart={g => { setGame(g); setSide(0); setError(''); }}/></> : own && opponent && <>
       <SkillPlaybackStatus game={game} playback={playback} onAutoAdvanceChange={setAutoAdvance}/>{burstAnimating&&<BurstNotice game={game} onComplete={finishBurst} autoAdvance={autoAdvance} onAutoAdvanceChange={setAutoAdvance}/>}<div className="match-strip" key={`score-${game.round}-${game.p1.points}-${game.p2.points}`}><span>ROUND <b>{game.round}</b> / 7 {game.round === 7 && 'ENCORE'}</span><strong>{game.p1.label} {game.p1.points} <span>—</span> {game.p2.points} {game.p2.label}</strong></div>

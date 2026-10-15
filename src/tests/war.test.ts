@@ -10,9 +10,10 @@ import { cpuSearchConfiguration } from '../game/cpu-search';
 import { IDOLS } from '../data/idols';
 import { runMatch,mirror,type MatchResult,type MatchSpec } from '../simulation/match';
 import { generateArchetypes,randomTeam,constructionScore } from '../simulation/teams';
-import { randomSchedule,archetypeSchedule } from '../simulation/schedule';
+import {CHARGE_POLICY} from '../simulation/charge-cpu';
+import { randomSchedule,archetypeSchedule,withStrategies } from '../simulation/schedule';
 import { INPUT_FINGERPRINT } from '../simulation/input-fingerprint';
-import { buildWarPlan,replaceCards,hash,type WarOptions } from '../simulation/war-plan';
+import { buildWarPlan,replaceCards,hash,validateBaseline,type WarOptions } from '../simulation/war-plan';
 import { chooseReplacement,replacementEligible } from '../simulation/war-replacement';
 import { executeWarPlan,compactWarResult,type WarResult } from '../simulation/war-runner';
 import { bootstrap95,summarizeWar } from '../simulation/war-statistics';
@@ -53,6 +54,18 @@ it('sampling/代替/ジョブ計画は同seedで一致し、ペアは異なる2�
  const bad={...baselines[0],inputFingerprint:'old'};expect(()=>buildWarPlan([bad],opts)).toThrow('fingerprint');
  expect(()=>buildWarPlan([{...baselines[0],cpuStrategies:['charge','normal']}],opts)).toThrow('strategy');
  expect(()=>buildWarPlan([{...baselines[0],roundAppeals:[]}],opts)).toThrow('seven');
+});
+it('旧CHARGE baselineを新policyのWARへ利用せず、通常CPU baselineは互換に保つ',()=>{
+ const normal=synthetic(spec());expect(()=>validateBaseline(normal,{})).not.toThrow();
+ const current=withStrategies([spec()],'charge')[0],baseline=synthetic(current);
+ expect(()=>validateBaseline(baseline,{})).not.toThrow();
+ for(const cpuPolicy of ['charge-v1',undefined]){
+  const old={...baseline,spec:{...current,cpuPolicy}};
+  if(cpuPolicy===undefined)delete old.spec.cpuPolicy;
+  expect(()=>validateBaseline(old,{})).toThrow('policy mismatch');
+  expect(()=>runMatch(old.spec)).toThrow('policy mismatch');
+ }
+ expect(current.cpuPolicy).toBe(CHARGE_POLICY);
 });
 it('RANDOMとARCHETYPEのWARを合算せずsynergyDependencyはper100の差、roundは本体得点を使う',()=>{
  const r=spec();r.b.members=r.b.members.map(id=>id===1?16:id);const a={...spec('archetype'),a:{...r.a,archetype:'RANDOM',mainTags:[]}},baselines=[synthetic(r,'B'),synthetic(a,'A')],plan=buildWarPlan(baselines,{...options,samplesPerCard:1,ablations:['BURST']});

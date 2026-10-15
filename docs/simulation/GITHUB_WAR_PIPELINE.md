@@ -34,9 +34,9 @@ runtime_minutes: 300
 
 ## 構築済み12デッキ
 
-`docs/simulation/constructed-decks-20261014.md`の「9軸各1デッキ＋櫻坂選抜＋日向坂選抜＋指定8人」の12デッキを使用する。9軸の72枠だけで48人全員を1〜2回ずつ起用する。メンバー8人・選択曲3曲は対戦中に変更しない。同一デッキ戦を含む78組を各50試合、mirror込みで実行するため、ARCHETYPEは3,900試合になる。RANDOMは別に1,000試合を実行する。
+`docs/simulation/constructed-decks-20261015.md`の「9軸各1デッキ＋櫻坂選抜＋日向坂選抜＋指定8人」の12デッキを使用する。9軸の72枠だけで48人全員を1〜2回ずつ起用する。メンバー8人・選択曲3曲は対戦中に変更しない。同一デッキ戦を含む78組を各50試合、mirror込みで実行するため、ARCHETYPEは3,900試合になる。RANDOMは別に1,000試合を実行する。
 
-CPUは「チャージ・序盤安定」だけCHARGE CPU、ほか11デッキとRANDOMは通常CPUを使う。BURST CPUは使わない。旧12デッキのArtifactとは構築仕様・予定試合hashが異なるため再開できない。新しいbaselineを別runとして開始する。
+CPUは「チャージ・序盤安定」だけCHARGE CPU（`charge-v2-effective-value`）、ほか11デッキとRANDOMは通常CPUを使う。BURST CPUは使わない。旧12デッキのArtifactとは構築仕様・予定試合hashが異なるため再開できない。新しいbaselineを別runとして開始する。
 
 ```text
 scenario: CUSTOM
@@ -100,3 +100,5 @@ war_pairs: 任意。例 1:7,7:25
 
 段階を飛ばした実行、別commitや別試合条件のArtifact、破損・改変されたArtifactは開始前に拒否する。
 
+
+2026-10-15追記：平尾AUTOの最高疲労対象化とR7終了時の新規BURST廃止により、カード/ルールfingerprintは旧測定と変わる。旧結果へ再開せず新規baselineから開始する。BURST率からR7終了時の発動が除かれるため、旧率との単純比較で効果の強弱を判断しない。測定開始は現在保留中で、PRマージだけでは起動しない。

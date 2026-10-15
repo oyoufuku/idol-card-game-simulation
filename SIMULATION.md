@@ -134,6 +134,16 @@ CPU・仕様の確認結果と性能上の注意は [ローカル実行整備の
 
 指定しなければ従来の通常CPUです。ブラウザーのCPU・おすすめ配置も通常CPUのままです。
 
+現在のCHARGE policyは `charge-v2-effective-value`。通常CPU・BURST CPU・カード性能は変更せず、シミュレーション専用のCHARGEだけを改善しています。
+
+- チャージあり/0の実previewのAppeal差で、公開済み状態で有効な投入価値を測る。免疫・Appeal下限・現在疲労で効かない場合の最低加点は廃止。
+- BACKS蓄積とBURST回復は終了時の在庫として1回だけ評価。投入・復帰自体の固定加点を廃止。
+- R1〜R4は在庫価値を重く、R5は温存を割り引き、R6はR7に投入できる在庫だけを評価。ステージにいる在庫はBACKSで休む1ラウンドが必要とする。
+- 未使用の通常Bで再回復でき、残り時間に2回投入できる場合だけ、小さな再利用価値を評価。強制BURSTを都合よく予測して加点しない。
+- 将来加点は最大9（現在1得点の評価は12）。R7終了後の価値は0。数学的に逆転不能になる候補の回避とR7の予測最終勝敗を優先する。
+
+これは公開済みの配置・現在曲による限界価値の目安で、未知の相手配置や曲順を読まない。同じラウンド内のカード間で効果が重複する場合の将来価値は近似であり、今回のAppealと各試合の結果は共有engineで確定する。R5/R6/R7の出し入れを固定せず、得点状況と実効価値で選ぶ。CHARGE側の配置・試合結果は旧版と変わるため、旧policyのcheckpoint/基準試合を新policyのWARへ再利用せず、新しい出力先で測定する。
+
 全チームにCHARGE戦略を指定（チャージ消費型を含まないチームは通常CPUへ戻ります）：
 
 ```powershell
@@ -239,7 +249,7 @@ K「ジャマイカビール」とS「NO WAR in the future」はBURST専用の�
 
 ## WARによる勝利貢献度の分析
 
-実在カードとのpaired比較を、基本診断→RANDOM→指定カード詳細の3段階で実行できます。詳細は [WAR分析のWindows手順](docs/simulation/WAR.md) を参照してください。既存checkpointを使う `--war-only` はbaselineを再実行しません。通常CPU・CHARGE CPU・カード性能の変更はありません。
+実在カードとのpaired比較を、基本診断→RANDOM→指定カード詳細の3段階で実行できます。詳細は [WAR分析のWindows手順](docs/simulation/WAR.md) を参照してください。既存checkpointを使う `--war-only` はbaselineを再実行しません。WARの有効化自体はCPU・カード性能を変更しません。
 
 ## 文言統一Excelと構築更新（2026-10-10・履歴）
 
@@ -262,7 +272,7 @@ generate-onlyを含む出力に `catalog-snapshot.json`（実入力48人・22曲
 
 ## BURSTを考慮するCPUと起用分散（2026-10-13）
 
-通常CPU・CHARGE CPUの判断方式は維持しています。`burst` は本番engineで今回の終了処理・BURSTを予測し、次回の公開楽曲候補と限定した合法配置を評価する別戦略です。相手の未確定配置・非公開の曲順は読みません。R7終了後のBURST価値は0です。通常より計算が重く、実際の勝率を保証する予測ではありません。
+BURST CPUの追加自体は通常CPU・CHARGE CPUの判断方式を変更しません。`burst` は本番engineで今回の終了処理・BURSTを予測し、次回の公開楽曲候補と限定した合法配置を評価する別戦略です。相手の未確定配置・非公開の曲順は読みません。R7終了後のBURST価値は0です。通常より計算が重く、実際の勝率を保証する予測ではありません。
 
 まず1試合だけ：
 
@@ -292,7 +302,7 @@ pnpm.cmd simulate -- --mode archetype --generate-only --seed 1 --archetype-selec
 
 `--archetype-selection legacy` で以前の生成方式を比較できます。RANDOM構築は変更していません。カード性能は田村Bの確定変更を含む現行データ共通なので、legacyは旧カード性能の復元ではありません。田村変更前のcheckpointは入力fingerprint不一致で拒否します。新しい出力先で実行してください。再開時は同じ設定＋`--resume`を使い、追加なしの確認には`--max-new-matches 0`を指定します。
 
-ブラウザは開始画面の「CPU・おすすめ配置の思考」で「BURSTを考慮」を選びます。検証用27チームを維持し、CLIの構築済み12デッキは[9軸各1＋所属選抜2＋指定8人](docs/simulation/constructed-decks-20261014.md)です。B条件のL1/L2を手動調整の参考にし、9軸だけで48人全員を1〜2回ずつ起用します。新構築の勝率は未検証です。12デッキはUIへ未登録です。
+ブラウザは開始画面の「CPU・おすすめ配置の思考」で「BURSTを考慮」を選びます。検証用27チームを維持し、CLIの構築済み12デッキは[9軸各1＋所属選抜2＋指定8人](docs/simulation/constructed-decks-20261015.md)です。旧構築のL1/L2/L3を手動調整の参考にし、9軸だけで48人全員を1〜2回ずつ起用します。新構築の勝率は未検証です。12デッキはUIへ未登録です。
 
 
 ## チャージ軸だけCHARGE、その他はBURST CPU
@@ -301,7 +311,7 @@ pnpm.cmd simulate -- --mode archetype --generate-only --seed 1 --archetype-selec
 pnpm.cmd simulate -- --mode archetype --matches-per-matchup 10 --cpu-strategy burst-charge-archetype --seed 1 --out simulation-results/archetype-burst-charge
 ```
 
-`burst-charge-archetype` はチームごとに判定し、チャージ軸だけ既存CHARGE CPU、その他8軸はBURST CPUを使います。チャージ同士は両方CHARGE、mirrorでもチームに対応するCPUを維持します。CPU自体の評価式は変更しません。RANDOMにはチャージ軸の指定がないため、RANDOM側は全チームBURST CPUです。
+`burst-charge-archetype` はチームごとに判定し、チャージ軸だけ既存CHARGE CPU、その他8軸はBURST CPUを使います。チャージ同士は両方CHARGE、mirrorでもチームに対応するCPUを維持します。この選択オプション自体はCPU評価式を変更せず、現在の各policyを選びます。RANDOMにはチャージ軸の指定がないため、RANDOM側は全チームBURST CPUです。
 
 探索設定は両CPU共通で、既定は二段階100候補です。以前のCHARGEが全候補評価だった場合、この既定では探索精度が異なります。同じ精度で比較するときは以前と同じ `--cpu-search` と `--preview-candidates` を明示してください。`--cpu-search exhaustive` で両方を全候補評価できますが、BURST CPUの全候補評価は非常に重くなります。
 
@@ -342,3 +352,9 @@ pnpm.cmd simulate -- --war-only --random-card-war --war-exclude-selection-decks 
 ```
 
 Actionsでconstructedを選んだL1/L2/L3には、この除外設定が自動で付与されます。除外対象・対象試合数は `summary.json` の `warScope` に記録します。旧カード結果とはfingerprintが変わるため、新しい出力先を使ってください。
+
+## 2026-10-15の追加確定ルール
+
+平尾AUTOは消費チャージ分、両軍8人の最高疲労の1人へ味方回復・相手付与（同率は各チームでランダム）。抽選乱数はカード別に開始時予約し、繰り返しのpreviewと実処理で同じ対象を使います。R7終了時には条件判定・通常/強制/反応BURSTを行いません。R6までのBURST効果はR7中に有効です。ルール版は `reviewed-burst-20261015-v3`、CHARGE policyは `charge-v2-effective-value`。旧結果は混在させず、新規baselineから測定します。
+
+本測定はユーザーの開始指示まで保留。構築3900試合＋RANDOM1000試合を並行し、その後L1・L2まで進める条件は維持しますが、PRのマージだけでは測定を起動しません。

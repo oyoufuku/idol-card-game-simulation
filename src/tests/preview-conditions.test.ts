@@ -104,7 +104,7 @@ it.each([false,true])('村井の登場免疫は石塚BのFRONT位置ボーナス
  expect(coarse(game).total).toBe(prediction.p1.total);verifyExecution(game);
 });
 
-it.each([[1,0,0,3],[2,0,3,3],[2,1,3,0],[2,2,0,0]] as const)('松田好花はR%i・BURST人数%iでA=%i/C=%iを予測する',(round,count,a,c)=>{
+it.each([[1,0,0,3],[2,0,2,3],[2,1,2,0],[2,2,0,0]] as const)('松田好花はR%i・BURST人数%iでA=%i/C=%iを予測する',(round,count,a,c)=>{
  const game=make();game.round=game.p1.round=game.p2.round=round;isolate(game,48);game.roundSong=songById('I');
  game.p1.formation=formationFromArray([48,10,18,24,27]);
  // Cumulative activations / normal-used are deliberately high and unrelated.
@@ -120,7 +120,7 @@ it.each([[1,0,0,3],[2,0,3,3],[2,1,3,0],[2,2,0,0]] as const)('松田好花はR%i�
 it('JOYFUL LOVEの解除後のBURST人数を松田好花A/Cへ反映する',()=>{
  const game=make();secondRound(game);isolate(game,48);game.p1.formation=formationFromArray([48,10,18,24,27]);
  game.p1.states[9].burstActive=game.p2.states[32].burstActive=true;game.p1.states[9].burstStacks=game.p2.states[32].burstStacks=1;game.roundSong=songById('V');
- const prediction=preview(game);expect(prediction.p1.members.find(m=>m.id===48)!.val).toBe(11);
+ const prediction=preview(game);expect(prediction.p1.members.find(m=>m.id===48)!.val).toBe(10);
  expect(game.p1.states[9].burstActive).toBe(true);expect(coarse(game).total).toBe(prediction.p1.total);verifyExecution(game);
 });
 

@@ -4,9 +4,9 @@ import { executeRound,preview } from '../game/engine';
 import { calculationContext } from '../game/context';
 import { prng } from '../simulation/random';
 import { optimizationCases } from './helpers/engine-optimization-cases';
-import baseline from './fixtures/engine-reviewed-burst-20261014.json';
+import baseline from './fixtures/engine-balance-20261015.json';
 import { runMatch } from '../simulation/match';
-import matches from './fixtures/matches-reviewed-burst-20261014.json';
+import matches from './fixtures/matches-balance-20261015.json';
 import type {MatchSpec} from '../simulation/match';
 
 const digest=(value:unknown)=>createHash('sha256').update(JSON.stringify(value,(_key,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.entries(item).sort(([a],[b])=>a.localeCompare(b))):item)).digest('hex');
@@ -18,7 +18,7 @@ it('予測用の説明省略は全44盤面でAppeal・終了状態・BURST・演
   expect(values(a),full[index].name).toEqual(values(b));expect([game.p1,game.p2],full[index].name).toEqual([other.p1,other.p2]);expect(game.skillEffects).toEqual(other.skillEffects);
  }
 });
-it('全22曲44盤面は20261014確定カード変更後の基準と一致する',()=>{
+it('全22曲44盤面は20261015の好花A・石塚B変更後の基準と一致する',()=>{
  const cases=optimizationCases();expect(cases).toHaveLength(baseline.length);
  for(const [{name,game},index] of cases.map((scenario,index)=>[scenario,index] as const)){
   const normal=preview(game),compact=preview(game,game.p1.formation,game.p2.formation,false);

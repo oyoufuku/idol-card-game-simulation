@@ -29,7 +29,7 @@ export interface IdolState {
 }
 export interface Player {
   cuteOnly?:boolean; coolOnly?:boolean; burstRounds?:number[];
-  performanceRandom?:number[]; performanceBurstCount?:number; backGroupStreak?:number; previousBackIds?:number[];
+  performanceRandom?:number[]; performanceRandomById?:Record<number,readonly number[]>; performanceBurstCount?:number; backGroupStreak?:number; previousBackIds?:number[];
   songHistory: Attribute[]; noBurstStreak: number; burstBackCandidates: number[];
   label: string; ids: number[]; songs: string[]; points: number; totalAppeal: number;
   states: Record<number, IdolState>; formation: Formation; winsStreak: number; lossStreak: number;

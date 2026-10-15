@@ -69,10 +69,10 @@ it('CLI一括処理と人間側の1枚ずつ処理は同seed・同対象で7ラ�
  }
  expect(a.done).toBe(true);
 });
-it('CPUは対象選択を待たず、R7終了時のBURSTも確定得点と最終勝敗を変えない',()=>{
+it('R7終了時にはBURSTせず、条件成立でも疲労回復・READY加算・対象選択を行わない',()=>{
  const g=make(true);g.cpuBoth=true;g.round=7;g.p1.round=7;g.p2.round=7;g.p1.states[2].fatigue=3;g.p1.states[2].fatigueTwoEnds=1;
  executeRound(g);const score=[g.p1.points,g.p2.points,g.result!.final];resolvePendingBursts(g,()=>.5);
- expect(g.p1.states[2].burstActive).toBe(true);expect([g.p1.points,g.p2.points,g.result!.final]).toEqual(score);expect(g.pendingBursts).toEqual([]);
+ expect(g.p1.states[2].burstActive).toBe(false);expect(g.p1.states[2].burstCount).toBe(0);expect(g.p1.states[2].stats.ready).toBe(0);expect(g.p1.states[2].fatigue).toBeGreaterThan(0);expect([g.p1.points,g.p2.points,g.result!.final]).toEqual(score);expect(g.pendingBursts).toEqual([]);
 });
 it('小田倉の終了時Bは次の予測・実パフォーマンスへクール追加とAUTO-5を反映し、その終了時に解除する',()=>{
  const g=make(false,[3,8,10,18,24,27,28,30],[1,3,5,17,19,21,23,25]);

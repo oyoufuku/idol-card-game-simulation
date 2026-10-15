@@ -5,7 +5,7 @@ import { evaluateBurstFormation,type BurstEvaluation } from '../game/burst-cpu';
 import { prng, seedFor } from './random';
 import type { Team } from './teams';
 import type { Player, Formation } from '../game/types';
-import { evaluateChargeFormation,type CpuStrategy } from './charge-cpu';
+import { evaluateChargeFormation,assertChargePolicy,type CpuStrategy } from './charge-cpu';
 import { chargeBefore,chargeRoundTrace,traceFormationPosition,type ChargeRound } from './charge-trace';
 import { INPUT_FINGERPRINT } from './input-fingerprint';
 import { cpuSearchConfiguration,type CpuSearchOptions } from '../game/cpu-search';
@@ -21,6 +21,7 @@ export function assertFinite(value:unknown,path='result'):void{
  if(value&&typeof value==='object')for(const [k,v] of Object.entries(value))assertFinite(v,`${path}.${k}`);
 }
 export function runMatch(spec:MatchSpec,options:MatchOptions={}):MatchResult{
+ assertChargePolicy(spec);
  const fast=!!options.fastSimulation,search=cpuSearchConfiguration(options.cpuSearch??(spec.cpuStrategies?.includes('burst')?{mode:'two-stage',previewCandidates:100}:{}));
  const rng=prng(seedFor(spec.seed,'engine')), first=spec.mirror?spec.b:spec.a,second=spec.mirror?spec.a:spec.b;
  const deck=shuffle([...spec.a.songs,...spec.b.songs],prng(seedFor(spec.seed,'deck')));

@@ -2,10 +2,11 @@ import { expect,it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { clonePlayer,createGame,executeRound } from '../game/engine';
 import { formationFromArray,posOf,validateFormation } from '../game/formation';
+import {setAnalysisSkillMasks} from '../game/analysis-skills';
 import { evaluateCpuFormation } from '../game/cpu';
 import { songById } from '../data/songs';
 import { IDOLS } from '../data/idols';
-import { evaluateChargeFormation,chargeUtility,chargeConsumers } from '../simulation/charge-cpu';
+import { evaluateChargeFormation,chargeUtility,chargeConsumers,chargeEntryValue,chargeInventoryFuture,assertChargePolicy,CHARGE_POLICY } from '../simulation/charge-cpu';
 import { chargeBefore,chargeRoundTrace } from '../simulation/charge-trace';
 import { generateArchetypes } from '../simulation/teams';
 import { generateMetaArchetypes } from '../simulation/meta-teams';
@@ -24,12 +25,15 @@ function scenario(round:number){
  for(const id of [32,38,44]){const s=g.p1.states[id];s.charge=round===1?0:round===4?3:5;if(round===6){s.prevPos='FRONT-L';s.normalUsed=true;s.burstCount=1;s.lastSpentCharge=4;}}
  g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];return g;
 }
-it('R1は3人をBACKS、R5は投入、R6は回復後に戻し、R7で再投入する。通常CPUとは異なる',()=>{
+it('有効チャージを蓄積・投入・再温存し、R4も引分を取れる場合は早期投入する',()=>{
  for(const round of [1,4,5,6,7]){
   const g=scenario(round),before=structuredClone(g),charge=evaluateChargeFormation(g,1,prng(1));expect(g).toEqual(before);expect(validateFormation(g.p1,charge.formation)).toBeNull();expect(charge.checked).toBe(120);
   const stage=Object.values(charge.formation).filter(id=>chargeConsumers(g.p1).includes(id));
-  if(round===1||round===6)expect(stage).toHaveLength(0);if(round===4)expect(stage.length).toBeLessThan(3);if(round===5||round===7)expect(stage).toHaveLength(3);
-  if(round===1)expect(charge.formation).not.toEqual(evaluateCpuFormation(g,1,prng(1)).formation);
+  if(round===1||round===6){expect(stage).not.toContain(32);expect(stage).not.toContain(38);expect(stage.length).toBeLessThanOrEqual(1);}
+  if(round===4){expect(stage).toHaveLength(3);expect(charge.outcome).toBe(0);}
+  if(round===5)expect(stage).toEqual(expect.arrayContaining([32,38]));
+  if(round===7){expect(stage).toHaveLength(3);expect('futureValue' in charge&&charge.futureValue).toBe(0);}
+  if(round===6)expect(charge.formation).not.toEqual(evaluateCpuFormation(g,1,prng(1)).formation);
  }
 },20000);
 it('CHARGEも公開状態だけを参照し、同seed再現・同評価の選択に非seed乱数を使わない',()=>{
@@ -41,10 +45,52 @@ it('R6で予測敗北が数学的に確定する候補はチャージ温存よ�
  const g=scenario(6);g.p1.points=0;g.p2.points=3;for(const id of g.p2.ids)g.p2.states[id].fatigue=7;g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];
  const evaluation=evaluateChargeFormation(g,1,prng(1));expect('recoverable' in evaluation&&evaluation.recoverable).toBe(true);expect(evaluation.outcome).toBeGreaterThanOrEqual(0);
 },20000);
-it('固定された現在得点と将来価値の重みは、R6の復帰・R5/R7の投入を評価する',()=>{
- const current={formation:formationFromArray([1,2,3,4,5]),total:10,opponentTotal:10,points:0,outcome:0,difference:0,fatigue:0},empty={stored:0,reserve:0,backGain:0,entered:0,returned:0,burst:0};
- expect(chargeUtility(6,current,{...empty,returned:3}).utility).toBeGreaterThan(chargeUtility(6,current,empty).utility);
- expect(chargeUtility(5,current,{...empty,entered:3}).futureValue).toBeGreaterThan(chargeUtility(7,current,{...empty,entered:3}).futureValue);
+it('将来チャージ加点は1得点未満に制限し、投入・復帰の行動自体やR7終了後へ加点しない',()=>{
+ const current={formation:formationFromArray([1,2,3,4,5]),total:10,opponentTotal:10,points:0,outcome:0,difference:0,fatigue:0},empty={stored:0,reuse:0};
+ expect(chargeUtility(4,current,{stored:10,reuse:0}).futureValue).toBe(9);
+ expect(chargeUtility(6,current,{stored:1000,reuse:1000}).futureValue).toBe(9);
+ const actionOnly={...empty,entered:100,returned:100,backGain:100};
+ expect(chargeUtility(5,current,actionOnly).futureValue).toBe(0);
+ expect(chargeUtility(7,current,{stored:1000,reuse:1000}).futureValue).toBe(0);
+ expect(chargeUtility(5,current,{stored:5,reuse:0}).futureValue).toBeLessThan(chargeUtility(4,current,{stored:5,reuse:0}).futureValue);
+ const win={...current,points:1,outcome:1,difference:1},loss={...current,outcome:-1,difference:-1};
+ expect(chargeUtility(4,win,empty).utility).toBeGreaterThan(chargeUtility(4,loss,{stored:1000,reuse:1000}).utility);
+});
+it('次回投入の限界価値は免疫・Appeal下限・現在疲労を実previewで評価し、最低価値を捏造しない',()=>{
+ const g=scenario(5),before=structuredClone(g);
+ expect(chargeEntryValue(g,1,32,5)).toBeGreaterThan(0);expect(g).toEqual(before);
+ for(const id of g.p2.ids)g.p2.states[id].shield=true;
+ expect(chargeEntryValue(g,1,38,5)).toBe(0);
+ const floor=scenario(5);
+ for(const p of [floor.p1,floor.p2])setAnalysisSkillMasks(p,p.ids.filter(id=>id!==38).map(id=>({id,kind:'ALL' as const})));
+ for(const id of floor.p2.ids){floor.p2.states[id].permBonus=-IDOLS[id-1].base;floor.p2.states[id].fatigue=20;}
+ expect(chargeEntryValue(floor,1,38,5)).toBe(0);
+ // No recovery at own fatigue 0, and opposing immunity blocks added fatigue.
+ const h=scenario(5);for(const p of [h.p1,h.p2])for(const id of p.ids)p.states[id].fatigue=0;
+ for(const id of h.p2.ids)h.p2.states[id].shield=true;
+ expect(chargeEntryValue(h,1,44,5)).toBe(0);
+ // Adding fatigue can still matter at opposing fatigue 0 once immunity is off.
+ for(const id of h.p2.ids)h.p2.states[id].shield=false;
+ expect(chargeEntryValue(h,1,44,5)).toBeGreaterThan(0);
+
+});
+it('最終投入に間に合う在庫だけ評価し、使用済みBを再回復の予約価値へ数えない',()=>{
+ const p=scenario(5).p1;p.states[32].normalUsed=false;
+ expect(chargeInventoryFuture(5,p,[32],(_id,n)=>n)).toEqual({stored:5,reuse:1.25});
+ p.states[32].normalUsed=true;
+ expect(chargeInventoryFuture(5,p,[32],(_id,n)=>n)).toEqual({stored:5,reuse:0});
+ expect(chargeInventoryFuture(6,p,[32],(_id,n)=>n)).toEqual({stored:5,reuse:0});
+ p.formation.CENTER=32;
+ expect(chargeInventoryFuture(6,p,[32],(_id,n)=>n)).toEqual({stored:0,reuse:0});
+ expect(chargeInventoryFuture(7,p,[32],()=>{throw Error('no future');})).toEqual({stored:0,reuse:0});
+});
+it('旧CHARGE policy・policy欠落を拒否し、通常CPUと新CHARGE/BURST混成policyを許す',()=>{
+ expect(()=>assertChargePolicy({})).not.toThrow();
+ expect(()=>assertChargePolicy({cpuStrategies:['charge','normal']})).toThrow('policy mismatch');
+ expect(()=>assertChargePolicy({cpuStrategies:['charge','normal'],cpuPolicy:'charge-v1'})).toThrow('policy mismatch');
+ expect(()=>assertChargePolicy({cpuStrategies:['normal','normal'],cpuPolicy:'charge-v1'})).toThrow('policy mismatch');
+ expect(()=>assertChargePolicy({cpuStrategies:['charge','normal'],cpuPolicy:CHARGE_POLICY})).not.toThrow();
+ expect(()=>assertChargePolicy({cpuStrategies:['charge','burst'],cpuPolicy:CHARGE_POLICY+'+burst-public-v1'})).not.toThrow();
 });
 it('候補内のチャージBURSTと松田の反応抽選は、本試合の乱数ストリームを消費しない',()=>{
  const g=createGame([32,38,44,43,45,13,9,8],[10,14,18,25,26,27,28,30],['L','J','C'],['A','B','C'],'local',()=>.5);

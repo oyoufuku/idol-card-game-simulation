@@ -12,7 +12,7 @@ import { calcBoth } from './appeal';
 import { skillFor } from './skills';
 import { finalResult, scoreRound } from './scoring';
 import { effectsFor } from './effects';
-export const GAME_RULE_VERSION='reviewed-burst-20261014-v2';
+export const GAME_RULE_VERSION='reviewed-burst-20261015-v3';
 export function stateFor(id: number): IdolState {
   return { charge: 0, spentCharge: 0, lastSpentCharge: 0, samePositionStreak: 0, positionCounts: {}, symmetries: [], positionKinds: [], fatigueStreak: 0, freshStreak: 0, cuteRounds: 0, exactlyTwoCuteRounds: 0, repeatedSongAutos: 0, swapReduction: 0, plain: false, baseAdjustment: 0, fatigueAffected: false, autoTriggered: false, centerTriggered: false, matchedAttribute: null, stats: { auto: 0, ready: 0, center: 0, positions: { CENTER: 0, 'FRONT-L': 0, 'FRONT-R': 0, 'MIDDLE-L': 0, 'MIDDLE-R': 0, BACK: 0 } }, id, fatigue: 0, normalUsed: false, burstActive: false, forcedBurstCount: 0, burstCount: 0, burstStacks: 0, attributeOverride: null, addedAttributes: [],
     autoGainTotal: 0, autoDebuffTotal: 0, lastAutoGain: 0, lastAutoDebuff: 0, lastAppealGain:0, lastOppositeReduction:0,lastOppositeGain:0, nextAutoCarry: 0, activeAutoCarry: 0, burstDebuff: 0, permBonus: 0,
@@ -67,7 +67,13 @@ export function prepareRound(game: Game, random = Math.random) {
   if (game.songAttributeOverride) game.roundSong = { ...game.roundSong, type: game.songAttributeOverride };
   game.songOverride = undefined; game.songAttributeOverride = undefined;
   game.playedSongs?.push(game.roundSong.id);
-  for(const p of [game.p1,game.p2])if(p.ids.some(id=>byId(id).skill==='yamaguchi')){const rng=playerRandom(game,p,random);p.performanceRandom=[rng(),rng()];}
+  for(const p of [game.p1,game.p2]){
+    // Reserve random draws before formation selection. Repeated preview and
+    // actual execution use the same per-card tie breaks without consuming RNG.
+    const rng=playerRandom(game,p,random),yamaguchi=p.ids.find(id=>byId(id).skill==='yamaguchi'),hirao=p.ids.find(id=>byId(id).skill==='hirao');
+    if(yamaguchi!==undefined)p.performanceRandom=[rng(),rng()];
+    if(hirao!==undefined)p.performanceRandomById={...(yamaguchi!==undefined?{[yamaguchi]:[...p.performanceRandom!]}:{}),[hirao]:[rng(),rng()]};
+  }
   game.publicPlayers=[clonePlayer(game.p1),clonePlayer(game.p2)];
   game.logs.push(`\n--- ROUND ${game.round}${game.round === 7 ? ' ENCORE' : ''} / 楽曲 ${game.roundSong.name}: ${game.roundSong.effect} ---`);
 }
@@ -174,5 +180,5 @@ export function nextRound(game: Game, random = Math.random) {
 }
 
 export function clonePlayer(p: Player): Player {
- return inheritAnalysisSkills(p,{...p, ids:[...p.ids],songs:[...p.songs],songHistory:[...p.songHistory],burstRounds:[...(p.burstRounds||[])],burstBackCandidates:[...p.burstBackCandidates],formation:{...p.formation},addedAttributes:[...p.addedAttributes],enteredThisRoundIds:[...p.enteredThisRoundIds],states:Object.fromEntries(p.ids.map(id=>{const s=p.states[id];return [id,{...s,addedAttributes:[...s.addedAttributes],positionCounts:{...s.positionCounts},symmetries:[...s.symmetries],positionKinds:[...s.positionKinds],...(s.burstDebuffSources?{burstDebuffSources:s.burstDebuffSources.map(source=>({...source}))}:{}),stats:{...s.stats,positions:{...s.stats.positions}}}];}))});
+ return inheritAnalysisSkills(p,{...p,...(p.performanceRandomById?{performanceRandomById:Object.fromEntries(Object.entries(p.performanceRandomById).map(([id,draws])=>[id,[...draws]]))}:{}), ids:[...p.ids],songs:[...p.songs],songHistory:[...p.songHistory],burstRounds:[...(p.burstRounds||[])],burstBackCandidates:[...p.burstBackCandidates],formation:{...p.formation},addedAttributes:[...p.addedAttributes],enteredThisRoundIds:[...p.enteredThisRoundIds],states:Object.fromEntries(p.ids.map(id=>{const s=p.states[id];return [id,{...s,addedAttributes:[...s.addedAttributes],positionCounts:{...s.positionCounts},symmetries:[...s.symmetries],positionKinds:[...s.positionKinds],...(s.burstDebuffSources?{burstDebuffSources:s.burstDebuffSources.map(source=>({...source}))}:{}),stats:{...s.stats,positions:{...s.stats.positions}}}];}))});
 }

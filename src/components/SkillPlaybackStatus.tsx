@@ -45,7 +45,7 @@ export function SkillPlaybackStatus({ game, playback,onAutoAdvanceChange }: { ga
       <div key={`${playback.eventKey}:${playback.autoAdvance}`} className={`skill-message-motion${playback.autoAdvance?'':' manual-playback'}`} style={playback.autoAdvance?{animationDuration:`${event.durationMs}ms`}:undefined}>
         <small className="message-source">{source} · {name} · {kind}　{playback.index+1}/{playback.count}</small>
         <p className="skill-message-text">{event.messageType==='source'?`${source} ${name}の${kind}！`:<TargetMessage game={game} event={event}/>}</p>
-        <details className="message-ability"><summary>スキル効果を確認</summary><p>{skillDescription(game,event)}</p></details>
+        <details className="message-ability" open><summary>スキル効果を確認</summary><p>{skillDescription(game,event)}</p></details>
       </div>
       <div className="message-controls"><div className="message-actions"><button onClick={playback.next}>次へ →</button><button onClick={playback.skip}>スキップ</button></div>
         {onAutoAdvanceChange&&<PlaybackSettings autoAdvance={playback.autoAdvance} onChange={onAutoAdvanceChange}/>}

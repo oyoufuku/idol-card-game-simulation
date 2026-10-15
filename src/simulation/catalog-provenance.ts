@@ -8,11 +8,15 @@ import {json} from './output';
 export function catalogProvenance(){
  const repositoryRoot=resolve(dirname(fileURLToPath(import.meta.url)),'../..');let gitCommit:string|null=null;
  try{gitCommit=execFileSync('git',['rev-parse','HEAD'],{cwd:repositoryRoot,stdio:['ignore','pipe','ignore'],timeout:2000}).toString().trim();}catch{/* ZIP downloads may have no Git metadata. */}
- return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
+ return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋2026-10-15チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
   cardDefinitionsFile:'src/data/idols.ts',songDefinitionsFile:'src/data/songs.ts',repositoryRoot,gitCommit,inputFingerprint:INPUT_FINGERPRINT,
   constructionPolicy:'effect-aware-v6-role-fit-coverage',historicalDocument:'docs/simulation/normalized-balance-20261010.md（履歴）',currentDocument:'docs/simulation/reviewed-burst-20261014.md',
   usesFixtureAsInput:false,usesWorkbookAsRuntimeInput:false,usesGeneratedJsonAsConstructionInput:false,
   confirmedRulings:[
+   {cardIds:[44],rule:'2026-10-15追加確定：AUTOは両軍8人の最高疲労1人ずつを選び、消費チャージ分だけ味方を回復・相手へ付与。同率は各チームでランダム。'},
+   {cardIds:[],rule:'2026-10-15追加確定：R7終了時には通常BURST条件を判定せず、強制・反応BURSTも開始しない。R6までに始まったBURSTのR7中効果は有効。'},
+   {cardIds:[48],rule:'2026-10-15確定：AUTOの自身Appeal+3を+2へ。条件・基礎値・BURST・CENTERの+3は維持。'},
+   {cardIds:[34],rule:'2026-10-15確定：BURSTの次回開始前・相手FRONT2人への追加疲労を各+1から各+2へ。AUTOの+2、BURST条件、位置ボーナス無効は維持。'},
    {cardIds:[19],rule:'2026-10-13チャット確定：条件/抽選は相手BACKSのBURST開始。対象を次のパフォーマンス終了までCENTER固定・Bのみ無効（A/Cは有効）、元CENTERはBACKSへ。Appeal減少なし。終了時の条件/強制B効果も無効。完了済みの回復・移動・永続補正等は巻き戻さない。'},
    {cardIds:[5],rule:'JOYFUL LOVEでキュート上書きを解除して元の属性へ戻す。PLAINが最優先。'},
    {cardIds:[16],rule:'BURST終了時の基礎低下・使用済みリセット後、同じ終了処理の条件判定で成立すれば再BURST。条件成立中は毎ラウンド可能。'},

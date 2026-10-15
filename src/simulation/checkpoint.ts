@@ -1,3 +1,4 @@
+import { assertChargePolicy } from './charge-cpu';
 import { GAME_RULE_VERSION } from '../game/engine';
 import { readFileSync } from 'node:fs';
 import { assertFinite, type MatchSpec, type MatchResult, type MatchOptions } from './match';
@@ -17,6 +18,7 @@ export function loadCheckpoint(path:string,specs:MatchSpec[],options:MatchOption
   if(stored.mode!==expectedSearch.mode||(stored.mode==='two-stage'&&stored.previewCandidates!==expectedSearch.previewCandidates))throw new Error('checkpoint のCPU探索方式・候補数が一致しません。同じ設定で再開してください');
   if(stored.mode==='two-stage'&&stored.policy!==expectedSearch.policy)throw new Error('checkpoint のCPU探索policyは旧実装です。--overwrite または別の --out で新規実行してください');
   if(!Number.isInteger(entry.index)||!specs[entry.index]||JSON.stringify(entry.result?.spec)!==JSON.stringify(specs[entry.index]))throw new Error('checkpoint と実行条件が一致しません');
+  assertChargePolicy(entry.result.spec);
   if(entry.result.rounds!==7)throw new Error('checkpoint のラウンド数が不正です');
   assertFinite(entry.result);
   if(saved.has(entry.index))throw new Error('checkpoint の試合番号が重複しています');

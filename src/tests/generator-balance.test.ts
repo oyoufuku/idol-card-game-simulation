@@ -41,6 +41,30 @@ it('構築済みは9軸各1候補＋2所属選抜＋指定8人、9軸だけで48
  expect(new Set(multi.songs.map(id=>SONGS.find(s=>s.id===id)!.type)).size).toBe(3);
  expect(generateArchetypes(123,3,'constructed')).toEqual(teams);
 });
+it('再測定用の支援交換と属性メタの楽曲を反映し、選抜3デッキを維持する',()=>{
+ const teams=generateArchetypes(1,3,'constructed');
+ const expected=[
+  [[11,10,18,14,27,8,4,15],['A','M','E']],
+  [[32,38,44,43,25,26,48,31],['F','J','N']],
+  [[6,12,47,41,22,29,34,18],['C','M','N']],
+  [[45,9,28,24,27,13,31,2],['F','J','N']],
+  [[22,30,35,46,41,15,17,33],['N','P','F']],
+  [[7,19,9,20,33,8,39,36],['V','B','N']],
+  [[13,42,39,40,2,24,4,26],['J','N','T']],
+  [[16,21,23,42,45,37,29,34],['C','D','M']],
+  [[3,40,1,5,37,48,19,36],['B','M','L']],
+  [[11,10,20,22,7,13,17,24],['A','I','H']],
+  [[40,36,39,37,41,42,46,48],['Q','P','V']],
+  [[7,12,19,4,1,40,41,28],['B','N','J']],
+ ];
+ expect(teams.map(t=>[t.members,t.songs])).toEqual(expected);
+ const meta=teams.find(t=>t.mainTags[0]==='対単一属性')!;
+ expect(meta.members).toEqual(expect.arrayContaining([3,40,1,5,36]));
+ expect(meta.songs).not.toContain('Q');expect(meta.songs).not.toContain('P');
+ for(const team of teams)expect(Object.keys(team.reasons).sort()).toEqual([...team.members,...team.songs].map(String).sort());
+ // Changing the fixed 12-deck list must not replace the 9 x 3 diagnostic generator.
+ expect(generateArchetypes(1)).toHaveLength(27);
+});
 it('櫻坂はステージ出役を支える所属曲、日向はキュート/ユーモアと所属曲で構築・WAR代替を維持',()=>{
  const teams=generateArchetypes(1,3,'constructed'),sakura=teams.find(t=>t.mainTags[0]==='櫻坂46')!,hinata=teams.find(t=>t.mainTags[0]==='日向坂46')!;
  expect(sakura.members).toEqual(expect.arrayContaining([13,17]));expect(sakura.songs).toEqual(['A','I','H']);expect(sakura.songs).not.toContain('F');

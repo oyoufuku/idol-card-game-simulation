@@ -1,3 +1,4 @@
+import { assertChargePolicy } from './charge-cpu';
 import { compactWarResult,validateWarResult } from './war-result';
 import { createHash } from 'node:crypto';
 import { shuffle,GAME_RULE_VERSION } from '../game/engine';
@@ -26,6 +27,7 @@ export function validateBaseline(result:MatchResult,options:MatchOptions) {
  if(hash(result.cpuSearch??null)!==hash(expected))throw new Error('WAR baseline CPU search mismatch');
  if(result.rounds!==7||result.roundAppeals.length!==7||result.formations.length!==7||result.songs.length!==7)throw new Error('WAR baseline must contain all seven rounds');
  if(hash(result.cpuStrategies??['normal','normal'])!==hash(result.spec.cpuStrategies??['normal','normal']))throw new Error('WAR baseline CPU strategy mismatch');
+ assertChargePolicy(result.spec);
  assertFinite(result);validateWarResult(compactWarResult(result));
 }
 export function buildWarPlan(baselines:MatchResult[],options:WarOptions,matchOptions:MatchOptions={}):WarPlan {

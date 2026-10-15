@@ -31,7 +31,7 @@ export const EXTRA_SKILLS: Record<string,Skill> = {
  miyata: {autoAppeal:c=>sum(c.p)<=10?2:0,condition:c=>c.p.round>=3&&sum(c.p)<=15,burst:()=>{},burstEffects:c=>idsStage(c.p).map(id=>({id,amount:st(c).burstStacks}))},
  watanabe_miho: {...restoreCharge,autoAppeal:c=>st(c).spentCharge},
  kamimura: {autoEffects:c=>{const t=oppositeId(c.p,c.opp,c.id);const targets=st(c).burstActive&&skillEnabled(c.p,c.id,'BURST')?idsStage(c.opp):(t==null?[]:[t]);return targets.filter(id=>baseAppeal(c.opp,id)>=4).map(id=>({id,amount:-3,opponent:true}));},condition:c=>(st(c).autoSuccessRounds||0)>=3,burst:()=>{},baseEnemyCenter:true,centerEffects:c=>c.opp.ids.map(id=>({id,amount:-1,opponent:true}))},
-  ishizuka: {pre:c=>{const t=oppositeId(c.p,c.opp,c.id);if(posOf(c.p,c.id).startsWith('FRONT')&&t!==null&&!c.opp.states[t].shield&&!c.opp.states[t].negativeShield)increaseFatigue(c.opp,c.p,t,2);},condition:c=>posOf(c.p,c.id).startsWith('FRONT')&&st(c).samePositionStreak>=2,burst:()=>{},cancelEnemyFront:true,burstPre:c=>{for(const slot of ['FRONT-L','FRONT-R'] as const){const id=c.opp.formation[slot];if(!c.opp.states[id].shield&&!c.opp.states[id].negativeShield)increaseFatigue(c.opp,c.p,id,1);}}},
+  ishizuka: {pre:c=>{const t=oppositeId(c.p,c.opp,c.id);if(posOf(c.p,c.id).startsWith('FRONT')&&t!==null&&!c.opp.states[t].shield&&!c.opp.states[t].negativeShield)increaseFatigue(c.opp,c.p,t,2);},condition:c=>posOf(c.p,c.id).startsWith('FRONT')&&st(c).samePositionStreak>=2,burst:()=>{},cancelEnemyFront:true,burstPre:c=>{for(const slot of ['FRONT-L','FRONT-R'] as const){const id=c.opp.formation[slot];if(!c.opp.states[id].shield&&!c.opp.states[id].negativeShield)increaseFatigue(c.opp,c.p,id,2);}}},
   shimizu: {autoEffects:c=>opposite(c,-new Set(idsStage(c.p).flatMap(id=>attributesOf(c.p,id))).size),condition:c=>posOf(c.p,c.id)!=='BACK'&&(st(c).qualifiedBackRounds||0)>=2&&hasThreeBackAttributes(c.p),burst:c=>{for(const id of c.p.ids)if(hasAttr(c.p,id,'クール')||hasAttr(c.p,id,'ユーモア'))grantImmunity(c.p,id,c.id,'B');},burstPartyShield:true},
  fujishima: {autoEffects:c=>c.song.type==='キュート'?opposite(c,-2):[],condition:c=>['CENTER','FRONT-L','FRONT-R'].includes(posOf(c.p,c.id))&&st(c).cuteRounds>=2,burst:()=>{},burstEffects:c=>c.opp.ids.filter(id=>!hasAttr(c.opp,id,c.song.type)).map(id=>({id,amount:-st(c).burstStacks,opponent:true})),plainCenter:true},
   miyachi: {autoEffects:c=>c.p.round>1&&posOf(c.p,c.id)===st(c).prevPos?opposite(c,-(st(c).samePositionStreak+1)):[],condition:c=>posOf(c.p,c.id)!=='BACK'&&st(c).samePositionStreak>=2,burst:c=>{const t=oppositeId(c.p,c.opp,c.id);if(t!==null&&!c.opp.states[t].shield&&!c.opp.states[t].negativeShield)c.opp.states[t].permBonus=Math.max(-byId(t).base,c.opp.states[t].permBonus-2);}},
@@ -45,7 +45,13 @@ export const EXTRA_SKILLS: Record<string,Skill> = {
   c.p.states[own].fatigue=clamp0(c.p.states[own].fatigue-amount);if(!c.opp.states[enemy].shield&&!c.opp.states[enemy].negativeShield)increaseFatigue(c.opp,c.p,enemy,amount);
  },condition:c=>posOf(c.p,c.id)!=='BACK'&&Math.max(...c.p.ids.map(id=>c.p.states[id].fatigue))>=7,burst:()=>{},centerPre:c=>idsBack(c.opp).forEach(id=>{if(!c.opp.states[id].shield&&!c.opp.states[id].negativeShield)increaseFatigue(c.opp,c.p,id,3);})},
  takeuchi: {post:c=>{for(const id of idsBack(c.p)){const s=c.p.states[id];s.charge= Math.min(s.charge+1, [32,38,44].includes(id)?5:Infinity);}st(c).autoTriggered=true;},condition:c=>(c.p.backGroupStreak||0)>=2,burst:c=>{st(c).burstSelfAppeal+=3;}},
- hirao: {...restoreCharge,pre:c=>{const n=st(c).spentCharge;if(n){c.p.states[c.p.formation.CENTER].fatigue=clamp0(c.p.states[c.p.formation.CENTER].fatigue-n);const t=c.opp.states[c.opp.formation.CENTER];if(!t.shield&&!t.negativeShield)increaseFatigue(c.opp,c.p,c.opp.formation.CENTER,n);st(c).autoTriggered=true;}}},
+ hirao: {...restoreCharge,pre:c=>{const n=st(c).spentCharge;if(n){
+  const select=(p:Context['p'])=>{const max=Math.max(...p.ids.map(id=>p.states[id].fatigue)),ids=p.ids.filter(id=>p.states[id].fatigue===max);return ids[Math.floor(c.random()*ids.length)];};
+  const own=select(c.p),enemy=select(c.opp);
+  c.p.states[own].fatigue=clamp0(c.p.states[own].fatigue-n);
+  if(!c.opp.states[enemy].shield&&!c.opp.states[enemy].negativeShield)increaseFatigue(c.opp,c.p,enemy,n);
+  st(c).autoTriggered=true;
+ }}},
  yamashita_haruka: {autoAppeal:c=>new Set([...st(c).positionKinds,positionKind(posOf(c.p,c.id))]).size,condition:c=>['CENTER','FRONT','MIDDLE'].every(p=>st(c).positionKinds.includes(p)),burst:()=>{},burstPre:c=>{for(const id of idsStage(c.opp))if(!c.opp.states[id].shield&&!c.opp.states[id].negativeShield)increaseFatigue(c.opp,c.p,id,1);},
  centerPre:c=>{if(c.p.round>1)idsStage(c.opp).filter(id=>positionKind(posOf(c.opp,id))!==positionKind(c.opp.states[id].prevPos)&&!c.opp.states[id].shield&&!c.opp.states[id].negativeShield).forEach(id=>increaseFatigue(c.opp,c.p,id,2));}},
  hamagishi: {autoAppeal:c=>c.p.round>1&&c.p.songHistory.at(-1)===c.song.type?2:0,condition:c=>st(c).repeatedSongAutos>=2,burst:c=>{c.game!.songOverride='S';}},
@@ -60,5 +66,5 @@ export const EXTRA_SKILLS: Record<string,Skill> = {
    }
   },
  },
- matsuda_konoka: {autoAppeal:c=>c.p.round>1&&active(c)<=1?3:0,condition:c=>c.p.round>=3&&![c.p.round-1,c.p.round-2].some(round=>c.p.burstRounds?.includes(round)),burst:c=>{const t=c.target('allyBurst');if(t&&t!==c.id&&c.p.states[t]&&!c.game?.burstSeen?.includes(`${c.p===c.game.p1?1:2}:${t}`))c.burst(t,true);},centerAppeal:(c,id)=>id===c.id&&active(c)===0?3:0},
+ matsuda_konoka: {autoAppeal:c=>c.p.round>1&&active(c)<=1?2:0,condition:c=>c.p.round>=3&&![c.p.round-1,c.p.round-2].some(round=>c.p.burstRounds?.includes(round)),burst:c=>{const t=c.target('allyBurst');if(t&&t!==c.id&&c.p.states[t]&&!c.game?.burstSeen?.includes(`${c.p===c.game.p1?1:2}:${t}`))c.burst(t,true);},centerAppeal:(c,id)=>id===c.id&&active(c)===0?3:0},
 };

@@ -201,7 +201,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
   "34": {
     "A": "FRONTなら、対面の疲労＋2。",
     "Bcond": "同じFRONT枠で3ラウンド連続終了。",
-    "B": "【次回開始前】相手FRONT2人の疲労＋1。\n【次回】相手FRONTの位置ボーナスを0にする。",
+    "B": "【次回開始前】相手FRONT2人の疲労＋2。\n【次回】相手FRONTの位置ボーナスを0にする。",
     "C": "—"
   },
   "35": {
@@ -259,7 +259,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "44": {
-    "A": "【チャージ】\n【登場】時、消費数分、味方CENTERの疲労−／相手CENTERの疲労＋。",
+    "A": "【チャージ】\n【登場】時、消費数分、味方の最高疲労1人を−／相手の最高疲労1人を＋。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"
@@ -283,7 +283,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "48": {
-    "A": "R2以降、両軍のBURST中人数が計1人以下なら、自身のAppeal＋3。",
+    "A": "R2以降、両軍のBURST中人数が計1人以下なら、自身のAppeal＋2。",
     "Bcond": "R3以降、直前2ラウンドで味方のBURST開始なし。今回は履歴に含めない。",
     "B": "自身以外の味方1人を選び、【強制BURST】。",
     "C": "両軍のBURST中人数が0人なら、自身のAppeal＋3。"

@@ -29,7 +29,7 @@ export function applySongFatigue(p: Player, song: Song, opp?:Player) {
 export function applyPrePerformance(p: Player, opp: Player, song: Song, cEnabled: boolean, log: (s: string) => void = ignoreLog, songAlreadyApplied = false, effects?:EffectRecorder) {
   if (!songAlreadyApplied) applySongFatigue(p, song, opp);
   p.ids.forEach(id => { const pre=skillFor(id,p).pre;if (autoEnabled(p, opp, id) && pre) {
-    const before=fatigueSnapshot(p,opp);let draw=0;const ctx={...calculationContext(p,opp,id,song,log),random:()=>p.performanceRandom?.[draw++]??0};
+    const before=fatigueSnapshot(p,opp);let draw=0;const ctx={...calculationContext(p,opp,id,song,log),random:()=>(p.performanceRandomById?.[id]??p.performanceRandom)?.[draw++]??0};
     if(effects)effects.capture(effects.source(p,id,'A','performance'),()=>pre(ctx));else pre(ctx);
     if(fatigueChanged(before,p,opp))p.states[id].autoTriggered=true;
   } });

@@ -14,20 +14,30 @@ import { skillFor } from '../game/skills';
 import { prng,seedFor } from './random';
 import { setRandomSources } from '../game/random-source';
 export type CpuStrategy='normal'|'charge'|'burst';
-export const CHARGE_POLICY='charge-v1';
+export const CHARGE_POLICY='charge-v2-effective-value';
 export const hasChargeTag=(id:number)=>byId(id).themeTags.includes('チャージ');
 export const chargeConsumers=(p:Player)=>p.ids.filter(id=>hasChargeTag(id)&&skillFor(id,p).chargeConsumer);
 export interface ChargeEvaluation extends CpuEvaluation {utility:number;futureValue:number;recoverable:boolean;finalOutcome:number;checked:number}
-export function chargeUtility(round:number,current:CpuEvaluation,future:{stored:number;reserve:number;backGain:number;entered:number;returned:number;burst:number}) {
+export interface ChargeFuture {stored:number;reuse:number}
+/** No action bonuses: charge spent now is already in current Appeal. The
+ * inventory includes end-of-round accumulation and any actual B recovery once.
+ * At most 9 utility units (< one point's 12) may be credited to uncertain future
+ * charge. R5 discounts postponement; R6 values a final R7 entry; R7 has no future. */
+export function chargeUtility(round:number,current:CpuEvaluation,future:ChargeFuture) {
  const currentValue=(current.outcome>0?current.points:current.outcome<0?-((Math.abs(current.difference)>=10?2:1)+(round===7?1:0)):0)*12+current.outcome*3+current.difference*.45-current.fatigue*.08;
- const futureValue=round<=4?future.stored*1.8+future.reserve*1.2+future.backGain*2+future.burst*.5:
-  round===5?future.stored*.65+future.reserve*.3+future.entered*3+future.burst:
-  round===6?future.stored*2+future.returned*3+future.backGain*2:future.entered*.5;
+ const weight=round<=4?.9:round===5?.3:round===6?.65:0;
+ const futureValue=Math.min(9,Math.max(0,(future.stored+future.reuse)*weight));
  return {utility:currentValue+futureValue,futureValue};
+}
+/** Old CHARGE games must never become the actual side of new-policy WAR. */
+export function assertChargePolicy(spec:{cpuStrategies?:CpuStrategy[];cpuPolicy?:string}) {
+ const components=spec.cpuPolicy?.split('+')??[],charge=components.filter(c=>c.startsWith('charge-'));
+ if((spec.cpuStrategies?.includes('charge')||charge.length)&&
+    (charge.length!==1||charge[0]!==CHARGE_POLICY))throw Error('CHARGE CPU policy mismatch: new baseline required');
 }
 /** Value the next charge entry with the actual AUTO/Appeal/fatigue preparation.
  * This is a public-state hypothetical, not a forecast of an unknown enemy formation/song. */
-function entryValue(view:Game,side:1|2,id:number,charge:number):number {
+export function chargeEntryValue(view:Game,side:1|2,id:number,charge:number):number {
  if(charge<=0)return 0;
  const p=side===1?view.p1:view.p2;let best=0;
  for(const slot of SLOTS){
@@ -42,26 +52,38 @@ function entryValue(view:Game,side:1|2,id:number,charge:number):number {
   const diff=(r:typeof zero)=>side===1?r.p1.total-r.p2.total:r.p2.total-r.p1.total;
   best=Math.max(best,diff(charged)-diff(zero));
  }
- // Fatigue manipulation has potential even when today's public fatigue is zero.
- return Math.max(best,charge*.75);
+ // Immunity, Appeal floors and existing fatigue are resolved by the engine.
+ // No positive minimum for a charge that has no effective use in this state.
+ return best;
+}
+/** One opportunity for a card already in BACKS, otherwise a rest is needed.
+ * The small reuse option represents one later normal-B recovery, only when
+ * there is time to enter twice. It is not a second copy of a recovered charge. */
+export function chargeInventoryFuture(round:number,p:Player,consumers:number[],value:(id:number,n:number)=>number):ChargeFuture {
+ const future:ChargeFuture={stored:0,reuse:0};
+ for(const id of consumers){
+  const state=p.states[id],rest=posOf(p,id)==='BACK'?0:1,opportunities=7-round-rest;
+  if(opportunities<1)continue;
+  const effective=value(id,state.charge)*(rest?.5:1);
+  future.stored+=effective;
+  if(opportunities>=2&&!state.normalUsed&&state.charge>=3&&skillFor(id,p).condition)future.reuse+=effective*.25;
+ }
+ return future;
 }
 export function evaluateChargeFormation(game:Game,side:1|2,random:()=>number,search:CpuSearchOptions={}):ChargeEvaluation|ReturnType<typeof evaluateCpuFormation> {
  if(!game.publicPlayers)throw new Error('公開済みラウンド開始状態がありません');
  const view={...game,p1:game.publicPlayers[0],p2:game.publicPlayers[1]},player=side===1?view.p1:view.p2,consumers=chargeConsumers(player);
  if(!consumers.length)return evaluateCpuFormation(game,side,random,search);
  const predict=createCpuPreview(view,true,side);
- const values=new Map<string,number>(),value=(id:number,n:number)=>{const key=`${id}:${n}`;if(!values.has(key))values.set(key,entryValue(view,side,id,n));return values.get(key)!;};
+ const values=new Map<string,number>(),value=(id:number,n:number)=>{const key=`${id}:${n}`;if(!values.has(key))values.set(key,chargeEntryValue(view,side,id,n));return values.get(key)!;};
  let best:ChargeEvaluation|null=null,checked=0,ties=0;
  const candidates=cpuCandidates(view,side,search,e=>{
-  const own=e.players[side-1],opp=e.players[2-side],future={stored:0,reserve:0,backGain:0,entered:0,returned:0,burst:0};
-  for(const id of consumers){const before=player.states[id],after=own.states[id],back=posOf(own,id)==='BACK';
-   // Cheap charge ranking uses a fixed potential estimate; precise evaluation
-   // below still forecasts actual end-fatigue, charge recovery and reaction B.
-   future.stored+=after.charge*.75;if(!after.normalUsed&&after.charge>=3)future.reserve+=after.charge*.75+3;
-   if(back&&after.charge<5)future.backGain++;
-   if(own.enteredThisRoundIds.includes(id)&&after.spentCharge>=3)future.entered+=3+after.spentCharge*.75;
-   if(back&&before.prevPos!=='BACK'&&before.lastSpentCharge>=3&&before.burstCount>0)future.returned+=3+after.charge;
-  }
+  // Isolate telemetry because the shared post hook records AUTO statistics.
+  // This cheap pass resolves real BACKS charge/support, without full Appeal or
+  // reaction-B search. The same marginal-value table is used by the final pass.
+  const own=clonePlayer(e.players[side-1]),opp=clonePlayer(e.players[2-side]);
+  finishPerformance(own,opp,game.roundSong);
+  const future=chargeInventoryFuture(game.round,own,consumers,value);
   const signedPoints=e.outcome*(e.outcome===1?e.points:(Math.abs(e.difference)>=10?2:1)+(game.round===7?1:0)),remaining=game.round<7?(6-game.round)*2+3:0;
   const final=Math.sign(player.points-opp.points+signedPoints||player.totalAppeal+e.total-opp.totalAppeal-e.opponentTotal),recoverable=+(player.points-opp.points+signedPoints+remaining>=0);
   return [recoverable,...(game.round===7?[final,e.points,e.outcome]:[]),chargeUtility(game.round,e,future).utility,e.points,e.outcome,e.difference,-e.fatigue];
@@ -80,16 +102,8 @@ export function evaluateChargeFormation(game:Game,side:1|2,random:()=>number,sea
   const probe:Game={...view,p1,p2,cpuBoth:true,logs:[],skillEffects:undefined,burstTask:undefined,pendingBursts:undefined,burstChain:[],burstSeen:[]};
   setRandomSources(probe,{players:forecastSources});
   // Reuse the card's real condition and B; do not invent charge consumption/recovery rules.
-  for(const id of own.ids.filter(hasChargeTag))if(!own.states[id].normalUsed&&skillFor(id,own).condition?.(calculationContext(own,opp,id,game.roundSong)))applyBurst(probe,own,opp,id,false,forecastSources[side-1]);
-  const future={stored:0,reserve:0,backGain:0,entered:0,returned:0,burst:0};
-  for(const id of consumers){
-   const before=player.states[id],after=own.states[id],back=posOf(own,id)==='BACK';
-   future.stored+=value(id,after.charge);if(!after.normalUsed&&after.charge>=3)future.reserve+=value(id,after.charge)+3;
-   if(back)future.backGain+=Math.max(0,after.charge-before.charge);
-   if(own.enteredThisRoundIds.includes(id)&&after.spentCharge>=3)future.entered+=3+value(id,after.spentCharge);
-   if(back&&before.prevPos!=='BACK'&&before.lastSpentCharge>=3&&before.burstCount>0)future.returned+=3+after.charge;
-  }
-  for(const id of own.ids.filter(hasChargeTag))future.burst+=Math.max(0,own.states[id].burstSelfAppeal-player.states[id].burstSelfAppeal);
+  if(game.round<7)for(const id of own.ids.filter(hasChargeTag))if(!own.states[id].normalUsed&&skillFor(id,own).condition?.(calculationContext(own,opp,id,game.roundSong)))applyBurst(probe,own,opp,id,false,forecastSources[side-1]);
+  const future=chargeInventoryFuture(game.round,own,consumers,value);
   const current:CpuEvaluation={formation,total:ownResult.total,opponentTotal:enemyResult.total,points:outcome===1?score.points:0,outcome,difference:ownResult.total-enemyResult.total,fatigue};
   const signedPoints=outcome*score.points,remaining=game.round<7?(6-game.round)*2+3:0;
   const ownPoints=player.points+(outcome>0?score.points:0),enemyPoints=opp.points+(outcome<0?score.points:0);
