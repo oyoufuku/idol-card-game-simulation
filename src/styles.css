@@ -337,8 +337,8 @@
 .idol-card-face .full-art-label{font-size:4cqw!important;padding:1cqw 2cqw}
 .expanded-card{width:100%;max-width:320px;margin:0 auto;box-shadow:0 4px 16px #29432318}
 .inspector-abilities{margin:10px 0;font-size:12px;line-height:1.6}
-.inspector-abilities>div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:6px;padding:6px 0;border-bottom:1px solid #d9e1d4}
-.inspector-abilities dt{font-weight:750;color:var(--ink)}.inspector-abilities dd{margin:0;overflow-wrap:anywhere}
+.inspector-abilities>div{display:grid;grid-template-columns:4.4em minmax(0,1fr);gap:6px;padding:6px 0;border-bottom:1px solid #d9e1d4}
+.inspector-abilities dt{font-weight:750;color:var(--ink);text-align:center;white-space:nowrap}.inspector-abilities dd{margin:0;overflow-wrap:anywhere}
 .card-inspector .detail-state,.inspector-state,.inspector-instruction{font-size:11px}
 .burst-card-entrance{width:min(220px,42vw,43dvh);height:auto;aspect-ratio:2/3}
 .burst-card-entrance .idol-card-face{height:100%;padding:0}
@@ -351,31 +351,31 @@
 
 /* Five stage cards and three reserves share a size and fit side by side on landscape screens. */
 @media(orientation:landscape) and (min-width:600px){
-  .game-shell{--board-card-width:80px;--stage-card-base-width:96px;--stage-card-width:calc(var(--stage-card-base-width)*1.1)}
-  .game-shell .card-board{display:grid;grid-template-columns:minmax(0,1fr) max-content;grid-template-rows:auto auto;gap:4px 12px;width:100%;max-width:none;margin:0 auto;align-items:start}
-  .game-shell .card-board{grid-template-rows:auto}
-  .game-shell .placement-help{display:none}
-  .game-shell .placement-help button{min-height:24px;padding:2px 8px}
+  :is(.game-shell,.training-workspace){--board-card-width:80px;--stage-card-base-width:96px;--stage-card-width:calc(var(--stage-card-base-width)*1.1)}
+  :is(.game-shell,.training-workspace) .card-board{display:grid;grid-template-columns:minmax(0,1fr) max-content;grid-template-rows:auto auto;gap:4px 12px;width:100%;max-width:none;margin:0 auto;align-items:start}
+  :is(.game-shell,.training-workspace) .card-board{grid-template-rows:auto}
+  :is(.game-shell,.training-workspace) .placement-help{display:none}
+  :is(.game-shell,.training-workspace) .placement-help button{min-height:24px;padding:2px 8px}
   /* Fixed-width columns keep the enlarged cards together; halve the former distributed space. */
-  .game-shell .formation-stage{--board-card-width:var(--stage-card-width);grid-column:1;grid-row:1;grid-template-columns:repeat(5,var(--board-card-width));gap:4px max(2px,calc(10% - var(--stage-card-base-width)/2));justify-content:center;padding:3px 4px 5px}
-  .game-shell .reserve-cards,.game-shell .opponent-backs{grid-column:2;grid-row:1;margin:0;min-width:0}
-  .game-shell .backs-row{grid-template-columns:repeat(3,var(--board-card-width));gap:4px;padding:0;width:max-content;margin:0}
-  .game-shell .backs-row .card-wrap:nth-child(n){grid-column:auto}
-  .game-shell .card-wrap{width:var(--board-card-width);min-width:0;margin:0 auto}
-  .game-shell .idol-card{width:var(--board-card-width);height:auto;aspect-ratio:auto;min-height:0;padding:0}
-  .game-shell .formation-stage .idol-card-face,.game-shell .backs-row .idol-card-face{width:100%;height:auto;min-height:0;aspect-ratio:2/3}
-  .game-shell .idol-card .card-state{position:absolute;top:12%;right:2px;left:auto;font-size:7px;line-height:1.1;margin:0;padding:1px 2px;gap:0;min-height:0;background:#ffffffe0;border-radius:3px;z-index:2}
-  .game-shell .idol-card .card-state span:last-child{display:none}
-  .game-shell .formation-slot{position:relative}
-  .game-shell .formation-stage .slot-label{position:absolute;top:calc(var(--slot-step,0px) + var(--board-card-width)*1.5 - 14px);left:calc(50% - var(--board-card-width)/2);width:var(--board-card-width);height:14px;min-height:14px;font-size:6px;padding:1px;background:#ffffffe6;z-index:3;pointer-events:none;border-radius:0}
-  .game-shell .formation-stage .slot-label:not(.can-place){height:14px;min-height:14px}
-  .game-shell .formation-stage .slot-label.can-place{top:var(--slot-step,0px);height:calc(var(--board-card-width)*1.5);min-height:0;margin:0;font-size:6px;pointer-events:auto;background:#254e4126;color:#173e2c;border:1px dashed #254e41;border-radius:5px;display:flex;align-items:flex-end;justify-content:center}
-  .game-shell .slot-middle-l,.game-shell .slot-middle-r{--slot-step:10px;padding-top:var(--slot-step)}
-  .game-shell .slot-front-l,.game-shell .slot-front-r{--slot-step:5px;padding-top:var(--slot-step)}
-  .game-shell .formation-stage .appeal-chip{height:22px;min-height:22px;margin-top:2px;padding:1px;gap:2px;flex-wrap:nowrap}
-  .game-shell .formation-stage .appeal-chip b{font-size:12px}.game-shell .formation-stage .appeal-chip>span:last-child{font-size:9px}
-  .game-shell .backs-heading{margin:0 0 3px;min-height:18px}.game-shell .backs-heading>span,.game-shell .opponent-backs>summary{font-size:8px;min-height:18px}
-  .game-shell .board-hint{display:none}
+  :is(.game-shell,.training-workspace) .formation-stage{--board-card-width:var(--stage-card-width);grid-column:1;grid-row:1;grid-template-columns:repeat(5,var(--board-card-width));gap:4px max(2px,calc(10% - var(--stage-card-base-width)/2));justify-content:center;padding:3px 4px 5px}
+  :is(.game-shell,.training-workspace) .reserve-cards,:is(.game-shell,.training-workspace) .opponent-backs{grid-column:2;grid-row:1;margin:0;min-width:0}
+  :is(.game-shell,.training-workspace) .backs-row{grid-template-columns:repeat(3,var(--board-card-width));gap:4px;padding:0;width:max-content;margin:0}
+  :is(.game-shell,.training-workspace) .backs-row .card-wrap:nth-child(n){grid-column:auto}
+  :is(.game-shell,.training-workspace) .card-wrap{width:var(--board-card-width);min-width:0;margin:0 auto}
+  :is(.game-shell,.training-workspace) .idol-card{width:var(--board-card-width);height:auto;aspect-ratio:auto;min-height:0;padding:0}
+  :is(.game-shell,.training-workspace) .formation-stage .idol-card-face,:is(.game-shell,.training-workspace) .backs-row .idol-card-face{width:100%;height:auto;min-height:0;aspect-ratio:2/3}
+  :is(.game-shell,.training-workspace) .idol-card .card-state{position:absolute;top:12%;right:2px;left:auto;font-size:7px;line-height:1.1;margin:0;padding:1px 2px;gap:0;min-height:0;background:#ffffffe0;border-radius:3px;z-index:2}
+  :is(.game-shell,.training-workspace) .idol-card .card-state span:last-child{display:none}
+  :is(.game-shell,.training-workspace) .formation-slot{position:relative}
+  :is(.game-shell,.training-workspace) .formation-stage .slot-label{position:absolute;top:calc(var(--slot-step,0px) + var(--board-card-width)*1.5 - 14px);left:calc(50% - var(--board-card-width)/2);width:var(--board-card-width);height:14px;min-height:14px;font-size:6px;padding:1px;background:#ffffffe6;z-index:3;pointer-events:none;border-radius:0}
+  :is(.game-shell,.training-workspace) .formation-stage .slot-label:not(.can-place){height:14px;min-height:14px}
+  :is(.game-shell,.training-workspace) .formation-stage .slot-label.can-place{top:var(--slot-step,0px);height:calc(var(--board-card-width)*1.5);min-height:0;margin:0;font-size:6px;pointer-events:auto;background:#254e4126;color:#173e2c;border:1px dashed #254e41;border-radius:5px;display:flex;align-items:flex-end;justify-content:center}
+  :is(.game-shell,.training-workspace) .slot-middle-l,:is(.game-shell,.training-workspace) .slot-middle-r{--slot-step:10px;padding-top:var(--slot-step)}
+  :is(.game-shell,.training-workspace) .slot-front-l,:is(.game-shell,.training-workspace) .slot-front-r{--slot-step:5px;padding-top:var(--slot-step)}
+  :is(.game-shell,.training-workspace) .formation-stage .appeal-chip{height:22px;min-height:22px;margin-top:2px;padding:1px;gap:2px;flex-wrap:nowrap}
+  :is(.game-shell,.training-workspace) .formation-stage .appeal-chip b{font-size:12px}:is(.game-shell,.training-workspace) .formation-stage .appeal-chip>span:last-child{font-size:9px}
+  :is(.game-shell,.training-workspace) .backs-heading{margin:0 0 3px;min-height:18px}:is(.game-shell,.training-workspace) .backs-heading>span,:is(.game-shell,.training-workspace) .opponent-backs>summary{font-size:8px;min-height:18px}
+  :is(.game-shell,.training-workspace) .board-hint{display:none}
   .game-shell .performance-header{padding:5px;grid-template-columns:minmax(0,1fr) 66px;gap:6px}
   .game-shell .song-information h2{font-size:12px;margin:0 0 2px}.game-shell .song-information>p{font-size:9px;line-height:1.3}
   .game-shell .center-information{margin-top:2px}.game-shell .center-caption{min-height:18px;font-size:8px;padding:1px 0}
@@ -395,8 +395,9 @@
   .game-shell .stage-title .action-dock{position:static;bottom:auto;margin:0;padding:0;border:0;background:none;backdrop-filter:none}
   .game-shell .stage-title .action-dock .primary{width:auto;gap:6px}
 }
-@media(pointer:coarse) and (orientation:landscape) and (min-width:600px){.game-shell{--board-card-width:64px;--stage-card-base-width:76px}}
-@media(orientation:landscape) and (min-width:600px) and (max-width:750px){.game-shell{--board-card-width:64px;--stage-card-base-width:72px}}
+@media(pointer:coarse) and (orientation:landscape) and (min-width:600px){:is(.game-shell,.training-workspace){--board-card-width:64px;--stage-card-base-width:76px}}
+@media(orientation:landscape) and (min-width:600px) and (max-width:750px){:is(.game-shell,.training-workspace){--board-card-width:64px;--stage-card-base-width:72px}}
+
 
 /* One printed-card template: fixed label column and separate wrapped effects. */
 .idol-card-face{grid-template-rows:9% 42% 6% minmax(0,1fr)}
@@ -413,3 +414,125 @@
 .brand>.fullscreen-control+.playback-settings-panel{margin-left:0}
 .fullscreen-feedback{position:absolute;top:calc(100% + 6px);right:0;z-index:50;display:flex;align-items:flex-start;gap:6px;width:min(280px,75vw);padding:10px;border:1px solid #cdd6ce;border-radius:10px;background:#fff;box-shadow:0 3px 12px #09241e26;font-size:12px;line-height:1.6}
 .fullscreen-feedback button{flex-shrink:0;min-height:24px;padding:0 6px}
+
+/* Current fatigue follows the same four thresholds as Appeal penalties. */
+.fatigue-value{display:inline-block;border-radius:3px;padding:1px 3px;font-weight:700;white-space:nowrap}
+.fatigue-value.fatigue-level-0{color:#456052;background:#edf3ec}
+.fatigue-value.fatigue-level-1{color:#9f3328;background:#ffeae4}
+.fatigue-value.fatigue-level-2{color:#981d2a;background:#ffd4da}
+.fatigue-value.fatigue-level-3{color:#fff;background:#b81432}
+
+/* Reading help never changes card sizes or the field layout. */
+.help-controls{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:3px}
+.help-controls .rulebook-button{margin:0}
+.play-guide-button{font-size:11px;padding:5px 8px;min-height:28px}
+.detail-sheet.play-guide-sheet{inset:0;margin:auto;width:min(900px,calc(100% - 16px));max-height:92dvh;height:fit-content;border-radius:14px}
+.play-guide-sheet .sheet-header{position:sticky;top:0;z-index:2;background:#fcfdf9;padding-top:8px}
+.play-guide-sheet .sheet-header h2{font-size:18px}
+.play-guide{font-size:14px;line-height:1.8;overflow-wrap:anywhere;min-width:0}
+.guide-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.guide-tabs button{font-size:13px;padding:8px 12px}
+.guide-tabs button[aria-pressed=true],.guide-quiz button[aria-pressed=true]{background:#254e41;color:#fff;border-color:#254e41}
+.guide-select{display:block;font-size:12px;font-weight:700}
+.guide-select select{display:block;max-width:100%;width:100%;font-size:14px;margin-top:4px}
+.guide-step,.guide-note{color:#5c6e61;font-size:12px;line-height:1.7}
+.guide-step{margin-top:8px}
+.play-guide h3{font-size:21px;margin:18px 0 8px;line-height:1.5}
+.play-guide h3:focus{outline:none}
+.play-guide h4{font-size:16px;margin:18px 0 8px}
+.play-guide p{margin:8px 0}
+.guide-lead{font-weight:650}
+.guide-points{padding-left:1.5em}.guide-points li,.deck-guide-view li{margin:9px 0}
+.guide-table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;table-layout:fixed;min-width:0}
+.guide-table caption{text-align:left;font-size:12px;font-weight:700;margin-bottom:6px}
+.guide-table th,.guide-table td{border:1px solid #d4ded2;padding:6px 8px;text-align:center;white-space:normal}
+.guide-table th{background:#edf3e9}
+.guide-field{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding:12px 0}
+.guide-slot{align-self:start;border:1px solid #cbd8c5;background:#edf3e9;border-radius:6px;display:grid;gap:4px;text-align:center;padding:8px 2px;font-size:11px}
+.guide-slot b{font-size:10px;white-space:nowrap}.guide-slot-middle{margin-top:20px}.guide-slot-front{margin-top:10px}
+.guide-practice,.guide-quiz{padding:12px 14px;background:#eef5ea;border:1px solid #d1dec8;border-radius:10px;margin:16px 0}
+.guide-practice>b{display:block;color:#245244}
+.guide-quiz h4{margin:0}.guide-quiz [role=group]{display:flex;flex-wrap:wrap;gap:6px}
+.guide-quiz button{font-size:13px;padding:8px 10px}.quiz-answer b{margin-right:4px}
+.guide-rule-links{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}.guide-rule-links button{font-size:12px;padding:6px 8px}
+.guide-page-controls{display:flex;justify-content:space-between;gap:10px;position:sticky;bottom:-1px;padding:10px 0;background:#fcfdf9;border-top:1px solid #d6dfd0;z-index:1}
+.guide-page-controls button{font-size:13px;min-height:36px}.guide-level{display:inline-block;background:#e8f1e2;border-radius:20px;font-size:12px;padding:2px 10px;margin-top:14px}
+.guide-opening{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:12px 0}
+.guide-opening>div{display:flex;flex-direction:column;min-width:0;padding:8px;border:1px solid #d4decf;border-radius:6px;background:#f4f7f0}
+.guide-opening b{font-size:10px;color:#5c715c}.guide-opening .guide-opening-backs{grid-column:1/-1}
+.guide-gameplan dl,.guide-members dl{margin:0}.guide-gameplan dl>div{padding:8px 0;border-bottom:1px solid #dce4d7}
+.guide-gameplan dt{font-size:12px;font-weight:750;color:#305e43}.guide-gameplan dd{margin:4px 0}
+.guide-songs{list-style:none;padding:0}.guide-songs>li{border:1px solid #d7e0d2;border-radius:8px;padding:10px 12px}
+.guide-songs summary{font-size:12px}.guide-members>details{border-bottom:1px solid #d7e0d2;padding:8px 0}
+.guide-members summary{font-size:13px;font-weight:650}.guide-members dl>div{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:8px;padding:6px 0;font-size:12px}
+.guide-members dt{text-align:center;font-weight:700;white-space:nowrap}.guide-members dd{margin:0}
+@media(max-width:480px){.play-guide{font-size:13px}.play-guide h3{font-size:18px}.guide-slot{font-size:9px}.guide-slot b{font-size:8px}.guide-field{gap:3px}.guide-opening{grid-template-columns:1fr}}
+
+/* Guided practice reuses the real board and card details in an isolated match. */
+.guide-practice-start{background:#254e41;color:#fff;border-color:#254e41;font-size:13px;padding:8px 12px}
+.detail-sheet.training-guide-sheet{width:min(1500px,calc(100% - 16px));height:calc(100dvh - 16px);max-height:none;overflow:hidden}
+.training-guide-sheet .sheet-content{height:100%;display:flex;flex-direction:column;padding:8px 12px;min-height:0}
+.training-guide-sheet .sheet-grip{display:none}
+.training-guide-sheet .sheet-header{flex:none;position:static;padding:0 0 6px;min-height:32px}
+.training-guide-sheet .sheet-header h2{font-size:14px}
+.training-guide-sheet .sheet-header button{min-height:28px;padding:3px 10px}
+.training-guide-sheet .play-guide{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:6px 12px;flex:1;min-height:0}
+.training-guide-sheet .guide-tabs{margin:0;align-items:center;gap:4px}
+.training-guide-sheet .guide-tabs button{font-size:10px;padding:3px 6px;min-height:28px}
+.training-guide-sheet .play-guide>.guide-note{display:none}
+.training-guide-sheet .guide-select{display:flex;align-items:center;gap:6px;font-size:10px;min-width:0}
+.training-guide-sheet .guide-select>span{white-space:nowrap}
+.training-guide-sheet .guide-select select{width:100%;min-width:0;min-height:28px;margin:0;padding:3px;font-size:11px}
+.training-mode{grid-column:1/-1;display:flex;flex-direction:column;min-height:0;font-size:12px;gap:4px}
+.training-coach{flex:none;background:#fff6db;border:1px solid #d8bf71;border-radius:8px;padding:5px 8px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.training-coach>div{min-width:0}
+.training-coach h3{font-size:13px;margin:0;line-height:1.4;display:inline}
+.training-coach small{font-size:10px;margin-right:8px}
+.training-coach p{margin:2px 0;font-size:11px;line-height:1.5}
+.training-coach button{font-size:11px;flex-shrink:0;min-height:30px;padding:4px 8px}
+.training-goal-met{background:#eaf5e7;border-color:#96bd88}
+.training-round,.training-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;flex:none}
+.training-round{font-size:10px}.training-round button,.training-actions button{font-size:10px;padding:3px 8px;min-height:28px}
+.training-round>button{margin-left:auto}
+.training-overview{position:relative}.training-overview summary{font-size:10px;min-height:24px}
+.training-overview[open]>p{position:absolute;top:100%;left:0;width:min(400px,65vw);z-index:5;background:#fff;border:1px solid #cbd6c7;border-radius:6px;padding:10px;box-shadow:0 2px 12px #29432326;font-size:12px;margin:0}
+.training-error{color:#a12131;background:#ffe8ea;padding:8px;border-radius:6px}
+.training-workspace{display:grid;grid-template-columns:clamp(240px,26vw,320px) minmax(0,1fr);gap:12px;flex:1;min-height:0;overflow:hidden}
+.training-inspector,.training-field{min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain}
+.training-inspector .card-inspector{height:auto;max-height:none}
+.training-inspector .inspector-scroll{overflow:visible}
+.training-inspector .inspector-empty{min-height:100%}
+.training-inspector .modifier-list li{font-size:12px}
+.training-preview-fatigue{font-weight:700;background:#fff7df;padding:8px;font-size:12px}
+.training-appeal{background:#f0f5eb;padding:8px;border:1px solid #cbd6c7;border-radius:8px;margin-bottom:8px}
+.training-appeal h4{font-size:13px;margin:0}
+.training-field{scroll-padding-block:8px;padding:3px 5px 8px}
+.training-field>section{padding:6px;border:1px solid #d3ddcc;border-radius:8px;margin-bottom:8px;background:#eef3e9}
+.training-field h4{font-size:12px;margin:0 0 5px}
+.training-song>b{font-size:12px}.training-song p{font-size:11px;margin:2px 0;line-height:1.5}
+.training-field>.training-actions{margin:5px 0}
+.training-field .tutorial-hint>.card-art{outline:3px dashed #bc8d16;outline-offset:3px;border-radius:6px}
+.training-field .tutorial-slot-hint>.slot-label{outline:3px solid #bc8d16;outline-offset:2px}
+.training-burst-panel,.training-effect-panel,.training-result{border:1px solid #c4d8b9;border-radius:8px;padding:8px;margin:8px 0;background:#f1f7ec}
+.training-burst-panel select,.training-effect-panel select{width:100%;min-height:30px;margin:4px 0;font-size:12px}
+.training-burst-panel button,.training-result button{font-size:12px;min-height:30px;padding:4px 8px}
+.training-burst-panel small,.training-effect-panel small{display:block;color:#526a55;font-size:11px;margin-top:5px}
+.training-effect-message{font-size:13px;font-weight:700}
+.training-coach .training-coach-effect{font-size:11px;font-weight:700}
+.training-coach-effect button{margin-left:8px;padding:2px 6px;min-height:24px;font-size:10px}
+@media(pointer:coarse) and (max-width:1400px){.training-workspace{zoom:.75}}
+@media(orientation:portrait),(max-width:599px){
+ .training-guide-sheet .play-guide{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);gap:4px}
+ .training-guide-sheet .guide-select{grid-row:2}.training-mode{grid-row:3}
+ .training-workspace{grid-template-columns:1fr;grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);gap:6px;zoom:1}
+ .training-field{grid-row:1}.training-inspector{grid-row:2}
+ .training-field .card-board{min-width:310px}
+ .training-workspace .formation-stage .idol-card,.training-workspace .backs-row .idol-card{aspect-ratio:auto}
+ .training-workspace .formation-stage .idol-card-face,.training-workspace .backs-row .idol-card-face{min-height:0;flex-shrink:0;aspect-ratio:2/3}
+ .training-workspace .slot-label{min-height:20px;height:24px;font-size:6px}
+ .training-workspace .idol-card .card-state{font-size:7px;gap:1px}
+ .training-inspector .inspector-header{padding:3px 5px}.training-inspector .inspector-header small{font-size:9px}
+ .training-inspector .inspector-scroll{padding:5px}
+ .training-coach h3{font-size:12px}.training-coach p{font-size:10px}
+ .training-guide-sheet .sheet-header h2{font-size:12px}
+}

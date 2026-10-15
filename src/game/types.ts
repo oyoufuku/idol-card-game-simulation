@@ -48,6 +48,8 @@ export interface Game {
   lastBurst?: {side:0|1;id:number;count:number}; burstEffectSources?:SkillEffect[];
   // Optional presentation/telemetry data. CPU previews and fast CLI omit it.
   skillEffects?: SkillEffect[];
+  // Prepared attributes retained for playback after transient effects expire.
+  performanceAttributePlayers?:[Player,Player];
   round: number; done: boolean; cpuMode: boolean; cpuLocked: boolean; p1: Player; p2: Player;
   encorePool?: string[];
   publicPlayers?: [Player, Player];

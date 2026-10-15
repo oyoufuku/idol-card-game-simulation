@@ -1,3 +1,4 @@
+import {FatigueValue} from './FatigueValue';
 import { SLOTS, type Game, type TeamAppeal, type Slot, type Targets } from '../game/types';
 import { byId, calcEnteredThisRoundIds, idsBack, posOf, symmeId } from '../game/formation';
 export function TeamPanel({ game, index, prediction, onPosition, onTarget }: {
@@ -18,7 +19,7 @@ export function TeamPanel({ game, index, prediction, onPosition, onTarget }: {
     <h3>状態</h3>{p.ids.map(id => { const st = p.states[id], card = byId(id); const marks = [st.burstActive && 'BURST', st.normalUsed && 'B USED', st.permBonus && `永続+${st.permBonus}`, st.activeNextBonus && `松田C発動中+${st.activeNextBonus}`, st.nextBonus && `松田C次R+${st.nextBonus}`, st.lockedPos && `固定:${st.lockedPos}`, st.forcedBurstCount && `強制BURST ${st.forcedBurstCount}回`];
       if (card.skill === 'ishimori') { if (posOf(p, id) === 'BACK') marks.push('A有効:CENTER疲労-1'); else if (symmeId(p, id)) marks.push('A有効:シンメ疲労-2'); }
       if (card.skill === 'kojima' && posOf(p, id) === 'BACK') marks.push('A有効:CENTER数値デバフ軽減1');
-      return <div className="cardline" key={id}><b>{card.name}</b>　疲労 {st.fatigue}　<span className="badge">{card.attr}</span>{marks.filter(Boolean).map((m, i) => <span className="badge ready" key={i}>{m}</span>)}</div>;
+      return <div className="cardline" key={id}><b>{card.name}</b>　<FatigueValue value={st.fatigue}/>　<span className="badge">{card.attr}</span>{marks.filter(Boolean).map((m, i) => <span className="badge ready" key={i}>{m}</span>)}</div>;
     })}
   </section>;
 }

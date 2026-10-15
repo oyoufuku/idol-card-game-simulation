@@ -1,10 +1,11 @@
+import {PlayGuide} from './components/PlayGuide';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {SharedRulebook} from './components/SharedRulebook';
 import { FullscreenButton } from './components/FullscreenButton';
 import type { Game } from './game/types';
 import { burstTargetKind, burstTargetOptions, resolveNextBurst } from './game/burst';
 import { effectsFor } from './game/effects';
-import { executeRound, nextRound, preview } from './game/engine';
+import { executeRound, nextRound } from './game/engine';
 import { cpuChooseBestFormation, recommendPlayerFormation } from './game/cpu-strategy';
 import { byId, validateFormation } from './game/formation';
 import { resolveCenterSkills } from './game/appeal';
@@ -18,7 +19,7 @@ import { ReferenceTables } from './components/ReferenceTables';
 import { useSkillPlayback } from './components/useSkillPlayback';
 import { AUTO_ADVANCE_KEY, PlaybackSettings,readAutoAdvance } from './components/PlaybackSettings';
 import { AppealBreakdown } from './components/AppealBreakdown';
-import { battlePlayers } from './components/battle-view';
+import { battlePlayers,battlePrediction,playbackAttributePlayers } from './components/battle-view';
 import { SkillPlaybackStatus } from './components/SkillPlaybackStatus';
 type Inspect = { kind: 'card' | 'appeal'; id: number; side: 0 | 1 } | null;
 export default function App() {
@@ -27,8 +28,10 @@ export default function App() {
   const [opponentOpen, setOpponentOpen] = useState(true);
   const [burstAnimating,setBurstAnimating]=useState(false);
   const [autoAdvance,setAutoAdvance]=useState(readAutoAdvance);
+  const [guideOpen,setGuideOpen]=useState(false),[rulebookOpen,setRulebookOpen]=useState(false);
+  const helpOpen=guideOpen||rulebookOpen;
   const finishBurst=useCallback(()=>setBurstAnimating(false),[]);
-  const playback = useSkillPlayback(game,burstAnimating,autoAdvance);
+  const playback = useSkillPlayback(game,burstAnimating,autoAdvance&&!helpOpen);
   useEffect(()=>{try{window.localStorage.setItem(AUTO_ADVANCE_KEY,String(autoAdvance));}catch{/* Keep the session preference when browser storage is unavailable. */}},[autoAdvance]);
   const burstJob=game?.pendingBursts?.[0], burstKind=burstJob&&burstTargetKind(burstJob.id);
   const chooseBurstTarget=!!(burstJob&&burstKind&&game&&burstTargetOptions(game,burstJob).length>0&&!game.cpuBoth&&!(game.cpuMode&&burstJob.side===1));
@@ -36,7 +39,7 @@ export default function App() {
   const busy = !!thinking || playback.playing || !!burstJob || burstAnimating;
 
   const effectProps = (playerSide: 0 | 1) => ({ playerSide, effects: playback.active?.targets.filter(t => t.side === playerSide) || [], activeId: playback.active?.side === playerSide ? playback.active.id ?? undefined : undefined, effectKey: playback.eventKey, animating: busy });
-  const prediction = useMemo(() => { if (!game) return null; if (game.roundResolved) return game.result; try { const [p1,p2]=battlePlayers(game,side);return preview({...game,p1,p2}); } catch { return null; } }, [game,side]);
+  const prediction = useMemo(() => { if (!game) return null; try { return battlePrediction(game,side); } catch { return null; } }, [game,side]);
   const change = (fn: (g: Game) => void) => { if (!game) return false; try { const draft = structuredClone(game); fn(draft); setGame(draft); setError(''); return true; } catch (e) { setError((e as Error).message); return false; } };
   const advance = (fn: (g: Game) => void) => { if (change(fn)) setInspect(null); };
   const fireBurst=(target?:number)=>{
@@ -45,11 +48,11 @@ export default function App() {
     if(success){setBurstTarget(null);setBurstAnimating(true);}
   };
   useEffect(()=>{
-    if(!autoAdvance||!burstJob||playback.playing||burstAnimating||chooseBurstTarget)return;
+    if(helpOpen||!autoAdvance||!burstJob||playback.playing||burstAnimating||chooseBurstTarget)return;
     // Leave a paint between cards so each one receives its own BURST animation.
     const timer=window.setTimeout(()=>fireBurst(),100);
     return ()=>window.clearTimeout(timer);
-  },[game,playback.playing,burstAnimating,chooseBurstTarget,autoAdvance]);
+  },[game,playback.playing,burstAnimating,chooseBurstTarget,autoAdvance,helpOpen]);
   useEffect(()=>{
     if(!burstJob||playback.playing||burstAnimating)return;
     setInspect({kind:'card',side:burstJob.side,id:burstJob.id});
@@ -64,15 +67,16 @@ export default function App() {
   const shown=game&&battlePlayers(game,side);
   const own=shown&&shown[side],opponent=shown&&shown[side===0?1:0],otherSide=side===0?1:0;
   const ownPrediction = prediction?.[side === 0 ? 'p1' : 'p2'], opponentPrediction = prediction?.[side === 0 ? 'p2' : 'p1'];
-  const centers = game && resolveCenterSkills(shown![0], shown![1], game.roundSong);
+
   const inspectedCard = inspect && byId(inspect.id), inspectedPlayer = game && inspect && shown![inspect.side];
-  const attributePlayers = prediction && 'players' in prediction ? prediction.players : undefined;
+  const attributePlayers = game&&playbackAttributePlayers(game,playback.playing,playback.active?.phase,burstAnimating) || (prediction && 'players' in prediction ? prediction.players : undefined);
+  const centers = game && resolveCenterSkills(attributePlayers?.[0]??shown![0], attributePlayers?.[1]??shown![1], game.roundSong);
   const inspectedAppeal = inspect && prediction?.[inspect.side === 0 ? 'p1' : 'p2']?.members.find(m => m.id === inspect.id);
   return <main className={`${game ? 'game-shell' : 'setup-shell'}${autoAdvance?'':' manual-playback-mode'}${playback.active?' skill-playback-mode':''}`} onKeyDown={e => { if (e.key === 'Escape' && inspect?.kind === 'card') setInspect(null); }}>
-    <header className="brand"><div><span className="eyebrow">IDOL CARD GAME</span><h1>ステージを、つくろう。</h1><SharedRulebook/></div><FullscreenButton/><details className="playback-settings-panel"><summary>演出設定</summary><PlaybackSettings autoAdvance={autoAdvance} onChange={setAutoAdvance}/><small>OFF：メッセージ・BURSTは「次へ」で進みます。</small></details><span className="version">v0.8</span></header>
+    <header className="brand"><div><span className="eyebrow">IDOL CARD GAME</span><h1>ステージを、つくろう。</h1><nav className="help-controls" aria-label="遊び方とルール"><SharedRulebook onOpenChange={setRulebookOpen}/><PlayGuide onOpenChange={setGuideOpen}/></nav></div><FullscreenButton/><details className="playback-settings-panel"><summary>演出設定</summary><PlaybackSettings autoAdvance={autoAdvance} onChange={setAutoAdvance}/><small>OFF：メッセージ・BURSTは「次へ」で進みます。</small></details><span className="version">v0.8</span></header>
     <p className="orientation-hint">スマートフォンは横向きにすると、カードと操作パネルを並べて表示できます。</p>
     {!game ? <><p className="intro">8人のアイドルと3枚の楽曲で、7ラウンドのステージへ。</p><Setup onStart={g => { setGame(g); setSide(0); setError(''); }}/></> : own && opponent && <>
-      <SkillPlaybackStatus game={game} playback={playback} onAutoAdvanceChange={setAutoAdvance}/>{burstAnimating&&<BurstNotice game={game} onComplete={finishBurst} autoAdvance={autoAdvance} onAutoAdvanceChange={setAutoAdvance}/>}<div className="match-strip" key={`score-${game.round}-${game.p1.points}-${game.p2.points}`}><span>ROUND <b>{game.round}</b> / 7 {game.round === 7 && 'ENCORE'}</span><strong>{game.p1.label} {game.p1.points} <span>—</span> {game.p2.points} {game.p2.label}</strong></div>
+      <SkillPlaybackStatus game={game} playback={playback} onAutoAdvanceChange={setAutoAdvance}/>{burstAnimating&&<BurstNotice game={game} onComplete={finishBurst} autoAdvance={autoAdvance&&!helpOpen} onAutoAdvanceChange={setAutoAdvance}/>}<div className="match-strip" key={`score-${game.round}-${game.p1.points}-${game.p2.points}`}><span>ROUND <b>{game.round}</b> / 7 {game.round === 7 && 'ENCORE'}</span><strong>{game.p1.label} {game.p1.points} <span>—</span> {game.p2.points} {game.p2.label}</strong></div>
       <div className="battle-layout"><div className="battle-sidebar">
       {inspect?.kind === 'card' && inspectedPlayer ? <CardInspector player={inspectedPlayer} attributePlayer={attributePlayers?.[inspect.side]} id={inspect.id} editable={inspect.side === side && !game.roundResolved && !busy} onClose={() => setInspect(null)}/> : <aside className="card-inspector inspector-empty" aria-label="拡大カードスペース"><div className="empty-card-outline"><span aria-hidden="true">◇</span><strong>カードをタップ</strong><p>ここに拡大カードを表示します</p></div></aside>}
       </div><div className="battle-field">

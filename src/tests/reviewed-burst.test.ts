@@ -55,3 +55,18 @@ it('丹生はExcel通り低疲労での出場累計3回・今回出場が必要�
  g.p1.states[39].stageFreshRounds=3;expect(condition(g,39)).toBe(true);const f=g.p1.formation;g.p1.formation=formationFromArray([8,10,18,24,27]);expect(condition(g,39)).toBe(false);g.p1.formation=f;
  applyBurst(g,g.p1,g.p2,39,true);const result=preview(g);for(const slot of ['FRONT-L','FRONT-R'])expect(result.p2.members.find(m=>m.slot===slot)!.breakdown).toContainEqual(expect.objectContaining({sourceId:39,kind:'B',amount:-2}));
 });
+
+it('守屋Cは疲労3〜4を−1、5以上を−2とし、予測でも同じ境界と防御を使う',()=>{
+ const g=game([23],[8,10,18,24,27,9]);g.roundSong=songById('B');
+ const ids=Object.values(g.p2.formation);
+ ids.forEach((id,i)=>g.p2.states[id].fatigue=[2,3,4,5,8][i]);
+ const r=preview(g);
+ ids.forEach((id,i)=>{
+  const effects=r.p2.members.find(m=>m.id===id)!.breakdown!.filter(e=>e.sourceId===23&&e.kind==='C');
+  expect(effects.reduce((sum,e)=>sum+e.amount,0)).toBe([0,-1,-1,-2,-2][i]);
+ });
+ applyBurst(g,g.p2,g.p1,9,true);
+ expect(preview(g).p2.members.find(m=>m.id===ids[3])!.breakdown!.filter(e=>e.sourceId===23&&e.kind==='C').reduce((sum,e)=>sum+e.amount,0)).toBe(0);
+ g.roundSong={...songById('B'),rule:'disableCenter'};
+ expect(preview(g).p2.members.every(m=>m.breakdown!.every(e=>e.sourceId!==23||e.kind!=='C'))).toBe(true);
+});

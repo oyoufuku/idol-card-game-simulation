@@ -3,15 +3,18 @@ import { IDOLS } from '../data/idols';
 import { SONGS,SELECTABLE_SONGS } from '../data/songs';
 import type { Game, Mode } from '../game/types';
 import { createGame } from '../game/engine';
-import { generateArchetypes, randomTeam, type Team } from '../simulation/teams';
-type PickMode = 'manual' | 'random' | 'archetype';
+import {constructedTeams} from '../simulation/constructed-teams';
+import type {Team} from '../simulation/teams';
+import {RANDOM_PICK_OPTIONS,randomSetupTeam,type RandomPickScope} from './setup-teams';
+import {openDeckGuide} from './guide-events';
+type PickMode = 'manual' | 'random' | 'deck';
 export function Setup({ onStart }: { onStart: (game: Game) => void }) {
   const [ids, setIds] = useState([[1, 2, 4, 5, 9, 11, 13, 24], [3, 6, 7, 10, 12, 14, 18, 22]]);
   const [songs, setSongs] = useState([['B', 'F', 'H'], ['A', 'I', 'J']]);
   const [mode, setMode] = useState<Mode>('cpu'), [error, setError] = useState('');
   const [cpuStrategy,setCpuStrategy]=useState<'normal'|'burst'>('normal');
-  const decks = useMemo(() => generateArchetypes(1), []);
-  const archetypes = [...new Set(decks.map(deck => deck.archetype))];
+  const decks = useMemo(() => constructedTeams(), []);
+  const [randomScopes,setRandomScopes]=useState<RandomPickScope[]>(['all','all']);
   const [picks, setPicks] = useState<PickMode[]>(['manual', 'manual']);
   const [deckNames, setDeckNames] = useState([decks[0].name, decks[0].name]);
   const applyTeam = (n: number, team: Team) => {
@@ -19,7 +22,11 @@ export function Setup({ onStart }: { onStart: (game: Game) => void }) {
     setSongs(old => old.map((value, i) => i === n ? [...team.songs] : value));
     setError('');
   };
-  const pickRandom = (n: number) => applyTeam(n, randomTeam(Math.floor(Math.random() * 0x100000000), `Player ${n + 1}`));
+  const pickRandom = (n: number,scope:RandomPickScope=randomScopes[n]) => applyTeam(n, randomSetupTeam(scope, Math.floor(Math.random() * 0x100000000), `Player ${n + 1}`));
+  const changeRandomScope=(n:number,scope:RandomPickScope)=>{
+    setRandomScopes(old=>old.map((value,i)=>i===n?scope:value));
+    pickRandom(n,scope);
+  };
   const pickDeck = (n: number, name: string) => {
     setDeckNames(old => old.map((value, i) => i === n ? name : value));
     applyTeam(n, decks.find(deck => deck.name === name)!);
@@ -28,7 +35,7 @@ export function Setup({ onStart }: { onStart: (game: Game) => void }) {
     setPicks(old => old.map((value, i) => i === n ? pick : value));
     setError('');
     if (pick === 'random') pickRandom(n);
-    if (pick === 'archetype') pickDeck(n, deckNames[n]);
+    if (pick === 'deck') pickDeck(n, deckNames[n]);
   };
   return <section className="panel"><h2>ステージの準備</h2><p className="muted">Excel更新版 · アイドル48人 / 通常楽曲20曲・BURST専用2曲</p>
     <label>対戦モード <select className="inline-select" value={mode} onChange={e => setMode(e.target.value as Mode)}><option value="cpu">P1（あなた） vs CPU</option><option value="local">P1 vs P2（この端末で操作）</option></select></label>
@@ -40,13 +47,17 @@ export function Setup({ onStart }: { onStart: (game: Game) => void }) {
       const label = n === 0 ? 'P1（あなた）' : mode === 'cpu' ? 'CPU' : 'P2';
       return <section className="setup-team" aria-label={`${label}のデッキ`} key={n}><h3>{label}</h3>
       <div className="pick-modes" role="group" aria-label="カードの選び方">
-        {([['manual', '手動選択'], ['random', 'ランダムピック'], ['archetype', 'アーキタイプ']] as const).map(([pick, title]) => <button key={pick} aria-pressed={picks[n] === pick} onClick={() => changePick(n, pick)}>{title}</button>)}
+        {([['manual', '手動選択'], ['deck', 'デッキ選択'], ['random', 'ランダム']] as const).map(([pick, title]) => <button key={pick} aria-pressed={picks[n] === pick} onClick={() => changePick(n, pick)}>{title}</button>)}
       </div>
-      {picks[n] === 'random' && <div className="pick-options"><p className="muted">48人から8人、通常20曲から3曲を重複なしで選びます。</p><button onClick={() => pickRandom(n)}>引き直す</button></div>}
-      {picks[n] === 'archetype' && <div className="pick-options">
-        <div className="deck-selects"><label>テーマ<select value={deck.archetype} onChange={e => pickDeck(n, decks.find(candidate => candidate.archetype === e.target.value)!.name)}>{archetypes.map(name => <option key={name}>{name}</option>)}</select></label>
-          <label>デッキ候補<select value={deck.name} onChange={e => pickDeck(n, e.target.value)}>{decks.filter(candidate => candidate.archetype === deck.archetype).map(candidate => <option key={candidate.name}>{candidate.name}</option>)}</select></label></div>
-        <p className="muted">主タグ：{deck.mainTags.join(' / ')}<br/>関連タグ：{deck.subTags.join(' / ')}</p>
+      {picks[n] === 'random' && <div className="pick-options">
+        <label>ランダムの種類<select value={randomScopes[n]} onChange={e=>changeRandomScope(n,e.target.value as RandomPickScope)}>{Object.entries(RANDOM_PICK_OPTIONS).map(([scope,option])=><option key={scope} value={scope}>{option.label}</option>)}</select></label>
+        <p className="muted">{randomScopes[n]==='all'?'全48人・通常20曲':`${RANDOM_PICK_OPTIONS[randomScopes[n]].group}のアイドル・通常楽曲`}から、8人と3曲を重複なしで選びます。</p>
+        <button onClick={() => pickRandom(n)}>引き直す</button>
+      </div>}
+      {picks[n] === 'deck' && <div className="pick-options">
+        <div className="deck-selects"><label>構築済みデッキ<select value={deck.name} onChange={e => pickDeck(n, e.target.value)}>{decks.map((candidate,i) => <option key={candidate.name} value={candidate.name}>{i+1}. {candidate.name}</option>)}</select></label></div>
+        <p className="muted">構築済み12デッキから、アイドル8人と楽曲3曲を選びます。</p>
+        <button type="button" onClick={()=>openDeckGuide(deck.name)}>このデッキの戦い方</button>
       </div>}
       {picks[n] === 'manual' ? <><b>アイドル8人（選択 {ids[n].length}/8）</b>
       <div className="setup-list">{IDOLS.map(card => <label className="chk" key={card.id}><input type="checkbox" checked={ids[n].includes(card.id)} onChange={e => setIds(old => old.map((a, i) => i === n ? IDOLS.filter(c => c.id === card.id ? e.target.checked : a.includes(c.id)).map(c => c.id) : a))}/>{card.name} ({card.base}/{card.attr})</label>)}</div>

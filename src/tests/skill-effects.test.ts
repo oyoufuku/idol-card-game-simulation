@@ -12,7 +12,7 @@ it('Aの対面減少・疲労付与、味方の疲労回復は対象側と実適
  g.p1.states[18].fatigue=1;g.p2.states[18].fatigue=1;g.roundSong=songById('A');
  executeRound(g);
  expect(g.skillEffects!.some(e=>e.id===13&&e.kind==='A'&&e.targets.some(t=>t.side===0&&t.id===18&&t.label==='疲労値'&&t.delta===-1))).toBe(true);
- expect(g.skillEffects!.some(e=>e.id===16&&e.kind==='A'&&e.targets.some(t=>t.side===1&&t.id===24&&t.label==='疲労値'&&t.delta===2))).toBe(true);
+ expect(g.skillEffects!.some(e=>e.id===16&&e.kind==='A'&&e.targets.some(t=>t.side===1&&t.id===27&&t.label==='疲労値'&&t.delta===2))).toBe(true);
  expect(g.skillEffects!.some(e=>e.id===34&&e.kind==='A'&&e.targets.some(t=>t.side===1&&t.id===27&&t.label==='疲労値'&&t.delta===1))).toBe(false); // MIDDLE does not satisfy FRONT condition.
 });
 it('軽減・無効化後のAppealを記録し、BACKSへの不適用を加算として表示しない',()=>{
@@ -50,7 +50,7 @@ it('記録あり/なしで同じseedの実状態・得点・ログが全7ラウ�
   for(let round=1;round<=7;round++){
    const before=structuredClone(shown.skillEffects);preview(shown);expect(shown.skillEffects).toEqual(before);
    executeRound(plain,plain.p1.formation,plain.p2.formation,r1);executeRound(shown,shown.p1.formation,shown.p2.formation,r2);
-   expect(plain.skillEffects).toBeUndefined();const {skillEffects,burstEffectSources,...core}=shown;expect(core).toEqual(plain);
+   expect(plain.skillEffects).toBeUndefined();const {skillEffects,burstEffectSources,performanceAttributePlayers,...core}=shown;expect(core).toEqual(plain);
    if(round<7){nextRound(plain,r1);nextRound(shown,r2);}
   }
  }

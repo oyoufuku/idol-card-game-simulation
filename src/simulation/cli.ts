@@ -87,7 +87,7 @@ console.log(`[catalog] ${catalogSource.cardDefinitionsFile} / ${catalogSource.sp
 summary.inputFingerprint=INPUT_FINGERPRINT;summary.cpuStrategy=chargeComparison?'normal-vs-charge':cpuStrategy;
 summary.configuration={...(summary.configuration as object),cpuStrategy,chargeComparison,archetypeSelection,warExcludeSelectionDecks,coveragePolicy:COVERAGE_POLICY,representative:args.includes('--representative'),archetypes:filter,chargePolicy:CHARGE_POLICY,...(cpuStrategy.startsWith('burst')?{burstPolicy:BURST_CPU_POLICY}:{}),fastSimulation,cpuSearch,recordBurstRounds};
 summary.chargeTelemetryAvailable=!fastSimulation;
-if(cpuStrategy==='charge'||cpuStrategy==='charge-archetype'||chargeComparison)summary.cpu='通常CPUは不変。CHARGEはシミュレーション専用：現在得点/勝敗/差/疲労＋蓄積・BURST回復・R5出場/R6復帰/R7再登場の固定ヒューリスティック。公開状態だけを使用';
+if(cpuStrategy==='charge'||cpuStrategy==='charge-archetype'||chargeComparison)summary.cpu='通常CPUは不変。CHARGEはシミュレーション専用：原則5チャージまでBACKS・残るメンバーで戦い、満充填投入とR6温存/R7再登場を優先。予測敗北回避・R7・固定を例外とし、公開状態だけを使用';
 if(cpuStrategy.startsWith('burst'))summary.cpu='BURST考慮：公開状態から本番engineで今回終了・BURSTを実行し、公開楽曲候補と次回の合法な交換・同時投入を限定評価。今回得点/勝敗/Appeal差＋0.6×次回平均。通常/CHARGEは不変';
 if(cpuStrategy==='burst-charge-archetype')summary.cpu='チャージ軸は従来のCHARGE CPU、その他は本番engineで今回と次回を比較するBURST CPU。RANDOMは全チームBURST CPU。探索方式・候補数は両CPU共通';
 if(cpuSearch.mode==='two-stage'){summary.cpu=String(summary.cpu)+`; two-stage ranking, top ${cpuSearch.previewCandidates} exact previews`;summary.notes=[...(summary.notes as string[]),'二段階探索は概算による候補絞り込みを行うため、全候補探索とは配置・勝敗が変わり得る。探索方式/候補数/policyを保持して比較する'];}

@@ -31,6 +31,6 @@ it('松田好花の無BURST連続数はJOYFULで解除されても発動履歴�
 
 it('JOYFUL解除後も開始時に予約した終了時効果は実行する',()=>{const g=make([26]);applyBurst(g,g.p1,g.p2,26);g.roundSong=songById('V');executeRound(g);expect(g.p1.states[26].fatigue).toBe(11);});
 
-it('清水BURSTは自軍クール/ユーモアを相手由来スキルから保護する',()=>{const g=make([35,18],[1,3]);const before=val(g,18).val;applyBurst(g,g.p1,g.p2,35);expect(val(g,18).val).toBeGreaterThan(before);expect(preview(g).players[0].states[18].shield).toBe(true);});
+it('清水BURSTは自軍クール/ユーモアを相手由来スキルから保護する',()=>{const g=make([35,18],[1,2,3]);const before=val(g,18).val;applyBurst(g,g.p1,g.p2,35);expect(val(g,18).val).toBeGreaterThan(before);expect(preview(g).players[0].states[18].shield).toBe(true);});
 
 it('山崎CENTERの次回加算は受け手自身のCENTER SKILL発動に数えない',()=>{const g=make([8]);g.p1.states[8].activeNextBonus=1;g.p1.states[10].activeNextBonus=1;executeRound(g);expect(g.p1.states[8].stats.center).toBe(0);expect(g.p1.states[10].stats.center).toBe(0);});

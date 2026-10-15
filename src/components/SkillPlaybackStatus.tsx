@@ -6,6 +6,7 @@ import type { useSkillPlayback } from './useSkillPlayback';
 import { playerCaption,skillDescription } from './presentation';
 import type { MessageStep } from './presentation';
 import { PlaybackSettings } from './PlaybackSettings';
+import {openPlayGuide} from './guide-events';
 
 const signed=(amount:number)=>`${amount>0?'+':''}${amount}`;
 export function TargetMessage({game,event}:{game:Game;event:MessageStep}) {
@@ -47,7 +48,7 @@ export function SkillPlaybackStatus({ game, playback,onAutoAdvanceChange }: { ga
         <p className="skill-message-text">{event.messageType==='source'?`${source} ${name}の${kind}！`:<TargetMessage game={game} event={event}/>}</p>
         <details className="message-ability" open><summary>スキル効果を確認</summary><p>{skillDescription(game,event)}</p></details>
       </div>
-      <div className="message-controls"><div className="message-actions"><button onClick={playback.next}>次へ →</button><button onClick={playback.skip}>スキップ</button></div>
+      <div className="message-controls"><div className="message-actions"><button onClick={playback.next}>次へ →</button><button onClick={playback.skip}>スキップ</button><button onClick={openPlayGuide} aria-label="演出を一時停止して遊び方を開く">遊び方</button></div>
         {onAutoAdvanceChange&&<PlaybackSettings autoAdvance={playback.autoAdvance} onChange={onAutoAdvanceChange}/>}
       </div>
     </aside>

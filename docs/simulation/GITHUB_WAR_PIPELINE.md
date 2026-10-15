@@ -36,7 +36,7 @@ runtime_minutes: 300
 
 `docs/simulation/constructed-decks-20261015.md`の「9軸各1デッキ＋櫻坂選抜＋日向坂選抜＋指定8人」の12デッキを使用する。9軸の72枠だけで48人全員を1〜2回ずつ起用する。メンバー8人・選択曲3曲は対戦中に変更しない。同一デッキ戦を含む78組を各50試合、mirror込みで実行するため、ARCHETYPEは3,900試合になる。RANDOMは別に1,000試合を実行する。
 
-CPUは「チャージ・序盤安定」だけCHARGE CPU（`charge-v2-effective-value`）、ほか11デッキとRANDOMは通常CPUを使う。BURST CPUは使わない。旧12デッキのArtifactとは構築仕様・予定試合hashが異なるため再開できない。新しいbaselineを別runとして開始する。
+CPUは「チャージ・序盤安定」だけCHARGE CPU（`charge-v3-full-five`）、ほか11デッキとRANDOMは通常CPUを使う。BURST CPUは使わない。旧12デッキのArtifactとは構築仕様・予定試合hashが異なるため再開できない。新しいbaselineを別runとして開始する。
 
 ```text
 scenario: CUSTOM

@@ -8,7 +8,7 @@ import { songById,SONGS } from '../data/songs';
 import { ATTRS,randomTeam } from '../simulation/teams';
 import { prng } from '../simulation/random';
 import { evaluateChargeFormation } from '../simulation/charge-cpu';
-import baseline from './fixtures/cpu-balance-20261015.json';
+import baseline from './fixtures/cpu-front-charge-20261015.json';
 import { applyFatigueAndPost } from '../game/fatigue';
 import { resolveCenterSkills } from '../game/appeal';
 import { applyBurst } from '../game/burst';
@@ -57,7 +57,7 @@ it('CPU projectionも通常previewと同じ位置固定違反を拒否する',()
  g.p1.states[g.p1.formation.CENTER].lockedPos='CENTER';const f=formationCandidates([...g.p1.ids].reverse())[0];
  expect(validateFormation(g.p1,f)).not.toBeNull();expect(()=>createCpuPreview(g)(f,g.p2.formation)).toThrow();
 });
-it('確定した平尾AUTO・CHARGE v2の10ケースと配置・全評価値・同値乱数回数が一致する',()=>{
+it('確定した満充填登場+2・左右対面・CHARGE v2の10ケースと配置・全評価値・同値乱数回数が一致する',()=>{
  for(const expected of baseline){
   const round=expected.round,g=createGame([32,38,44,43,45,13,9,17],[10,14,18,25,26,27,28,30],['L','J','C'],['A','B','C'],'local',()=>.5);
   g.round=round;g.roundSong=songById('J');g.p1.formation=formationFromArray([45,43,9,13,17]);for(const p of [g.p1,g.p2])p.round=round;

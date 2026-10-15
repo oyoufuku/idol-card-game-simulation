@@ -5,7 +5,7 @@ import { META_ARCHETYPE } from './meta-teams';
 import { CHARGE_POLICY,type CpuStrategy } from './charge-cpu';
 import { BURST_CPU_POLICY } from '../game/burst-cpu';
 export type StrategySelection='normal'|'charge'|'charge-archetype'|'burst'|'burst-archetype'|'burst-charge-archetype';
-const isChargeTheme=(team:Team)=>team.archetype==='チャージ軸'||team.mainTags.includes('チャージ');
+const isChargeTheme=(team:Team)=>team.preferredCpuStrategy==='charge'||team.archetype==='チャージ軸'||team.mainTags.includes('チャージ');
 export function withStrategies(specs:MatchSpec[],selection:StrategySelection):MatchSpec[]{
  if(selection==='normal')return specs;
  if(selection==='burst-charge-archetype')return specs.map(spec=>({...spec,cpuStrategies:[spec.a,spec.b].map(t=>isChargeTheme(t)?'charge':'burst') as [CpuStrategy,CpuStrategy],cpuPolicy:`${CHARGE_POLICY}+${BURST_CPU_POLICY}`}));

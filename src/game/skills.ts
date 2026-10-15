@@ -87,7 +87,7 @@ export const SKILLS: Record<string, Skill> = {
     autoEffects: c => { const id = oppositeId(c.p, c.opp, c.id); return id != null && c.opp.states[id].fatigue >= 3 ? opposite(c, -2) : []; },
     condition:c=>self(c).lastOppositeReduction-(self(c).lastOppositeGain||0)>=3,
     burst: c => { self(c).activeAutoCarry += self(c).lastAutoDebuff;const t=oppositeId(c.p,c.opp,c.id);if(t!==null&&!c.opp.states[t].shield&&!c.opp.states[t].negativeShield)c.opp.states[t].lockedPos=posOf(c.opp,t); c.log(`  守屋B：前パフォーマンスのAUTO下降分-${self(c).lastAutoDebuff}を引継ぎ`); },
-    centerEffects: c => c.opp.ids.filter(id => c.opp.states[id].fatigue >= 3).map(id => ({ id, amount: -1, opponent: true })),
+    centerEffects: c => c.opp.ids.filter(id => c.opp.states[id].fatigue >= 3).map(id => ({ id, amount: c.opp.states[id].fatigue >= 5 ? -2 : -1, opponent: true })),
   },
   inoue: {
     pre: c => { const back = posOf(c.p, c.id) === 'BACK', t = back ? c.p.formation.CENTER : symmeId(c.p, c.id); if (t != null) { c.p.states[t].fatigue = clamp0(c.p.states[t].fatigue - 2); c.log(`${c.p.label} 井上A：${byId(t).name}疲労-2`); } },

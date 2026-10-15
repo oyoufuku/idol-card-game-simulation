@@ -14,10 +14,10 @@ import { skillFor } from '../game/skills';
 import { prng,seedFor } from './random';
 import { setRandomSources } from '../game/random-source';
 export type CpuStrategy='normal'|'charge'|'burst';
-export const CHARGE_POLICY='charge-v2-effective-value';
+export const CHARGE_POLICY='charge-v3-full-five';
 export const hasChargeTag=(id:number)=>byId(id).themeTags.includes('チャージ');
 export const chargeConsumers=(p:Player)=>p.ids.filter(id=>hasChargeTag(id)&&skillFor(id,p).chargeConsumer);
-export interface ChargeEvaluation extends CpuEvaluation {utility:number;futureValue:number;recoverable:boolean;finalOutcome:number;checked:number}
+export interface ChargeEvaluation extends CpuEvaluation {utility:number;futureValue:number;recoverable:boolean;finalOutcome:number;waitingCost:number;checked:number}
 export interface ChargeFuture {stored:number;reuse:number}
 /** No action bonuses: charge spent now is already in current Appeal. The
  * inventory includes end-of-round accumulation and any actual B recovery once.
@@ -70,6 +70,14 @@ export function chargeInventoryFuture(round:number,p:Player,consumers:number[],v
  }
  return future;
 }
+/** Keep incomplete consumers in BACKS while the other five fight. At R6,
+ * preserve already-used, recharged BACKS consumers for their final R7 entry.
+ * R7 has no future waiting value. Forced positions remain legal constraints. */
+export function chargeWaitingCost(round:number,p:Player,consumers:number[],formation:Formation):number {
+ if(round===7)return 0;
+ const stage=new Set(Object.values(formation));
+ return consumers.filter(id=>stage.has(id)&&(p.states[id].charge<5||round===6&&p.states[id].normalUsed&&posOf(p,id)==='BACK')).length;
+}
 export function evaluateChargeFormation(game:Game,side:1|2,random:()=>number,search:CpuSearchOptions={}):ChargeEvaluation|ReturnType<typeof evaluateCpuFormation> {
  if(!game.publicPlayers)throw new Error('公開済みラウンド開始状態がありません');
  const view={...game,p1:game.publicPlayers[0],p2:game.publicPlayers[1]},player=side===1?view.p1:view.p2,consumers=chargeConsumers(player);
@@ -86,7 +94,7 @@ export function evaluateChargeFormation(game:Game,side:1|2,random:()=>number,sea
   const future=chargeInventoryFuture(game.round,own,consumers,value);
   const signedPoints=e.outcome*(e.outcome===1?e.points:(Math.abs(e.difference)>=10?2:1)+(game.round===7?1:0)),remaining=game.round<7?(6-game.round)*2+3:0;
   const final=Math.sign(player.points-opp.points+signedPoints||player.totalAppeal+e.total-opp.totalAppeal-e.opponentTotal),recoverable=+(player.points-opp.points+signedPoints+remaining>=0);
-  return [recoverable,...(game.round===7?[final,e.points,e.outcome]:[]),chargeUtility(game.round,e,future).utility,e.points,e.outcome,e.difference,-e.fatigue];
+  return [recoverable,...(game.round===7?[final,e.points,e.outcome]:[]),-chargeWaitingCost(game.round,player,consumers,e.formation),chargeUtility(game.round,e,future).utility,e.points,e.outcome,e.difference,-e.fatigue];
  });
  for(const formation of candidates){
   if(validateFormation(player,formation))continue;checked++;
@@ -108,10 +116,10 @@ export function evaluateChargeFormation(game:Game,side:1|2,random:()=>number,sea
   const signedPoints=outcome*score.points,remaining=game.round<7?(6-game.round)*2+3:0;
   const ownPoints=player.points+(outcome>0?score.points:0),enemyPoints=opp.points+(outcome<0?score.points:0);
   const finalOutcome=Math.sign(ownPoints-enemyPoints||player.totalAppeal+ownResult.total-(opp.totalAppeal+enemyResult.total));
-  const candidate:ChargeEvaluation={...current,...chargeUtility(game.round,current,future),recoverable:player.points-opp.points+signedPoints+remaining>=0,finalOutcome,checked};
+  const candidate:ChargeEvaluation={...current,...chargeUtility(game.round,current,future),recoverable:player.points-opp.points+signedPoints+remaining>=0,finalOutcome,waitingCost:chargeWaitingCost(game.round,player,consumers,formation),checked};
   const comparison=!best?1:+candidate.recoverable-+best.recoverable||
    (game.round===7?(candidate.finalOutcome-best.finalOutcome||candidate.points-best.points||candidate.outcome-best.outcome):0)||
-   (candidate.utility-best.utility)||compareCpuEvaluations(candidate,best);
+   (best.waitingCost-candidate.waitingCost)||(candidate.utility-best.utility)||compareCpuEvaluations(candidate,best);
   if(comparison>0){best=candidate;ties=1;}else if(comparison===0&&random()<1/++ties)best=candidate;
  }
  if(!best)throw new Error('CHARGE CPUが合法な配置を見つけられませんでした');

@@ -23,7 +23,7 @@ it('構築済み12デッキは固定8人3曲・同型込み78組×50戦で、チ
  const teams=generateArchetypes(1,3,'constructed');expect(teams).toHaveLength(12);expect(new Set(teams.map(t=>t.name)).size).toBe(12);
  for(const team of teams){expect(team.members).toHaveLength(8);expect(new Set(team.members).size).toBe(8);expect(team.songs).toHaveLength(3);expect(new Set(team.songs).size).toBe(3);expect(team.selectionPolicy).toBe(CONSTRUCTED_DECK_POLICY);expect(team.songs.every(id=>SONGS.some(s=>s.id===id&&s.selectable!==false))).toBe(true);for(const key of [...team.members,...team.songs])expect(team.reasons[String(key)]?.[0]).toBeTruthy();}
  const schedule=withStrategies(archetypeSchedule(1,50,teams),'charge-archetype');expect(schedule).toHaveLength(3900);
- for(const spec of schedule)expect(spec.cpuStrategies).toEqual([spec.a,spec.b].map(team=>team.mainTags.includes('チャージ')?'charge':'normal'));
+ for(const spec of schedule)expect(spec.cpuStrategies).toEqual([spec.a,spec.b].map(team=>team.preferredCpuStrategy==='charge'||team.mainTags.includes('チャージ')?'charge':'normal'));
 });
 it('構築済みは9軸各1候補＋2所属選抜＋指定8人、9軸だけで48人全員を1〜2回起用',()=>{
  const teams=generateArchetypes(1,3,'constructed'),axes=teams.filter(t=>(CONSTRUCTED_AXIS_TAGS as readonly string[]).includes(t.mainTags[0]));
@@ -51,15 +51,15 @@ it('再測定用の支援交換と属性メタの楽曲を反映し、選抜3デ
   [[22,30,35,46,41,15,17,33],['N','P','F']],
   [[7,19,9,20,33,8,39,36],['V','B','N']],
   [[13,42,39,40,2,24,4,26],['J','N','T']],
-  [[16,21,23,42,45,37,29,34],['C','D','M']],
-  [[3,40,1,5,37,48,19,36],['B','M','L']],
+  [[16,21,23,42,45,44,29,34],['C','D','M']],
+  [[3,40,1,5,37,7,19,17],['B','M','L']],
   [[11,10,20,22,7,13,17,24],['A','I','H']],
   [[40,36,39,37,41,42,46,48],['Q','P','V']],
   [[7,12,19,4,1,40,41,28],['B','N','J']],
  ];
  expect(teams.map(t=>[t.members,t.songs])).toEqual(expected);
  const meta=teams.find(t=>t.mainTags[0]==='対単一属性')!;
- expect(meta.members).toEqual(expect.arrayContaining([3,40,1,5,36]));
+ expect(meta.members).toEqual(expect.arrayContaining([3,40,1,5,17]));
  expect(meta.songs).not.toContain('Q');expect(meta.songs).not.toContain('P');
  for(const team of teams)expect(Object.keys(team.reasons).sort()).toEqual([...team.members,...team.songs].map(String).sort());
  // Changing the fixed 12-deck list must not replace the 9 x 3 diagnostic generator.
@@ -130,3 +130,11 @@ it('構築済み全12チームのmetadataはworkerへ渡してもundefinedを含
  const result=runMatch(spec,{fastSimulation:true,cpuSearch:{mode:'two-stage',previewCandidates:100}});
  expect(()=>assertFinite(result)).not.toThrow();expect(result.rounds).toBe(7);
 },30000);
+
+it('構築済み疲労付与のCHARGE指定は両側・mirrorで維持し、通常CPU明示と属性メタには波及しない',()=>{
+ const teams=generateArchetypes(1,3,'constructed'),fatigue=teams.find(t=>t.mainTags[0]==='疲労付与')!,meta=teams.find(t=>t.mainTags[0]==='対単一属性')!;
+ const specs=archetypeSchedule(1,2,[fatigue,meta]);
+ for(const s of withStrategies(specs,'charge-archetype'))expect(s.cpuStrategies).toEqual([s.a,s.b].map(t=>t===fatigue?'charge':'normal'));
+ for(const s of withStrategies(specs,'burst-charge-archetype'))expect(s.cpuStrategies).toEqual([s.a,s.b].map(t=>t===fatigue?'charge':'burst'));
+ expect(withStrategies(specs,'normal')).toEqual(specs);
+});

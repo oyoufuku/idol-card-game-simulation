@@ -1,3 +1,4 @@
+import {MAX_CHARGE} from './charge';
 // Shared performance preparation for previews, the browser and the CLI.
 import {skillEnabled} from './analysis-skills';
 import {grantImmunity} from './immunity';
@@ -72,7 +73,7 @@ export function recordPerformance(p:Player,opp:Player,song:Song,outcome:Outcome=
 export function finishPerformance(p:Player,opp:Player,song:Song,effects?:EffectRecorder){
  for(const id of p.ids){const s=p.states[id],skill=skillFor(id,p);
   if(autoEnabled(p,opp,id)){
-   const apply=()=>{if(skill.chargeConsumer&&posOf(p,id)==='BACK'){s.charge=Math.min(5,s.charge+1);s.autoTriggered=true;}skill.post?.(calculationContext(p,opp,id,song));};
+   const apply=()=>{if(skill.chargeConsumer&&posOf(p,id)==='BACK'){s.charge=Math.min(MAX_CHARGE,s.charge+1);s.autoTriggered=true;}skill.post?.(calculationContext(p,opp,id,song));};
    if(effects)effects.capture(effects.source(p,id,'A','post'),apply);else apply();
   }
  }

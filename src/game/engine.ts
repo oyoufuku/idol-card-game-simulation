@@ -2,7 +2,7 @@ import { inheritAnalysisSkills } from './analysis-skills';
 import { playerRandom,setRandomSources,type RandomSources } from './random-source';
 import { preparePerformance, recordPerformance, finishPerformance } from './performance';
 import { calculationContext } from './context';
-import { autoEnabled } from './formation';
+import { oppositeSlot, autoEnabled } from './formation';
 import { songById,selectableSongById } from '../data/songs';
 import type { Formation, Game, IdolState, Mode, Player, Song } from './types';
 import { byId, formationFromArray, posOf, setFormation, validateFormation } from './formation';
@@ -12,7 +12,7 @@ import { calcBoth } from './appeal';
 import { skillFor } from './skills';
 import { finalResult, scoreRound } from './scoring';
 import { effectsFor } from './effects';
-export const GAME_RULE_VERSION='reviewed-burst-20261015-v3';
+export const GAME_RULE_VERSION='fatigue-center-meta-20261015-v6';
 export function stateFor(id: number): IdolState {
   return { charge: 0, spentCharge: 0, lastSpentCharge: 0, samePositionStreak: 0, positionCounts: {}, symmetries: [], positionKinds: [], fatigueStreak: 0, freshStreak: 0, cuteRounds: 0, exactlyTwoCuteRounds: 0, repeatedSongAutos: 0, swapReduction: 0, plain: false, baseAdjustment: 0, fatigueAffected: false, autoTriggered: false, centerTriggered: false, matchedAttribute: null, stats: { auto: 0, ready: 0, center: 0, positions: { CENTER: 0, 'FRONT-L': 0, 'FRONT-R': 0, 'MIDDLE-L': 0, 'MIDDLE-R': 0, BACK: 0 } }, id, fatigue: 0, normalUsed: false, burstActive: false, forcedBurstCount: 0, burstCount: 0, burstStacks: 0, attributeOverride: null, addedAttributes: [],
     autoGainTotal: 0, autoDebuffTotal: 0, lastAutoGain: 0, lastAutoDebuff: 0, lastAppealGain:0, lastOppositeReduction:0,lastOppositeGain:0, nextAutoCarry: 0, activeAutoCarry: 0, burstDebuff: 0, permBonus: 0,
@@ -46,7 +46,7 @@ export function createGame(ids1: number[], ids2: number[], songs1: string[], son
 }
 export function prepareRound(game: Game, random = Math.random) {
   const effects = effectsFor(game); effects?.reset();
-  game.roundResolved = false; game.result = null; game.cpuLocked = false;
+  game.roundResolved = false; game.result = null; game.cpuLocked = false;delete game.performanceAttributePlayers;
   [game.p1, game.p2].forEach(p => { p.round = game.round; p.ids.forEach(id => { const st = p.states[id]; st.autoTriggered = false; st.activeNextBonus = st.nextBonus; st.nextBonus = 0; st.activeAutoCarry += st.nextAutoCarry; st.nextAutoCarry = 0; }); p.enteredThisRoundIds = []; });
   for(const [p,opp] of [[game.p1,game.p2],[game.p2,game.p1]])for(const id of p.ids)if(autoEnabled(p,opp,id)){
     const start=skillFor(id,p).start;
@@ -137,11 +137,12 @@ export function executeRound(game: Game, f1: Formation = game.p1.formation, f2: 
   else {applySongFatigue(p1, game.roundSong, p2);applySongFatigue(p2, game.roundSong, p1);}
   applyPrePerformance(p1, p2, game.roundSong, c1, log, true, effects); applyPrePerformance(p2, p1, game.roundSong, c2, log, true, effects);
   const { p1: r1, p2: r2 } = calcBoth(p1, p2, game.roundSong, options?.detailedAppeal??true, effects);
+  if(effects)game.performanceAttributePlayers=[clonePlayer(p1),clonePlayer(p2)];
   for (const [p, result] of [[p1, r1], [p2, r2]] as const) {
     p.lastAppeal = result.total; p.coolStreak = game.roundSong.type === 'クール' ? p.coolStreak + 1 : 0;
     p.ids.forEach(id => { p.states[id].lastAutoGain = 0; p.states[id].lastAutoDebuff = 0; p.states[id].lastAppealGain=0;p.states[id].lastOppositeReduction=0;p.states[id].lastOppositeGain=0; });
     const other=result===r1?r2:r1;
-    for (const m of result.members) { const st = p.states[m.id]; st.lastAutoGain = m.autoGain; st.lastAutoDebuff = m.autoDebuff; st.autoGainTotal += m.autoGain; st.autoDebuffTotal += m.autoDebuff;st.lastAppealGain=m.skillGain??0;st.lastOppositeReduction=other.members.find(target=>target.slot===m.slot)?.skillReduction??0;st.lastOppositeGain=other.members.find(target=>target.slot===m.slot)?.skillGain??0; }
+    for (const m of result.members) { const st = p.states[m.id]; st.lastAutoGain = m.autoGain; st.lastAutoDebuff = m.autoDebuff; st.autoGainTotal += m.autoGain; st.autoDebuffTotal += m.autoDebuff;st.lastAppealGain=m.skillGain??0;st.lastOppositeReduction=other.members.find(target=>target.slot===oppositeSlot(m.slot))?.skillReduction??0;st.lastOppositeGain=other.members.find(target=>target.slot===oppositeSlot(m.slot))?.skillGain??0; }
   }
   p1.totalAppeal += r1.total; p2.totalAppeal += r2.total;
   const { winner, points } = scoreRound(r1.total, r2.total, game.round);

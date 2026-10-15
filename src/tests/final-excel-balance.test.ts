@@ -51,7 +51,7 @@ it('最新の髙橋・小西・濱岸・松田好花と村井の保護を文面�
  expect(abilitySemantics(byId(9))).toMatchObject({negativeProtection:true,partyProtection:true,antiSkill:true});
 });
 it('藤吉は対面に与えられた他人AUTO/B/曲をコピーせず、自身AUTO加算のみを引き継ぐ',()=>{
- const g=make([20,8,10,18,24,27,28,30],[18,14,10,8,24,27,28,30]);g.p2.formation=formationFromArray([8,18,14,10,24]);g.p1.formation=formationFromArray([8,20,10,18,24]);
+ const g=make([20,8,10,18,24,27,28,30],[18,14,10,8,24,27,28,30]);g.p2.formation=formationFromArray([8,14,18,24,10]);g.p1.formation=formationFromArray([8,20,10,18,24]);
  applyBurst(g,g.p2,g.p1,18);g.p2.states[18].permBonus=10;const m=preview(g).p1.members.find(m=>m.id===20)!;
  // Opposite Takemoto also gets Hikari A+1, B+2 and song+1. Copy only her own A+3.
  expect(m.autoGain).toBe(3);expect(m.skillGain).toBe(4);

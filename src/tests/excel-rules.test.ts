@@ -142,7 +142,7 @@ it('藤吉同士のコピーは循環せず、藤吉Cはクールの味方への
  const h=make([20,18],[1,3]);expect(details(h,20)).toContain('石森璃花A+0（藤吉C）');
 });
 it('守屋は対面の位置以外の純減3以上（疲労含む）でBURSTし、累計にはしない',()=>{
- const g=make([8,23],[10,18]);for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].normalUsed=true;g.p1.states[23].normalUsed=false;
+ const g=make([8,23],[10,18]);g.p2.formation=formationFromArray([10,2,18,9,8]);for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].normalUsed=true;g.p1.states[23].normalUsed=false;
  for(let round=1;round<=2;round++){g.roundSong=songById('A');g.p2.states[18].fatigue=3;executeRound(g);expect(g.p1.states[23].lastOppositeReduction).toBe(3);expect(g.p1.states[23].burstActive).toBe(false);nextRound(g,()=>.5);}
  expect(g.p1.states[23].autoDebuffTotal).toBe(4);g.roundSong=songById('A');g.roundSong=songById('B');g.p2.states[18].fatigue=3;executeRound(g);
  expect(g.p1.states[23].lastOppositeReduction).toBe(4);expect(g.p1.states[23].lastOppositeGain).toBe(0);expect(g.p1.states[23].lastAutoDebuff).toBe(2);expect(g.p1.states[23].burstActive).toBe(true);

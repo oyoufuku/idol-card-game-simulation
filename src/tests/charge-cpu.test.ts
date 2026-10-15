@@ -25,12 +25,11 @@ function scenario(round:number){
  for(const id of [32,38,44]){const s=g.p1.states[id];s.charge=round===1?0:round===4?3:5;if(round===6){s.prevPos='FRONT-L';s.normalUsed=true;s.burstCount=1;s.lastSpentCharge=4;}}
  g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];return g;
 }
-it('有効チャージを蓄積・投入・再温存し、R4も引分を取れる場合は早期投入する',()=>{
+it('チャージ5未満は5人の支援で戦い、満充填投入・R6温存・R7再登場を選ぶ',()=>{
  for(const round of [1,4,5,6,7]){
   const g=scenario(round),before=structuredClone(g),charge=evaluateChargeFormation(g,1,prng(1));expect(g).toEqual(before);expect(validateFormation(g.p1,charge.formation)).toBeNull();expect(charge.checked).toBe(120);
   const stage=Object.values(charge.formation).filter(id=>chargeConsumers(g.p1).includes(id));
-  if(round===1||round===6){expect(stage).not.toContain(32);expect(stage).not.toContain(38);expect(stage.length).toBeLessThanOrEqual(1);}
-  if(round===4){expect(stage).toHaveLength(3);expect(charge.outcome).toBe(0);}
+  if(round===1||round===4||round===6)expect(stage).toHaveLength(0);
   if(round===5)expect(stage).toEqual(expect.arrayContaining([32,38]));
   if(round===7){expect(stage).toHaveLength(3);expect('futureValue' in charge&&charge.futureValue).toBe(0);}
   if(round===6)expect(charge.formation).not.toEqual(evaluateCpuFormation(g,1,prng(1)).formation);
@@ -60,18 +59,18 @@ it('次回投入の限界価値は免疫・Appeal下限・現在疲労を実prev
  const g=scenario(5),before=structuredClone(g);
  expect(chargeEntryValue(g,1,32,5)).toBeGreaterThan(0);expect(g).toEqual(before);
  for(const id of g.p2.ids)g.p2.states[id].shield=true;
- expect(chargeEntryValue(g,1,38,5)).toBe(0);
+ expect(chargeEntryValue(g,1,38,4)).toBe(0);expect(chargeEntryValue(g,1,38,5)).toBeGreaterThanOrEqual(2);
  const floor=scenario(5);
  for(const p of [floor.p1,floor.p2])setAnalysisSkillMasks(p,p.ids.filter(id=>id!==38).map(id=>({id,kind:'ALL' as const})));
  for(const id of floor.p2.ids){floor.p2.states[id].permBonus=-IDOLS[id-1].base;floor.p2.states[id].fatigue=20;}
- expect(chargeEntryValue(floor,1,38,5)).toBe(0);
+ expect(chargeEntryValue(floor,1,38,4)).toBe(0);expect(chargeEntryValue(floor,1,38,5)).toBeGreaterThanOrEqual(2);
  // No recovery at own fatigue 0, and opposing immunity blocks added fatigue.
  const h=scenario(5);for(const p of [h.p1,h.p2])for(const id of p.ids)p.states[id].fatigue=0;
  for(const id of h.p2.ids)h.p2.states[id].shield=true;
- expect(chargeEntryValue(h,1,44,5)).toBe(0);
+ expect(chargeEntryValue(h,1,44,4)).toBe(0);expect(chargeEntryValue(h,1,44,5)).toBeGreaterThanOrEqual(2);
  // Adding fatigue can still matter at opposing fatigue 0 once immunity is off.
  for(const id of h.p2.ids)h.p2.states[id].shield=false;
- expect(chargeEntryValue(h,1,44,5)).toBeGreaterThan(0);
+ expect(chargeEntryValue(h,1,44,4)).toBeGreaterThan(0);
 
 });
 it('最終投入に間に合う在庫だけ評価し、使用済みBを再回復の予約価値へ数えない',()=>{
@@ -89,6 +88,7 @@ it('旧CHARGE policy・policy欠落を拒否し、通常CPUと新CHARGE/BURST混
  expect(()=>assertChargePolicy({cpuStrategies:['charge','normal']})).toThrow('policy mismatch');
  expect(()=>assertChargePolicy({cpuStrategies:['charge','normal'],cpuPolicy:'charge-v1'})).toThrow('policy mismatch');
  expect(()=>assertChargePolicy({cpuStrategies:['normal','normal'],cpuPolicy:'charge-v1'})).toThrow('policy mismatch');
+ expect(()=>assertChargePolicy({cpuStrategies:['charge','normal'],cpuPolicy:'charge-v2-effective-value'})).toThrow('policy mismatch');
  expect(()=>assertChargePolicy({cpuStrategies:['charge','normal'],cpuPolicy:CHARGE_POLICY})).not.toThrow();
  expect(()=>assertChargePolicy({cpuStrategies:['charge','burst'],cpuPolicy:CHARGE_POLICY+'+burst-public-v1'})).not.toThrow();
 });
@@ -135,3 +135,24 @@ it('CHARGE対通常CPUの7ラウンド実試合は通常/fastで全状態が一�
  try{const a=runMatch(spec),b=runMatch(spec,{fastSimulation:true}),expected={...a};delete expected.chargeTrace;expect(b).toEqual({...expected,fastSimulation:true});expect(b.chargeTrace).toBeUndefined();assertFinite(a);expect(a.rounds).toBe(7);expect(a.cpuStrategy).toBe('mixed');expect(a.cpuStrategies).toEqual(['normal','charge']);expect(a.chargeTrace).toHaveLength(56);expect(a.chargeTrace!.some(t=>t.burstRecoveries>0)).toBe(true);}
  finally{Math.random=original;}
 },90000);
+
+it.each(['exhaustive','two-stage'] as const)('5未満でも温存すると予測敗北が確定する場合は投入して回避する（%s）',mode=>{
+ const g=scenario(6);g.p1.points=0;g.p2.points=3;
+ for(const id of chargeConsumers(g.p1))g.p1.states[id].charge=4;
+ for(const id of g.p1.ids.filter(id=>!chargeConsumers(g.p1).includes(id))){g.p1.states[id].fatigue=10;g.p1.states[id].permBonus=-IDOLS[id-1].base;}
+ for(const id of g.p2.ids){g.p2.states[id].fatigue=0;g.p2.states[id].permBonus=-IDOLS[id-1].base;}
+ setAnalysisSkillMasks(g.p1,g.p1.ids.filter(id=>!chargeConsumers(g.p1).includes(id)).map(id=>({id,kind:'ALL'})));
+ setAnalysisSkillMasks(g.p2,g.p2.ids.map(id=>({id,kind:'ALL'})));
+ g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];
+ const e=evaluateChargeFormation(g,1,prng(1),{mode,previewCandidates:100});
+ expect('recoverable' in e&&e.recoverable).toBe(true);expect(e.outcome).toBeGreaterThanOrEqual(0);
+ expect(Object.values(e.formation).some(id=>chargeConsumers(g.p1).includes(id))).toBe(true);
+},20000);
+it('二段階評価でも3/4チャージの登場を抑え、支援5人の合法配置を精密評価に残す',()=>{
+ for(const n of [3,4]){
+  const g=scenario(4);for(const id of chargeConsumers(g.p1))g.p1.states[id].charge=n;g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];
+  const e=evaluateChargeFormation(g,1,prng(1),{mode:'two-stage',previewCandidates:100});
+  expect(Object.values(e.formation).filter(id=>chargeConsumers(g.p1).includes(id))).toHaveLength(0);
+  expect(e.checked).toBeLessThanOrEqual(100);expect(validateFormation(g.p1,e.formation)).toBeNull();
+ }
+},20000);

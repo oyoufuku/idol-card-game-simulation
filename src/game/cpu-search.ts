@@ -1,7 +1,7 @@
 import { skillEnabled } from './analysis-skills';
 import { SLOTS,type Formation,type Game,type Player,type AppealEffect } from './types';
 import { formationCandidates } from './cpu-candidates';
-import { autoEnabled,baseAppeal,byId,POSITION_BONUS,posOf,validateFormation } from './formation';
+import { autoEnabled,baseAppeal,byId,POSITION_BONUS,posOf,oppositeId,oppositeSlot,validateFormation } from './formation';
 import { prepareCpuEstimate } from './engine';
 import { resolveCenterSkills,songAppealEffects } from './appeal';
 import { fatiguePenalty } from './fatigue';
@@ -9,7 +9,7 @@ import { skillFor } from './skills';
 import { calculationContext } from './context';
 import { scoreRound } from './scoring';
 export interface CpuSearchOptions {mode?:'exhaustive'|'two-stage';previewCandidates?:number}
-export const TWO_STAGE_POLICY='two-stage-v2-entry-immunity';
+export const TWO_STAGE_POLICY='two-stage-v3-facing-opponent';
 export function cpuSearchConfiguration(options:CpuSearchOptions={}) {
  const mode=options.mode??'exhaustive';
  if(mode!=='exhaustive'&&mode!=='two-stage')throw new Error('cpu-search は exhaustive / two-stage');
@@ -36,7 +36,7 @@ function estimate(view:Game,side:1|2,formation:Formation):CoarseEvaluation {
  }};
  for(const [index,p] of players.entries()){
   const opp=players[1-index],center=skillFor(p.formation.CENTER,p),ctx=calculationContext(p,opp,p.formation.CENTER,view.roundSong),bonus=enabled[index]?center.centerPositionBonus?.(ctx)||0:0;
-  for(const slot of SLOTS){const id=p.formation[slot],s=p.states[id],on=autoEnabled(p,opp,id),facing=opp.formation[slot];
+  for(const slot of SLOTS){const id=p.formation[slot],s=p.states[id],on=autoEnabled(p,opp,id),facing=opp.formation[oppositeSlot(slot)];
    let position=POSITION_BONUS[slot]+bonus;
    if(view.roundSong.rule==='middleBonus'&&slot.startsWith('MIDDLE'))position+=byId(id).skill==='yamashita_haruka'&&skillEnabled(p,id,'BURST')&&s.burstActive?4:2;
    for(const source of p.ids)if(p.states[source].burstActive)position*=skillFor(source,p).positionTeamMultiplier||1;
@@ -51,7 +51,7 @@ function estimate(view:Game,side:1|2,formation:Formation):CoarseEvaluation {
   for(const id of p.ids){const s=p.states[id],skill=skillFor(id,p),ctx=calculationContext(p,opp,id,view.roundSong);
    if(autoEnabled(p,opp,id)){if(posOf(p,id)!=='BACK')values[index][id]+=skill.autoAppeal?.(ctx)||0;add(index,oppIndex,skill.autoEffects?.(ctx)||[],'A');}
    if(s.burstActive)add(index,oppIndex,skill.burstEffects?.(ctx)||[],'B');
-   if(byId(id).skill==='moriya'&&s.activeAutoCarry){const target=posOf(p,id)==='BACK'?null:opp.formation[posOf(p,id) as keyof Formation];if(target!==null)add(index,oppIndex,[{id:target,opponent:true,amount:-s.activeAutoCarry}],'B');}
+   if(byId(id).skill==='moriya'&&s.activeAutoCarry){const target=oppositeId(p,opp,id);if(target!==null)add(index,oppIndex,[{id:target,opponent:true,amount:-s.activeAutoCarry}],'B');}
   }
   if(enabled[index]){const id=p.formation.CENTER,skill=skillFor(id,p),ctx=calculationContext(p,opp,id,view.roundSong);
    for(const target of SLOTS.map(s=>p.formation[s]))values[index][target]+=skill.centerAppeal?.(ctx,target)||0;

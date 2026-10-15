@@ -10,7 +10,10 @@ export const clamp0 = (x: number) => Math.max(0, x);
 export const effectiveAttr = (p: Player, id: number) => p.cuteOnly?'キュート':p.coolOnly&&!p.states[id].shield&&!p.states[id].negativeShield?'クール': p.states[id].attributeOverride || p.tempAttr || byId(id).attr;
 export const attributesOf = (p: Player, id: number): Attribute[] => p.states[id].plain ? [] : p.cuteOnly?['キュート']:p.coolOnly&&!p.states[id].shield&&!p.states[id].negativeShield?['クール']: [...new Set([effectiveAttr(p, id), ...p.addedAttributes, ...p.states[id].addedAttributes])];
 export const hasAttr = (p: Player, id: number, attr: Attribute) => !p.states[id].plain && (p.cuteOnly?attr==='キュート':p.coolOnly&&!p.states[id].shield&&!p.states[id].negativeShield?attr==='クール':(effectiveAttr(p,id)===attr||p.addedAttributes.includes(attr)||p.states[id].addedAttributes.includes(attr)));
-export const oppositeId = (p: Player, opp: Player, id: number) => { const slot = posOf(p, id); return slot === 'BACK' ? null : opp.formation[slot]; };
+// Slots are named from each player's viewpoint. Facing rows mirror L/R.
+const OPPOSITE_SLOT:Record<Slot,Slot>={CENTER:'CENTER','FRONT-L':'FRONT-R','FRONT-R':'FRONT-L','MIDDLE-L':'MIDDLE-R','MIDDLE-R':'MIDDLE-L'};
+export const oppositeSlot=(slot:Slot):Slot=>OPPOSITE_SLOT[slot];
+export const oppositeId = (p: Player, opp: Player, id: number) => { const slot = posOf(p, id); return slot === 'BACK' ? null : opp.formation[oppositeSlot(slot)]; };
 // Disabling the opposing AUTO must not recurse when two Matono face each other.
 export const autoEnabled = (p: Player, opp: Player, id: number) => {if(!skillEnabled(p,id,'AUTO'))return false;if(p.states[id].shield||p.states[id].negativeShield)return true;const facing=oppositeId(p,opp,id);return facing==null||byId(facing).skill!=='matono'||!skillEnabled(opp,facing,'AUTO');};
 export const idsStage = (p: Player) => SLOTS.map(s => p.formation[s]);

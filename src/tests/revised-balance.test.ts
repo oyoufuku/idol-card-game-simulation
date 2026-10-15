@@ -6,7 +6,7 @@ import { calcBoth } from '../game/appeal';
 import { songById } from '../data/songs';
 import { calculationContext } from '../game/context';
 import { skillFor } from '../game/skills';
-const make=(a=[26,8,10,20,24,14,9,13],b=[8,10,18,24,27,28,30,31])=>createGame(a,b,['A','B','C'],['D','E','F'],'local',()=>.5);
+const make=(a=[26,8,10,20,24,14,9,13],b=[8,10,18,24,27,28,30,31])=>{const g=createGame(a,b,['A','B','C'],['D','E','F'],'local',()=>.5);g.p2.formation=formationFromArray([b[0],b[2],b[1],b[4],b[3]]);return g;};
 it('修正Excelの基礎値・山下C・大沼B/疲労・平岡Bをそのまま反映する',()=>{
  expect([8,40,41].map(id=>byId(id).base)).toEqual([4,5,5]);
  for(const [id,amount] of [[16,5],[30,5]]){const g=make([id,8,10,18,24,27,28,31]);applyBurst(g,g.p1,g.p2,id);expect(g.p1.states[id].burstSelfAppeal).toBe(amount);}
