@@ -4,10 +4,10 @@ import { GAME_RULE_VERSION,executeRound,preview } from '../game/engine';
 import { calculationContext } from '../game/context';
 import { prng } from '../simulation/random';
 import { optimizationCases } from './helpers/engine-optimization-cases';
-import baseline from './fixtures/engine-fatigue-meta-20261015.json';
+import baseline from './fixtures/engine-entry-charge-20261016.json';
 import priorBaseline from './fixtures/engine-facing-20261015.json';
 import { runMatch } from '../simulation/match';
-import matches from './fixtures/matches-fatigue-meta-20261015.json';
+import matches from './fixtures/matches-entry-charge-20261016.json';
 import priorMatches from './fixtures/matches-facing-20261015.json';
 import type {MatchSpec} from '../simulation/match';
 import {INPUT_FINGERPRINT} from '../simulation/input-fingerprint';
@@ -21,12 +21,12 @@ it('予測用の説明省略は全44盤面でAppeal・終了状態・BURST・演
   expect(values(a),full[index].name).toEqual(values(b));expect([game.p1,game.p2],full[index].name).toEqual([other.p1,other.p2]);expect(game.skillEffects).toEqual(other.skillEffects);
  }
 });
-it('全22曲44盤面は守屋C強化後の基準値と一致し、守屋不在の従来計算を維持する',()=>{
+it('全22曲44盤面は登場者B・チャージ倍化後の基準値と一致し、非対象カードの従来計算を維持する',()=>{
  const cases=optimizationCases();expect(cases).toHaveLength(baseline.length);
  for(const [{name,game},index] of cases.map((scenario,index)=>[scenario,index] as const)){
   const normal=preview(game),compact=preview(game,game.p1.formation,game.p2.formation,false);
   const result=executeRound(game,game.p1.formation,game.p2.formation,prng(400+index));
-  if(![...game.p1.ids,...game.p2.ids].includes(23))expect(digest(compact),name).toBe(priorBaseline[index].compact);
+  if(![...game.p1.ids,...game.p2.ids].some(id=>[9,23,32,38,44].includes(id)))expect(digest(compact),name).toBe(priorBaseline[index].compact);
   expect({name,normal:digest(normal),compact:digest(compact),execution:digest({result,players:[game.p1,game.p2],effects:game.skillEffects,logs:game.logs})},name).toEqual(baseline[index]);
  }
 });
@@ -36,12 +36,12 @@ it('共有した計算コールバックも乱数とBURSTを禁止し、指定lo
  expect(()=>ctx.random()).toThrow('計算中の乱数使用');expect(()=>ctx.burst(1,false)).toThrow('計算中のBURST');
 });
 // These are new goldens for the approved card rules, not old-balance compatibility.
-it('守屋C強化後も通常CPU/CHARGE試合をseed・全状態で再現する',()=>{
+it('登場者B・チャージ倍化後も通常CPU/CHARGE試合をseed・全状態で再現する',()=>{
  for(const {spec,digest:expected} of matches){
   const result=runMatch(spec as unknown as MatchSpec);
   expect(result.ruleVersion).toBe(GAME_RULE_VERSION);expect(result.inputFingerprint).toBe(INPUT_FINGERPRINT);
   expect(digest(result),spec.pairId).toBe(expected);
-  if(![...spec.a.members,...spec.b.members].some(id=>[23,32,34,38,44].includes(id))){
+  if(![...spec.a.members,...spec.b.members].some(id=>[9,23,32,34,38,44].includes(id))){
    // Preserve the old full-state golden for the unaffected normal-CPU team;
    // only the deliberately changed snapshot metadata is normalized.
    const previous=priorMatches.find(m=>m.spec.pairId===spec.pairId)!;

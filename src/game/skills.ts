@@ -55,7 +55,7 @@ export const SKILLS: Record<string, Skill> = {
   },
   mukai: { autoAppeal: c => c.p.points > c.opp.points ? 2 : undefined,
     burst: c => { self(c).burstSelfAppeal += Math.min(c.p.points, 3); }, condition:c=>onStage(c)&&(self(c).stageWins||0)>=2 },
-  murai: {negativeImmuneOnEntry:true,burst:c=>{self(c).muraiDoubleC=true;},condition:c=>c.p.enteredThisRoundIds.length>=3,burstEffects:c=>idsStage(c.p).map(id=>({id,amount:self(c).burstStacks})),centerAppeal:(c,id)=>c.p.enteredThisRoundIds.includes(id)?1:undefined,centerEntryFatigueReduction:1},
+  murai: {negativeImmuneOnEntry:true,burst:c=>{self(c).muraiDoubleC=true;},condition:c=>c.p.enteredThisRoundIds.length>=3,burstEffects:c=>idsStage(c.p).filter(id=>c.p.enteredThisRoundIds.includes(id)).map(id=>({id,amount:self(c).burstStacks})),centerAppeal:(c,id)=>c.p.enteredThisRoundIds.includes(id)?1:undefined,centerEntryFatigueReduction:1},
   murayama: { autoAppeal: c => countAttr(c.p, 'クール') >= 3 ? 2 : undefined,
     burst: c => { c.p.burstCoolBonus++; }, condition: c => c.song.type === 'クール' && posOf(c.p, c.id) === 'BACK' },
   yamashita: { autoAppeal: c => c.song.type === 'クール' && posOf(c.p, c.id) === 'CENTER' ? 1 : undefined,
@@ -87,7 +87,7 @@ export const SKILLS: Record<string, Skill> = {
     autoEffects: c => { const id = oppositeId(c.p, c.opp, c.id); return id != null && c.opp.states[id].fatigue >= 3 ? opposite(c, -2) : []; },
     condition:c=>self(c).lastOppositeReduction-(self(c).lastOppositeGain||0)>=3,
     burst: c => { self(c).activeAutoCarry += self(c).lastAutoDebuff;const t=oppositeId(c.p,c.opp,c.id);if(t!==null&&!c.opp.states[t].shield&&!c.opp.states[t].negativeShield)c.opp.states[t].lockedPos=posOf(c.opp,t); c.log(`  守屋B：前パフォーマンスのAUTO下降分-${self(c).lastAutoDebuff}を引継ぎ`); },
-    centerEffects: c => c.opp.ids.filter(id => c.opp.states[id].fatigue >= 3).map(id => ({ id, amount: c.opp.states[id].fatigue >= 5 ? -2 : -1, opponent: true })),
+    centerEffects: c => c.opp.ids.filter(id => c.opp.states[id].fatigue >= 2).map(id => ({ id, amount: c.opp.states[id].fatigue >= 4 ? -2 : -1, opponent: true })),
   },
   inoue: {
     pre: c => { const back = posOf(c.p, c.id) === 'BACK', t = back ? c.p.formation.CENTER : symmeId(c.p, c.id); if (t != null) { c.p.states[t].fatigue = clamp0(c.p.states[t].fatigue - 2); c.log(`${c.p.label} 井上A：${byId(t).name}疲労-2`); } },

@@ -21,7 +21,7 @@ export function preparePerformance(p1:Player,p2:Player,song:Song,effects?:Effect
  for(const [p,opp] of [[p1,p2],[p2,p1]])for(const source of p.ids){const s=p.states[source],skill=skillFor(source,p);if(!s.burstActive)continue;
   if(skill.selfBurstShield)grantImmunity(p,source,source,'B');
   if(skill.burstPartyShield)for(const id of p.ids)if(hasAttr(p,id,'クール')||hasAttr(p,id,'ユーモア'))grantImmunity(p,id,source,'B');
-  if(s.muraiDoubleC&&skillEnabled(p,source,'BURST'))for(const id of idsStage(p))grantImmunity(p,id,source,'B');
+  if(s.muraiDoubleC&&skillEnabled(p,source,'BURST'))for(const id of idsStage(p).filter(id=>p.enteredThisRoundIds.includes(id)))grantImmunity(p,id,source,'B');
   if(skillEnabled(p,source,'BURST'))for(const id of s.protectedTargets||[])grantImmunity(p,id,source,'B');
  }
  for(const [p,opp] of [[p1,p2],[p2,p1]])for(const id of p.ids)if(skillFor(id,p).negativeImmuneOnEntry&&p.enteredThisRoundIds.includes(id)&&skillEnabled(p,id,'AUTO')){p.states[id].autoTriggered=true;grantImmunity(p,id,id,'A');}

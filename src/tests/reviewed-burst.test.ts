@@ -10,6 +10,7 @@ import {calculationContext} from '../game/context';
 import {attributesOf,formationFromArray,posOf,hasThreeBackAttributes} from '../game/formation';
 const eight=(ids:number[])=>[...new Set([...ids,8,10,18,24,27,28,30,31])].slice(0,8);
 function game(a:number[],b:number[]=[8,10,18,24,27,28,30,31]){const g=createGame(eight(a),eight(b),['A','B','C'],['D','E','F'],'local',()=>.2,{interactiveBursts:true,recordEffects:true});g.roundSong=songById('A');for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].normalUsed=true;return g;}
+function enter(g:ReturnType<typeof game>,side:1|2,ids:number[]){g.round=g.p1.round=g.p2.round=2;for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].prevPos=posOf(p,id);const p=side===1?g.p1:g.p2;for(const id of ids)p.states[id].prevPos='BACK';}
 const condition=(g:ReturnType<typeof game>,id:number)=>skillFor(id,g.p1).condition!(calculationContext(g.p1,g.p2,id,g.roundSong));
 it('石森は実際のAUTO成功を伴う出場2回、遠藤理子は疲労2以上の終了2回で成立する',()=>{
  const g=game([1,2],[18]);g.p1.states[2].fatigue=3;g.p1.states[1].normalUsed=g.p1.states[2].normalUsed=false;
@@ -17,9 +18,9 @@ it('石森は実際のAUTO成功を伴う出場2回、遠藤理子は疲労2以�
  resolvePendingBursts(g,()=>.2);nextRound(g,()=>.2);g.roundSong=songById('A');executeRound(g);expect(g.pendingBursts?.map(j=>j.id)).toEqual(expect.arrayContaining([1,2]));
 });
 it('条件参照だけでは回数履歴を増やさない',()=>{const g=game([4,11]);for(let n=0;n<3;n++){checkBurstConditions(g,g.p1,g.p2,'win');preview(g);}expect(g.p1.states[4].positionCounts).toEqual({});expect(g.p1.states[11].positionCounts).toEqual({});expect(g.p1.states[8].stageWins).toBeUndefined();});
-it('村井Bは本人が登場・出場しなくても次のステージ全員を+1し、敵のA/C無効と曲減少を防ぐ',()=>{
- const g=game([8,10,18,24,27,9],[7,1]);applyBurst(g,g.p1,g.p2,9,true);g.roundSong=songById('B');const r=preview(g),p=r.players[0];
- expect(posOf(p,9)).toBe('BACK');for(const id of Object.values(p.formation)){expect(p.states[id].shield).toBe(true);expect(p.states[id].negativeShield).toBe(true);expect(r.p1.members.find(m=>m.id===id)!.breakdown).toContainEqual(expect.objectContaining({sourceId:9,kind:'B',amount:1}));}
+it('村井Bは本人がBACKSでも次回登場者だけを+1・保護し、居残りは対象外',()=>{
+ const g=game([8,10,18,24,27,9],[7,1]);applyBurst(g,g.p1,g.p2,9,true);g.roundSong=songById('B');enter(g,1,[8,18]);const r=preview(g),p=r.players[0];
+ expect(posOf(p,9)).toBe('BACK');for(const id of Object.values(p.formation)){const entered=[8,18].includes(id);expect(p.states[id].shield).toBe(entered);expect(p.states[id].negativeShield).toBe(entered);expect(r.p1.members.find(m=>m.id===id)!.breakdown!.filter(e=>e.sourceId===9&&e.kind==='B').reduce((n,e)=>n+e.amount,0)).toBe(entered?1:0);}
  expect(r.p1.members[0].details.join('|')).not.toContain('AUTO無効');
 });
 it('小島Bは交換先だけへ統合防御を付与し、次回終了で解除する',()=>{const g=game([4,8],[7,16]);g.targets[0].koji=8;g.p1.states[8].fatigue=5;applyBurst(g,g.p1,g.p2,4,true);expect(g.p1.states[8].shield).toBe(true);expect(g.p1.states[4].shield).toBe(false);expect(g.p1.states[4].fatigue).toBe(5);expect(preview(g).players[0].states[8].negativeShield).toBe(true);executeRound(g);expect(g.p1.states[8].shield).toBe(false);});
@@ -42,7 +43,7 @@ it('統合防御は曲のC無効・位置疲労・既存疲労減点・自軍負
  const before=g.p1.states[8].fatigue;applyFatigueAndPost(g.p1,g.p2,'draw',false,songById('A'));expect(g.p1.states[8].fatigue).toBe(before+2);
 });
 it('B無効はそのB由来の防御だけを止め、重複した他の防御は残す',()=>{
- const g=game([4,9,8]);g.targets[0].koji=8;applyBurst(g,g.p1,g.p2,4,true);applyBurst(g,g.p1,g.p2,9,true);const p=preview(g).players[0];
+ const g=game([4,9,8]);g.targets[0].koji=8;applyBurst(g,g.p1,g.p2,4,true);applyBurst(g,g.p1,g.p2,9,true);enter(g,1,[8]);const p=preview(g).players[0];
  expect(p.states[8].immunitySources).toEqual(expect.arrayContaining([{id:4,kind:'B'},{id:9,kind:'B'}]));disableBurstSkill(p,g.p2,4,2);expect(p.states[8].shield).toBe(true);disableBurstSkill(p,g.p2,9,2);expect(p.states[8].shield).toBe(false);
 });
 it('村井Cの登場疲労軽減は小坂AUTOの倍化前に適用し、演出もCの効果として記録する',()=>{
@@ -56,17 +57,27 @@ it('丹生はExcel通り低疲労での出場累計3回・今回出場が必要�
  applyBurst(g,g.p1,g.p2,39,true);const result=preview(g);for(const slot of ['FRONT-L','FRONT-R'])expect(result.p2.members.find(m=>m.slot===slot)!.breakdown).toContainEqual(expect.objectContaining({sourceId:39,kind:'B',amount:-2}));
 });
 
-it('守屋Cは疲労3〜4を−1、5以上を−2とし、予測でも同じ境界と防御を使う',()=>{
+it('守屋Cは疲労2〜3を−1、4以上を−2とし、予測でも同じ境界と防御を使う',()=>{
  const g=game([23],[8,10,18,24,27,9]);g.roundSong=songById('B');
  const ids=Object.values(g.p2.formation);
- ids.forEach((id,i)=>g.p2.states[id].fatigue=[2,3,4,5,8][i]);
+ ids.forEach((id,i)=>g.p2.states[id].fatigue=[1,2,3,4,8][i]);
  const r=preview(g);
  ids.forEach((id,i)=>{
   const effects=r.p2.members.find(m=>m.id===id)!.breakdown!.filter(e=>e.sourceId===23&&e.kind==='C');
   expect(effects.reduce((sum,e)=>sum+e.amount,0)).toBe([0,-1,-1,-2,-2][i]);
  });
- applyBurst(g,g.p2,g.p1,9,true);
+ enter(g,2,[ids[3]]);applyBurst(g,g.p2,g.p1,9,true);
  expect(preview(g).p2.members.find(m=>m.id===ids[3])!.breakdown!.filter(e=>e.sourceId===23&&e.kind==='C').reduce((sum,e)=>sum+e.amount,0)).toBe(0);
  g.roundSong={...songById('B'),rule:'disableCenter'};
  expect(preview(g).p2.members.every(m=>m.breakdown!.every(e=>e.sourceId!==23||e.kind!=='C'))).toBe(true);
+});
+
+it('村井Bは次回に登場者がいなければ加算・保護せず、R1初期配置も対象にしない',()=>{
+ for(const round of [1,2]){
+  const g=game([8,10,18,24,27,9]);g.round=g.p1.round=g.p2.round=round;
+  for(const id of g.p1.ids)g.p1.states[id].prevPos=posOf(g.p1,id);
+  applyBurst(g,g.p1,g.p2,9,true);const r=preview(g);
+  expect(r.players[0].enteredThisRoundIds).toEqual([]);
+  for(const m of r.p1.members){expect(m.breakdown!.some(e=>e.sourceId===9&&e.kind==='B')).toBe(false);expect(r.players[0].states[m.id].immunitySources?.some(e=>e.id===9&&e.kind==='B')||false).toBe(false);}
+ }
 });

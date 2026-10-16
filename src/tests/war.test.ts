@@ -140,5 +140,5 @@ it('CLIのLEVEL 1/2は別実行でき、デフォルトで能力除外/ペア/Ro
 },30000);
 
 it('指定調整後のgenerator全チーム・楽曲・採用理由が複数seedで固定される',()=>{
- for(const [seed,digest] of [[1,'363658972ac1f40acb28d7eae4591e3926f88e138b22232800875fd072f9333f'],[123,'9cac547d1caa5f87bfc45447b6379a9882f5e8157be29eb77a2e4bd2b64ea464'],[876,'20b590dc77bca5247587aa2a8c53de8cf1cb4a41ad2df5aba1364efa4ffcb737']] as const)expect(hash(generateArchetypes(seed,3,'legacy'))).toBe(digest);
+ for(const [seed,digest] of [[1,'30f7cd92574152a7e5e2df8490a541be40c39a7a984984e09033e5517dd3ac50'],[123,'a57687bdefe93015cc1a042cd53e4334ceec25102a947d30cc53fca8bda587fe'],[876,'080d9994f082bd8c17d5dabb7064324101b5ccd085a8f607cdc3ddf812c2c775']] as const)expect(hash(generateArchetypes(seed,3,'legacy'))).toBe(digest);
 });

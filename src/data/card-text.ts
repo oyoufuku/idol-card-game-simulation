@@ -51,7 +51,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
   "9": {
     "A": "【登場】した回、自身に【マイナス無効】。",
     "Bcond": "同じラウンドに味方3人以上が【登場】して終了。",
-    "B": "【次回】味方ステージ全員のAppeal＋1、【マイナス無効】。",
+    "B": "【次回】その回に【登場】した味方のAppeal＋1、【マイナス無効】。",
     "C": "その回に【登場】した味方のAppeal＋1、位置疲労を1軽減。"
   },
   "10": {
@@ -136,7 +136,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "A": "対面の疲労が3以上なら、そのAppeal−2。",
     "Bcond": "その回の対面の【純減】が3以上。",
     "B": "今の対面を今の位置に【固定】。\n【次回】今回Aで減らした分を、次の対面へ引き継ぐ。",
-    "C": "相手ステージの疲労3〜4はAppeal−1、5以上は−2。"
+    "C": "相手ステージの疲労2〜3はAppeal−1、4以上は−2。"
   },
   "24": {
     "A": "開始時にポイントで負けていれば、相手の現在ポイント数分、自身のAppeal＋。",
@@ -187,7 +187,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "32": {
-    "A": "【チャージ】\n【登場】時、消費数分、自身のAppeal＋。5消費ならさらに＋2。",
+    "A": "【チャージ】\n【登場】時、消費数×2、自身のAppeal＋。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"
@@ -223,7 +223,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "38": {
-    "A": "【チャージ】\n【登場】時、消費数分、相手CENTERのAppeal−。5消費なら自身のAppeal＋2。",
+    "A": "【チャージ】\n【登場】時、消費数×2、相手CENTERのAppeal−。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"
@@ -259,7 +259,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "44": {
-    "A": "【チャージ】\n【登場】時、消費数分、味方の最高疲労1人を−／相手の最高疲労1人を＋。5消費なら自身のAppeal＋2。",
+    "A": "【チャージ】\n【登場】時、消費数×2、味方の最高疲労1人を−／相手の最高疲労1人を＋。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"

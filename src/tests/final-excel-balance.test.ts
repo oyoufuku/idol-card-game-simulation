@@ -48,7 +48,7 @@ it('最新の髙橋・小西・濱岸・松田好花と村井の保護を文面�
  expect(r.p1.members.find(m=>m.id===28)!.details.join('|')).toContain('小西夏菜実A+1');
  expect(skillFor(46).autoAppeal!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(2);g.roundSong=songById('B');expect(skillFor(46).autoAppeal!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(0);
  g.p1.states[46].repeatedSongAutos=1;expect(skillFor(46).condition!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(false);g.p1.states[46].repeatedSongAutos=2;expect(skillFor(46).condition!(calculationContext(g.p1,g.p2,46,g.roundSong))).toBe(true);
- expect(abilitySemantics(byId(9))).toMatchObject({negativeProtection:true,partyProtection:true,antiSkill:true});
+ expect(abilitySemantics(byId(9))).toMatchObject({negativeProtection:true,partyProtection:false,antiSkill:true});
 });
 it('藤吉は対面に与えられた他人AUTO/B/曲をコピーせず、自身AUTO加算のみを引き継ぐ',()=>{
  const g=make([20,8,10,18,24,27,28,30],[18,14,10,8,24,27,28,30]);g.p2.formation=formationFromArray([8,14,18,24,10]);g.p1.formation=formationFromArray([8,20,10,18,24]);

@@ -34,7 +34,7 @@ it('構築済み12デッキと所属ランダムを両プレイヤーへ渡し�
 
 it('属性メタは藤嶌から幸坂へ交換し、楽曲と基本9軸の全員1〜2回起用を維持する',()=>{
  const decks=constructedTeams(),meta=decks.find(t=>t.name==='対単一属性・クールメタ')!;
- expect(meta.members).toEqual([3,40,1,5,37,7,19,17]);expect(meta.songs).toEqual(['B','M','L']);
+ expect(meta.members).toEqual([3,40,1,5,37,7,19,17]);expect(meta.songs).toEqual(['B','Q','V']);
  expect(meta.reasons['17'].join('')).toContain('BACKS');expect(meta.reasons['36']).toBeUndefined();
  const counts=new Map<number,number>();for(const t of decks.slice(0,9))for(const id of t.members)counts.set(id,(counts.get(id)||0)+1);
  expect(counts.size).toBe(48);for(const n of counts.values())expect([1,2]).toContain(n);
@@ -45,4 +45,11 @@ it('疲労付与だけ宮地を平尾へ交換し、チャージ軸とともにC
  const decks=constructedTeams(),fatigue=decks.find(t=>t.mainTags[0]==='疲労付与')!,meta=decks.find(t=>t.mainTags[0]==='対単一属性')!;
  expect(fatigue.members).toEqual([16,21,23,42,45,44,29,34]);expect(fatigue.songs).toEqual(['C','D','M']);expect(fatigue.preferredCpuStrategy).toBe('charge');
  expect(meta.members).toEqual([3,40,1,5,37,7,19,17]);expect(meta.preferredCpuStrategy).toBeUndefined();
+});
+
+it('疲労回復は河田から松田好花へ交換し、回復コア・楽曲と各人1〜2回の起用を維持する',()=>{
+ const decks=constructedTeams(),recovery=decks.find(t=>t.mainTags[0]==='疲労回復')!;
+ expect(recovery.members).toEqual([13,42,39,48,2,24,4,26]);expect(recovery.songs).toEqual(['J','N','T']);expect(recovery.preferredCpuStrategy).toBeUndefined();
+ const count=(id:number)=>decks.slice(0,9).filter(t=>t.members.includes(id)).length;
+ expect(count(48)).toBe(2);expect(count(40)).toBe(1);
 });

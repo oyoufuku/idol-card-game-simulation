@@ -50,9 +50,9 @@ it('再測定用の支援交換と属性メタの楽曲を反映し、選抜3デ
   [[45,9,28,24,27,13,31,2],['F','J','N']],
   [[22,30,35,46,41,15,17,33],['N','P','F']],
   [[7,19,9,20,33,8,39,36],['V','B','N']],
-  [[13,42,39,40,2,24,4,26],['J','N','T']],
+  [[13,42,39,48,2,24,4,26],['J','N','T']],
   [[16,21,23,42,45,44,29,34],['C','D','M']],
-  [[3,40,1,5,37,7,19,17],['B','M','L']],
+  [[3,40,1,5,37,7,19,17],['B','Q','V']],
   [[11,10,20,22,7,13,17,24],['A','I','H']],
   [[40,36,39,37,41,42,46,48],['Q','P','V']],
   [[7,12,19,4,1,40,41,28],['B','N','J']],
@@ -60,7 +60,7 @@ it('再測定用の支援交換と属性メタの楽曲を反映し、選抜3デ
  expect(teams.map(t=>[t.members,t.songs])).toEqual(expected);
  const meta=teams.find(t=>t.mainTags[0]==='対単一属性')!;
  expect(meta.members).toEqual(expect.arrayContaining([3,40,1,5,17]));
- expect(meta.songs).not.toContain('Q');expect(meta.songs).not.toContain('P');
+ expect(meta.songs).not.toContain('M');expect(meta.songs).not.toContain('L');expect(meta.songs.every(id=>SONGS.find(s=>s.id===id)!.type!=='クール')).toBe(true);
  for(const team of teams)expect(Object.keys(team.reasons).sort()).toEqual([...team.members,...team.songs].map(String).sort());
  // Changing the fixed 12-deck list must not replace the 9 x 3 diagnostic generator.
  expect(generateArchetypes(1)).toHaveLength(27);
@@ -88,13 +88,13 @@ it('自軍/相手のBURST・疲労・移動を区別する',()=>{
  expect(abilitySemantics(byId(7)).antiSkill).toBe(true);
  expect(constructionScore(byId(26),[],'チャージ',['フォーメーション固定'])).toEqual(constructionScore(byId(26),[],'チャージ',[]));
 });
-it('村井の新しい免疫・ステージ全体展開を対スキルとして加点する',()=>{
+it('村井の登場者保護を評価し、全員保護の加点を与えない',()=>{
  const card=byId(9),score=synergy(card,[],'対スキル');
- expect(abilitySemantics(card)).toMatchObject({antiSkill:true,negativeProtection:true,partyProtection:true});
+ expect(abilitySemantics(card)).toMatchObject({antiSkill:true,negativeProtection:true,partyProtection:false});
  expect(score.reasons.some(r=>r.includes('属性変更への登場時保護'))).toBe(true);
- expect(score.reasons.some(r=>r.includes('味方ステージ5人への展開'))).toBe(true);
+ expect(score.reasons.some(r=>r.includes('味方ステージ5人への展開'))).toBe(false);
  const old={...card,A:'登場した時、自身のAppealを+2する。',B:'次のパフォーマンス中に自身のAppealを+2する。'};
- expect(score.score-synergy(old,[],'対スキル').score).toBe(24);
+ expect(score.score-synergy(old,[],'対スキル').score).toBe(18);
  expect(generateArchetypes(1).filter(t=>t.archetype==='対スキル軸').every(t=>t.members.includes(9))).toBe(true);
 });
 it('楽曲は同じタグでも効果の利用/対策・自軍への不利益を区別する',()=>{

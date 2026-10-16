@@ -68,13 +68,13 @@ it('R1の初期配置・ステージ内移動には村井の登場A/Cを付け�
  }
 });
 
-it('村井BURSTの全員免疫と固定Bの減算も概算に反映し、自軍Cの減算は免疫対象にしない',()=>{
+it('村井BURSTの登場者免疫と固定Bの減算も概算に反映し、自軍Cの減算は免疫対象にしない',()=>{
  const party=make();secondRound(party);isolate(party,9);party.roundSong=songById('B');
  party.p1.formation=formationFromArray([9,10,18,24,27]);
  party.p1.states[9].burstActive=true;party.p1.states[9].burstStacks=1;party.p1.states[9].muraiDoubleC=true;
- party.p1.states[10].burstDebuff=-4;
+ party.p1.states[10].burstDebuff=-4;party.p1.states[10].prevPos='BACK';
  const prediction=preview(party);
- expect(Object.values(party.p1.formation).every(id=>prediction.players[0].states[id].negativeShield)).toBe(true);
+ expect(prediction.players[0].states[10].negativeShield).toBe(true);expect(prediction.players[0].states[18].negativeShield).toBe(false);
  expect(coarse(party).total).toBe(prediction.p1.total);verifyExecution(party);
  const own=make();secondRound(own);own.roundSong=songById('B');
  own.p1.ids[0]=5;delete own.p1.states[8];own.p1.states[5]={...own.p1.states[10],id:5};

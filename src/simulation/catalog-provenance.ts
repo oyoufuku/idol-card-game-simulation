@@ -8,13 +8,13 @@ import {json} from './output';
 export function catalogProvenance(){
  const repositoryRoot=resolve(dirname(fileURLToPath(import.meta.url)),'../..');let gitCommit:string|null=null;
  try{gitCommit=execFileSync('git',['rev-parse','HEAD'],{cwd:repositoryRoot,stdio:['ignore','pipe','ignore'],timeout:2000}).toString().trim();}catch{/* ZIP downloads may have no Git metadata. */}
- return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋2026-10-15チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
+ return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋2026-10-16チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
   cardDefinitionsFile:'src/data/idols.ts',songDefinitionsFile:'src/data/songs.ts',repositoryRoot,gitCommit,inputFingerprint:INPUT_FINGERPRINT,
   constructionPolicy:'effect-aware-v6-role-fit-coverage',historicalDocument:'docs/simulation/normalized-balance-20261010.md（履歴）',currentDocument:'docs/simulation/reviewed-burst-20261014.md',
   usesFixtureAsInput:false,usesWorkbookAsRuntimeInput:false,usesGeneratedJsonAsConstructionInput:false,
   confirmedRulings:[
    {cardIds:[32,38,44],rule:'2026-10-15追加確定：CHARGE CPUは原則チャージ5までBACKSで蓄積し残る5人で戦う。予測敗北回避・最終R7・位置固定を例外とし、R6再充填済みはR7温存を優先。通常CPUは維持。'},
-   {cardIds:[32,38,44],rule:'2026-10-15追加確定：チャージ5を消費して登場したパフォーマンス中、自身Appeal+2をAUTOへ追加。既存の消費効果・BURST条件・再充填は維持。'},
+   {cardIds:[32,38,44],rule:'2026-10-16追加確定：消費チャージ×2を元のAUTO効果へ適用（美穂Appeal、莉奈CENTER減少、平尾疲労回復/付与）。5消費の自身+2は削除。BURST条件・再充填は維持。'},
    {cardIds:[34],rule:'2026-10-15追加確定：BURST条件はFRONT-L/Rを合算した出場累計3回。途中のBACKS・CENTER・MIDDLEでは加算せず、履歴は保持。判定時もFRONT。AUTO・B効果は維持。'},
    {cardIds:[],rule:'2026-10-15追加確定：全メンバーのチャージ保持上限は5。竹内AUTOから受ける消費能力なしのメンバーも含む。'},
    {cardIds:[],rule:'2026-10-15追加確定：対面はCENTER同士、FRONT-L/相手FRONT-R、MIDDLE-L/相手MIDDLE-R。左右とも逆対応。カード能力・CPU精密/概算・対面の実増減履歴で共通化する。'},

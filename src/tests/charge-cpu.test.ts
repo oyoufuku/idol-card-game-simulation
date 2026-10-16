@@ -59,15 +59,15 @@ it('次回投入の限界価値は免疫・Appeal下限・現在疲労を実prev
  const g=scenario(5),before=structuredClone(g);
  expect(chargeEntryValue(g,1,32,5)).toBeGreaterThan(0);expect(g).toEqual(before);
  for(const id of g.p2.ids)g.p2.states[id].shield=true;
- expect(chargeEntryValue(g,1,38,4)).toBe(0);expect(chargeEntryValue(g,1,38,5)).toBeGreaterThanOrEqual(2);
+ expect(chargeEntryValue(g,1,38,4)).toBe(0);expect(chargeEntryValue(g,1,38,5)).toBe(0);
  const floor=scenario(5);
  for(const p of [floor.p1,floor.p2])setAnalysisSkillMasks(p,p.ids.filter(id=>id!==38).map(id=>({id,kind:'ALL' as const})));
  for(const id of floor.p2.ids){floor.p2.states[id].permBonus=-IDOLS[id-1].base;floor.p2.states[id].fatigue=20;}
- expect(chargeEntryValue(floor,1,38,4)).toBe(0);expect(chargeEntryValue(floor,1,38,5)).toBeGreaterThanOrEqual(2);
+ expect(chargeEntryValue(floor,1,38,4)).toBe(0);expect(chargeEntryValue(floor,1,38,5)).toBe(0);
  // No recovery at own fatigue 0, and opposing immunity blocks added fatigue.
  const h=scenario(5);for(const p of [h.p1,h.p2])for(const id of p.ids)p.states[id].fatigue=0;
  for(const id of h.p2.ids)h.p2.states[id].shield=true;
- expect(chargeEntryValue(h,1,44,4)).toBe(0);expect(chargeEntryValue(h,1,44,5)).toBeGreaterThanOrEqual(2);
+ expect(chargeEntryValue(h,1,44,4)).toBe(0);expect(chargeEntryValue(h,1,44,5)).toBe(0);
  // Adding fatigue can still matter at opposing fatigue 0 once immunity is off.
  for(const id of h.p2.ids)h.p2.states[id].shield=false;
  expect(chargeEntryValue(h,1,44,4)).toBeGreaterThan(0);

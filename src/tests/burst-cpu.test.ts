@@ -96,10 +96,11 @@ it('実候補の現在Appeal差を少し犠牲にして、B疲労付与と次回
  for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].normalUsed=true;
  for(const id of g.p1.ids){const s=g.p1.states[id];s.prevPos=s.pos=posOf(g.p1,id);s.fatigue=3;}
  for(const id of [32,38,44]){const s=g.p1.states[id];s.charge=3;s.normalUsed=false;s.prevPos='BACK';}
+ g.p1.states[38].charge=0;
  for(const slot of ['CENTER','FRONT-L','FRONT-R','MIDDLE-L'] as const)g.p1.states[g.p1.formation[slot]].lockedPos=slot;
  g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];
  const normal=evaluateCpuFormation(g,1,prng(1)),normalForecast=forecastBurstFormation(g,1,normal.formation),burst=evaluateBurstFormation(g,1,prng(1));
- expect(normal.formation['MIDDLE-R']).toBe(38);expect(burst.formation['MIDDLE-R']).toBe(44);
+ expect(normal.formation['MIDDLE-R']).toBe(32);expect(burst.formation['MIDDLE-R']).toBe(44);
  expect(burst.currentDifference).toBeLessThan(normal.difference);expect(burst.nextPoints).toBeGreaterThan(normalForecast.nextPoints);
  expect(burst.utility).toBeGreaterThan(normalForecast.utility);expect(burst.predictedBursts.some(b=>b.id===44)).toBe(true);
 });

@@ -31,7 +31,7 @@ it('完了済みのチャージ回復・BURST疲労回復は残し、次回のAU
  queueBursts(g,[],[32]);resolvePendingBursts(g,()=>0);
  expect(g.p2.states[32]).toMatchObject({charge:4,fatigue:0,burstCount:1,lockedPos:'CENTER'});
  g.round=g.p1.round=g.p2.round=2;const predicted=preview(g);expect(predicted.players[1].states[32].spentCharge).toBe(4);
- expect(predicted.p2.members.find(m=>m.id===32)!.autoGain).toBe(4);
+ expect(predicted.p2.members.find(m=>m.id===32)!.autoGain).toBe(8);
 });
 it('次回の通常BURST条件を無効にし、終了処理後に解除する。通常使用済み・累計回数は巻き戻さない',()=>{
  const g=scenario(41);queueBursts(g,[],[41]);resolvePendingBursts(g,()=>0);

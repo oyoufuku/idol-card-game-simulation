@@ -35,9 +35,9 @@ it('村井の登場AUTOは属性変更・位置無効・疲労付与・曲減算
  expect(s.fatigue).toBe(4);expect(attributesOf(r.players[0],9)).toEqual(['ユーモア']);expect(m.details).toContain('位置+1');expect(m.details.join('|')).toContain('夏の近道+0');
  g.interactiveBursts=true;executeRound(g);expect(g.p1.states[9].fatigue).toBe(6);expect(g.result!.p1.members.find(m=>m.id===9)!.val).toBe(m.val);
 });
-it('村井BURSTは登場時に味方ステージ全員へ免疫を展開、BACKSには展開しない',()=>{
+it('村井BURSTは次回登場者へ免疫を展開し、居残り・BACKSには展開しない',()=>{
  const g=make([8,10,18,24,27,9],[36]);g.round=2;g.p1.round=g.p2.round=2;g.p1.formation=formationFromArray([8,9,18,24,27]);applyBurst(g,g.p1,g.p2,9);
- const p=preview(g).players[0];for(const id of Object.values(p.formation))expect(p.states[id].negativeShield).toBe(true);for(const id of idsBack(p))expect(p.states[id].negativeShield).toBe(false);
+ const p=preview(g).players[0];for(const id of Object.values(p.formation))expect(p.states[id].negativeShield).toBe(id===9);for(const id of idsBack(p))expect(p.states[id].negativeShield).toBe(false);
 });
 it('小島Bは交換先へ免疫を与え、清水の継続免疫はJOYFULで解除される',()=>{
  const g=make([4,8],[3,16]);g.targets[0].koji=8;applyBurst(g,g.p1,g.p2,4);expect(g.p1.states[8].shield).toBe(true);g.roundSong=songById('V');expect(preview(g).players[0].states[8].shield).toBe(false);

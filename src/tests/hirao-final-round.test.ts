@@ -15,15 +15,15 @@ function hirao(){
  g.p1.formation=formationFromArray([8,44,18,24,27]);g.p1.states[44].charge=3;
  return g;
 }
-it('平尾はCENTERではなく両軍8人の最高疲労を対象にし、BACKSにも消費チャージ分を適用する',()=>{
+it('平尾はCENTERではなく両軍8人の最高疲労を対象にし、BACKSにも消費チャージ×2を適用する',()=>{
  const g=hirao();g.p1.states[8].fatigue=2;g.p1.states[31].fatigue=8;g.p2.states[8].fatigue=1;g.p2.states[31].fatigue=7;
  const before=structuredClone(g),predicted=preview(g);expect(g).toEqual(before);
- expect(predicted.players[0].states[31].fatigue).toBe(5);expect(predicted.players[1].states[31].fatigue).toBe(10);
+ expect(predicted.players[0].states[31].fatigue).toBe(2);expect(predicted.players[1].states[31].fatigue).toBe(13);
  expect(predicted.players[0].states[8].fatigue).toBe(2);expect(predicted.players[1].states[8].fatigue).toBe(1);
  expect(predicted.players[0].states[44]).toMatchObject({spentCharge:3,charge:0});
  const actual=executeRound(g);expect([actual.p1.total,actual.p2.total]).toEqual([predicted.p1.total,predicted.p2.total]);
  const effect=g.skillEffects!.find(e=>e.id===44&&e.kind==='A'&&e.targets.some(t=>t.id===31&&t.label==='疲労値'));
- expect(effect?.targets).toEqual(expect.arrayContaining([expect.objectContaining({side:0,id:31,delta:-3}),expect.objectContaining({side:1,id:31,delta:3})]));
+ expect(effect?.targets).toEqual(expect.arrayContaining([expect.objectContaining({side:0,id:31,delta:-6}),expect.objectContaining({side:1,id:31,delta:6})]));
  expect(CARD_TEXT[44].A).toContain('最高疲労');
 });
 it('平尾の同率抽選はカード別の予約乱数を使い、previewを繰り返しても対象・実処理・乱数を変えない',()=>{
@@ -31,8 +31,8 @@ it('平尾の同率抽選はカード別の予約乱数を使い、previewを繰
  g.p1.performanceRandomById={[44]:[.99,0]};
  setRandomSources(g,{players:[()=>{throw Error('live P1 RNG');},()=>{throw Error('live P2 RNG');}]});
  const before=structuredClone(g),a=preview(g);for(let n=0;n<3;n++)expect(preview(g)).toEqual(a);expect(g).toEqual(before);
- expect(a.players[0].states[8].fatigue).toBe(8);expect(a.players[0].states[10].fatigue).toBe(5);
- expect(a.players[1].states[24].fatigue).toBe(12);expect(a.players[1].states[27].fatigue).toBe(9);
+ expect(a.players[0].states[8].fatigue).toBe(8);expect(a.players[0].states[10].fatigue).toBe(2);
+ expect(a.players[1].states[24].fatigue).toBe(15);expect(a.players[1].states[27].fatigue).toBe(9);
  expect(executeRound(g).p1.total).toBe(a.p1.total);
 });
 it('平尾は最高疲労の免疫対象を選んでも別人へ再抽選せず、回復は0未満にならず、AUTO無効なら消費しない',()=>{
