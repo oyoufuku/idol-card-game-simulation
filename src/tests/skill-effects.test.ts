@@ -20,7 +20,7 @@ it('軽減・無効化後のAppealを記録し、BACKSへの不適用を加算�
  executeRound(g);
  expect(g.skillEffects!.find(e=>e.id===1&&e.side===0&&e.kind==='A')!.targets).toContainEqual({side:1,id:8,label:'Appeal',delta:-2});
  const h=make([1,8,10,18,24,2,3,4],[15,10,18,24,27,1,2,3]);h.p2.states[15].attributeOverride='クール';executeRound(h);
- expect(h.skillEffects!.some(e=>e.id===1&&e.side===0&&e.targets.some(t=>t.side===1&&t.id===15&&t.label==='大園A'&&t.delta===undefined))).toBe(true);
+ expect(h.skillEffects!.some(e=>e.id===1&&e.side===0&&e.targets.some(t=>t.side===1&&t.id===15&&t.label==='マイナス無効'&&t.delta===undefined))).toBe(true);
 });
 it('Cの相手BACKS疲労付与、属性PLAIN、位置ボーナス補正を記録する',()=>{
  const g=make([42,8,10,18,24,1,2,3],[8,10,18,24,27,1,2,3]);executeRound(g);

@@ -96,9 +96,9 @@ export const SKILLS: Record<string, Skill> = {
   endo_hikari: {
     autoEffects: c => { const t = symmeId(c.p, c.id); return t != null && hasAttr(c.p, t, 'クール') ? [{ id: c.id, amount: 1 }, { id: t, amount: 1 }] : []; },
     condition: c => [c.p.formation.CENTER, c.p.formation['FRONT-L'], c.p.formation['FRONT-R']].every(id => hasAttr(c.p, id, 'クール')),
-    burst: c => { c.game!.songOverride = 'K'; c.log('  B: 今回のパフォーマンス楽曲をジャマイカビールに変更'); },
+    burst: c => { c.game!.songOverride = 'K'; self(c).burstSelfAppeal += 2; c.log('  B: 次のパフォーマンス楽曲をジャマイカビールに変更・自身Appeal+2'); },
   },
-  ozono: { immuneAppeal: true, burst: () => {}, condition:c=>c.p.round>=5&&['CENTER','FRONT-L','FRONT-R'].includes(posOf(c.p,c.id)) },
+  ozono: { selfAutoShield: true, doubleBurstGains: true, burst: () => {}, condition:c=>c.p.round>=5&&['CENTER','FRONT-L','FRONT-R'].includes(posOf(c.p,c.id)) },
   onuma: {
     pre: c => { const t = oppositeId(c.p, c.opp, c.id); if (t != null && !c.opp.states[t].shield&&!c.opp.states[t].negativeShield) { increaseFatigue(c.opp,c.p,t,2); c.log(`${c.p.label} 大沼A：${byId(t).name}疲労+2`); } },
     condition: c => { const t = oppositeId(c.p, c.opp, c.id); return t != null && c.opp.states[t].fatigue >= 7; },

@@ -61,10 +61,10 @@ it('遠藤光莉はクールのシンメと自身に+1、Bでそのラウンド�
  const g=make([8,14,18]);g.roundSong=songById('A');expect(details(g,14)).toContain('遠藤光莉A+1');expect(details(g,18)).toContain('遠藤光莉A+1');
  applyBurst(g,g.p1,g.p2,14);g.round=2;prepareRound(g,()=>.5);expect(g.roundSong.name).toBe('ジャマイカビール');
 });
-it('大園は通常時増減無効、BURST中はプラス2倍・マイナス無効、位置補正と疲労は倍にしない',()=>{
- const g=make([15],[1]);g.roundSong=songById('A');expect(details(g,15)).toContain('石森璃花A+0（大園A）');expect(details(g,15)).toContain('Start over!+0（大園A）');
- applyBurst(g,g.p1,g.p2,15);expect(details(g,15)).toContain('石森璃花A+0（大園B×2）');expect(details(g,15)).toContain('Start over!+2（大園B×2）');
- expect(details(g,15)).toContain('位置+2');
+it('大園は常時マイナス無効で加算を受け、BURST中はプラス2倍、位置補正と疲労は倍にしない',()=>{
+ const g=make([15],[1]);g.roundSong=songById('A');const ownDetails=()=>preview(g).p1.members.find(m=>m.id===15)!.details.join('|');expect(ownDetails()).toContain('石森璃花A+0（マイナス無効）');expect(ownDetails()).toContain('Start over!+1');
+ applyBurst(g,g.p1,g.p2,15);expect(ownDetails()).toContain('石森璃花A+0（マイナス無効）');expect(ownDetails()).toContain('Start over!+2（大園B×2）');
+ expect(ownDetails()).toContain('位置+2');
 });
 it('大園はR5以降の前列終了でBURST、R6終了直後に発動する',()=>{
  const g=make([15]);g.p1.round=4;expect(checkBurstConditions(g,g.p1,g.p2,'draw')).not.toContain(15);

@@ -2,7 +2,7 @@
 
 このリポジトリは、GitHub Actionsでバランス検証するためにPrivate開発リポジトリのmainから作成した公開用スナップショットです。過去のGit履歴を含まず、公開後のコミット作者にはGitHubのnoreplyアドレスを使用します。
 
-最新同期：Private mainのPR #41（2026-10-17）。平尾の敵対象をステージのランダム1人へ、莉奈を相手FRONT2人への各消費数分の減少へ変更。CHARGE CPUの5待機を廃止し、構築済み編成を更新。正確なsource commit・仕様fingerprint・各ファイルhashは `SIMULATION_SOURCE.json` に記録します。
+最新同期：Private mainのPR #42（2026-10-17）。大園Aを自身へのマイナス無効へ変更し、光莉・濱岸のBへ次回本人Appeal+2を追加。対スキルはPR41前の編成へ戻し、クールは8人全員クールを維持。正確なsource commit・仕様fingerprint・各ファイルhashは `SIMULATION_SOURCE.json` に記録します。
 
 Actionsの **Constructed decks and RANDOM through L1** は、構築済み各組合せ50戦（計3,900戦）とRANDOM1,000戦を別runnerで並行実行し、両方の入力・checksumを検証して合流後、L1だけ実行します。L2/L3は自動開始しません。ゲーム・CPU・分析処理はマージ済みソースと同一で、この専用workflowだけ公開環境の運用ファイルです。
 

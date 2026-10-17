@@ -8,11 +8,13 @@ import {json} from './output';
 export function catalogProvenance(){
  const repositoryRoot=resolve(dirname(fileURLToPath(import.meta.url)),'../..');let gitCommit:string|null=null;
  try{gitCommit=execFileSync('git',['rev-parse','HEAD'],{cwd:repositoryRoot,stdio:['ignore','pipe','ignore'],timeout:2000}).toString().trim();}catch{/* ZIP downloads may have no Git metadata. */}
- return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋2026-10-16チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
+ return {specification:'burst_proposals_48cards_3options_20261014.xlsx（追記版）＋2026-10-17チャット確定変更',memberSheet:'docs/simulation/balance-overrides-20261014.json',originalWorkbook:'案_48人22曲_Codex実装用_最終確定_20261011.xlsx',songSheet:'Codex用楽曲',
   cardDefinitionsFile:'src/data/idols.ts',songDefinitionsFile:'src/data/songs.ts',repositoryRoot,gitCommit,inputFingerprint:INPUT_FINGERPRINT,
   constructionPolicy:'effect-aware-v6-role-fit-coverage',historicalDocument:'docs/simulation/normalized-balance-20261010.md（履歴）',currentDocument:'docs/simulation/reviewed-burst-20261014.md',
   usesFixtureAsInput:false,usesWorkbookAsRuntimeInput:false,usesGeneratedJsonAsConstructionInput:false,
   confirmedRulings:[
+   {cardIds:[15],rule:'2026-10-17確定：AUTOは常時自身に共通のマイナス無効。味方・楽曲のAppeal上昇を受ける。Bは上昇量2倍とAppeal減少無効を維持。位置疲労・既存疲労ペナルティ・自軍由来の負担は共通ルールどおり。'},
+   {cardIds:[14,46],rule:'2026-10-17確定：特殊曲への変更に加え、次のパフォーマンス中、本人のAppeal+2。JOYFUL LOVEによる継続B解除では加算も解除。B条件・曲の効果は維持。'},
    {cardIds:[32,38,44],rule:'2026-10-16追加確定：CHARGE CPUの5待機・R6固定温存を廃止。現在の得点と将来の蓄積・再充填価値を比較して投入する。通常CPUは維持。'},
    {cardIds:[32,38,44],rule:'2026-10-16追加確定：美穂は消費チャージ×2の自身Appeal。莉奈は消費数×1を相手FRONT2人へそれぞれ減少。平尾は消費数×2を味方最高疲労の回復と相手ステージのランダム1人への付与に使用。5消費の自身+2は削除。BURST条件・再充填は維持。'},
    {cardIds:[34],rule:'2026-10-15追加確定：BURST条件はFRONT-L/Rを合算した出場累計3回。途中のBACKS・CENTER・MIDDLEでは加算せず、履歴は保持。判定時もFRONT。AUTO・B効果は維持。'},

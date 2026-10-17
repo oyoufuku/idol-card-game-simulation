@@ -42,9 +42,9 @@ it('PLAIN CENTERを除外し同カード相手のPLAINは保持する',()=>{
 });
 it('強制BURSTで発動した大園のB倍化だけを除外しA免疫を維持する',()=>{
  const id=IDOLS.find(c=>c.skill==='ozono')!.id;const g=game([id,1,2,3,4,5,6,8],id,'BURST');applyBurst(g,g.p1,g.p2,id,true,()=>.5);
- // Attribute song would add +1 to the cute Ozono; retained A blocks it.
- const r=preview({...g,roundSong:songById('A')});expect(r.p1.members.find(m=>m.id===id)!.skillGain).toBe(0);
- expect(skillFor(id,g.p1).immuneAppeal).toBe(true);
+ // Retained A permits the +1 song; disabling B removes only its doubling.
+ const r=preview({...g,roundSong:songById('A')});expect(r.p1.members.find(m=>m.id===id)!.skillGain).toBe(1);
+ expect(skillFor(id,g.p1).selfAutoShield).toBe(true);expect(skillFor(id,g.p1).doubleBurstGains).toBeUndefined();
 });
 it('上村のBURST拡張と山下葉留花の楽曲倍化もB除外で止まる',()=>{
  const g=game([33,45,1,2,3,4,5,6],33,'BURST');g.p2.states[45].permBonus=2;g.p1.states[33].burstActive=true;

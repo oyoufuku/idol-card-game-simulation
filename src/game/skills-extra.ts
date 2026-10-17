@@ -55,7 +55,7 @@ export const EXTRA_SKILLS: Record<string,Skill> = {
  }}},
  yamashita_haruka: {autoAppeal:c=>new Set([...st(c).positionKinds,positionKind(posOf(c.p,c.id))]).size,condition:c=>['CENTER','FRONT','MIDDLE'].every(p=>st(c).positionKinds.includes(p)),burst:()=>{},burstPre:c=>{for(const id of idsStage(c.opp))if(!c.opp.states[id].shield&&!c.opp.states[id].negativeShield)increaseFatigue(c.opp,c.p,id,1);},
  centerPre:c=>{if(c.p.round>1)idsStage(c.opp).filter(id=>positionKind(posOf(c.opp,id))!==positionKind(c.opp.states[id].prevPos)&&!c.opp.states[id].shield&&!c.opp.states[id].negativeShield).forEach(id=>increaseFatigue(c.opp,c.p,id,2));}},
- hamagishi: {autoAppeal:c=>c.p.round>1&&c.p.songHistory.at(-1)===c.song.type?2:0,condition:c=>st(c).repeatedSongAutos>=2,burst:c=>{c.game!.songOverride='S';}},
+ hamagishi: {autoAppeal:c=>c.p.round>1&&c.p.songHistory.at(-1)===c.song.type?2:0,condition:c=>st(c).repeatedSongAutos>=2,burst:c=>{c.game!.songOverride='S';st(c).burstSelfAppeal+=2;}},
  tomita: {
   autoAppeal:c=>bursts(c.p)>bursts(c.opp)?2:0,
   condition:c=>idsStage(c.p).every(id=>c.p.states[id].burstCount>0),

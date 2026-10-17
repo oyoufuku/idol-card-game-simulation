@@ -81,11 +81,11 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
   "14": {
     "A": "シンメがクールなら、自身とシンメのAppeal＋1。",
     "Bcond": "終了時、味方CENTER／FRONT2人が全員クール。",
-    "B": "次の楽曲を「ジャマイカビール」にする。",
+    "B": "【次回】楽曲を「ジャマイカビール」にし、自身Appeal＋2。",
     "C": "—"
   },
   "15": {
-    "A": "スキル・楽曲による自身のAppeal増減を無効にする。",
+    "A": "自身に【マイナス無効】。",
     "Bcond": "R5以降、FRONTかCENTERで終了。",
     "B": "【次回】自身へのスキル・楽曲のAppeal上昇を2倍にし、減少を無効にする。",
     "C": "—"
@@ -273,7 +273,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
   "46": {
     "A": "前回と同じ楽曲属性なら、自身のAppeal＋2。",
     "Bcond": "自身のAが累計2回発動。",
-    "B": "次の楽曲を「NO WAR in the future」にする。",
+    "B": "【次回】楽曲を「NO WAR in the future」にし、自身Appeal＋2。",
     "C": "—"
   },
   "47": {

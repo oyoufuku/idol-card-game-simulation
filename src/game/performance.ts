@@ -24,7 +24,10 @@ export function preparePerformance(p1:Player,p2:Player,song:Song,effects?:Effect
   if(s.muraiDoubleC&&skillEnabled(p,source,'BURST'))for(const id of idsStage(p).filter(id=>p.enteredThisRoundIds.includes(id)))grantImmunity(p,id,source,'B');
   if(skillEnabled(p,source,'BURST'))for(const id of s.protectedTargets||[])grantImmunity(p,id,source,'B');
  }
- for(const [p,opp] of [[p1,p2],[p2,p1]])for(const id of p.ids)if(skillFor(id,p).negativeImmuneOnEntry&&p.enteredThisRoundIds.includes(id)&&skillEnabled(p,id,'AUTO')){p.states[id].autoTriggered=true;grantImmunity(p,id,id,'A');}
+ for(const p of [p1,p2])for(const id of p.ids){
+  const skill=skillFor(id,p);
+  if((skill.selfAutoShield||skill.negativeImmuneOnEntry&&p.enteredThisRoundIds.includes(id))&&skillEnabled(p,id,'AUTO')){p.states[id].autoTriggered=true;grantImmunity(p,id,id,'A');}
+ }
  for(const [p,opp] of [[p1,p2],[p2,p1]])for(const id of p.ids){const pre=skillFor(id,p).burstPre;if(p.states[id].burstActive&&pre){const ctx=calculationContext(p,opp,id,song);if(effects)effects.capture(effects.source(p,id,'B','performance'),()=>pre(ctx));else pre(ctx);}}
  const enabled=resolveCenterSkills(p1,p2,song);
  for(const p of [p1,p2])for(const id of p.ids){p.states[id].plain=false;p.states[id].baseAdjustment=0;}

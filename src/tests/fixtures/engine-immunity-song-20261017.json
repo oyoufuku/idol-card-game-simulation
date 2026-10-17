@@ -1,0 +1,266 @@
+[
+  {
+    "name": "A-random",
+    "normal": "620ed3bcb3fca80ce2a36b51ec384bf448d9bf84fef03aed9c6b4a0d39ae9253",
+    "compact": "0813a10810aa9fae4ef5fa3171766e99b7adf2d6247b88b1fbd7f77aaab86d7a",
+    "execution": "b2fcfbf1aec94cc99ff79cdddf78d59aaba78604f9d9087cfa247eda2f04cb40"
+  },
+  {
+    "name": "A-interactions",
+    "normal": "b19ca42dfb1145c73a25fdf9a7469510e0a90742761bada3855b9bd0f54c72bf",
+    "compact": "4130593a59546ac697a1a7c100c9bf2a5823a59145c744058aadf42911f4bb1b",
+    "execution": "c0d0b9f268988ace3a08e6b2caf16ab5b93b175fe9ac90e84b6e5fd6e312cce2"
+  },
+  {
+    "name": "B-random",
+    "normal": "d80b80bc34bd9785f9175f2bfb60e84984cb7baa86b8e6ba4c3b7d79d4fa0b51",
+    "compact": "48cba3265ea7a6a3120656e36d58521ca4e329921b66a942a4bd993482c7a4b2",
+    "execution": "b4c582b6fbfc9058b0be6e89b2267c98bec5525c768b5149890bf18589819a9b"
+  },
+  {
+    "name": "B-interactions",
+    "normal": "a942ebc951624a18d66cfc85f6740e6b89910bee65321d1584f40ab20158e12c",
+    "compact": "f619e5c39ee602ebc3a13f3b2fd80bc31d8638edc9586d6456e6d7aab0d75aae",
+    "execution": "fb00eb8cf299288364e3152dce947a1296b5f28261c4cf450e59be80f361a7e2"
+  },
+  {
+    "name": "C-random",
+    "normal": "72f3e041b2f1bb3257d7312f6e50ea3d4ac9274a4506c524a871079a48399447",
+    "compact": "25e2f1b9d24a8f10eeaf04924eeb6a925d7230569f6d122401343064c78b862e",
+    "execution": "3f9905ea67e9af9791e9d8fab3e39efe50feb4eeba321680e54875b625393376"
+  },
+  {
+    "name": "C-interactions",
+    "normal": "5e395fbc1ca85146dd54fd414c55e5869eaf5a73c5eff4075058701a1a040abf",
+    "compact": "e0b16fb234c0368375bb33ca1695ce56909582e6bdf8845acd6b7aad5894cc68",
+    "execution": "186d62208b3760671c21424b085ea20b04e6250c6147e0c4738c3e23d62e8f3d"
+  },
+  {
+    "name": "D-random",
+    "normal": "e06615c3f55a9b667b14ad41cc7a0039f6df5088c9371390485579b59d66a548",
+    "compact": "13dfb4c103ddd7aa7feae831dc843a868e2d9802d424cb010ad52fab0ad372c4",
+    "execution": "33247df73bcc10af965319d142953b4cb0055929526f4b74531e0d95d1c74ab4"
+  },
+  {
+    "name": "D-interactions",
+    "normal": "4a1956d9ab0c4fc4f5fc7bf0a174c9f4c1d1f526b62b687a1113a68935fffa73",
+    "compact": "3acda415746455ed50046b559d0c4640a257e7c178746fe941897ca76da83ab2",
+    "execution": "4829cc033b6ec503a417ff550b4386d5e0c408ab794711b94904c15e8d1f34a2"
+  },
+  {
+    "name": "E-random",
+    "normal": "f9cc6d7241dc48e5c803c6cb017dc3046357bf83527bda2b1807623b5e1a538f",
+    "compact": "26dbcc82facea5f4c410342af1be4fd12a7fe2ea9084a8facf92dead0c69ecba",
+    "execution": "5145056e3c513d073b29f2f83719483f7f903300dbe5f711b67f477060e66237"
+  },
+  {
+    "name": "E-interactions",
+    "normal": "5dacb11fd3f4bad20f4564d518028cd944554363ce9f9cab3453ee5608ab94a9",
+    "compact": "7ad006e1421ac6c0cc679f6df248b802fe2772a5894755286a94e1491f7a369c",
+    "execution": "345189bc1f0b2200de1419cc84b0f1c39732dbb1b74bd4fda3f635762cbf8716"
+  },
+  {
+    "name": "F-random",
+    "normal": "ab4def4874414875248dd6d05ed332162e4f56ac01bd5b77d345c01fe44ef6f2",
+    "compact": "a306bb41bad63262a300514bdfbcfda4bfa56c22b7215b5c86143d070beb4dff",
+    "execution": "26b33eeacce7a4aff34fd61f9423cb124777928654f0ca0544f2781ce2a0540e"
+  },
+  {
+    "name": "F-interactions",
+    "normal": "c55b88ed0aa8bb532d8a13ea264bb35c3feb98d6a264afd0418216b691c00145",
+    "compact": "334221220ff76e398a823d98f11d8964a9b7a027f5f2799e2bb74b8e81f6a485",
+    "execution": "4a3559924602be557ccd1e431cbe29024ec9d60a76013be3eefb78d1e16a2f03"
+  },
+  {
+    "name": "G-random",
+    "normal": "86a51bb69f5c535735933926c8022672d2eaf67e6b363f9bf6aff25693b0833e",
+    "compact": "b7067f6c71b73e773920d970694d5cc788628c2e88aca8a6cd9e215544bfd5c1",
+    "execution": "eee63a88fa38b9b4f3d34f80f586cac4ada2dc5a5d20986e61ac0876e0054b74"
+  },
+  {
+    "name": "G-interactions",
+    "normal": "7bac811c7e280d5de5b975f482e449a8304520794324c312f8e71b1e58ce24fa",
+    "compact": "d6cab64b87f543ba677eef82e56f98c8bc4d009373d37ba888ae0f7e38e8da4f",
+    "execution": "1d859431fb1905613fe99416b79ba8ccc1e87f4428563e44372f79c90fb12f41"
+  },
+  {
+    "name": "H-random",
+    "normal": "592a95c245efe9784858c13fbc9039be23cefb82560f339cbf67de23e43f066b",
+    "compact": "1320c5a468d55c110a5ebe383d441f6c4fe41ee4397d540ddfd4ec7ac7541530",
+    "execution": "4566222e4a175fda9c62464502a0bd8ee615157161aa06dc1651889378798abb"
+  },
+  {
+    "name": "H-interactions",
+    "normal": "3355d9541b8894c87bddcfea7b941c20d1624b6d2749ce7371577dd6389e535c",
+    "compact": "b58fec64b8b91603b6c9ace0f80e3f806a6b245d9b09552f442793242d1ebd62",
+    "execution": "7091015b69aaed6564d19a082aae2ff4174b940743d2ef33eab4b6c3e4f2f014"
+  },
+  {
+    "name": "I-random",
+    "normal": "a44b858c77c56a960417b88062c3f237ca24c11f87b79e24ae6858b90280f2cf",
+    "compact": "4e8ca8ce49adc4d5987a3aa72784a18545c3f10b6cb9360fea7047e6ec1fa72a",
+    "execution": "983ee067a89670eb40fea0b20dcdec358e281dc3faf75ed617b0962d9eb428f4"
+  },
+  {
+    "name": "I-interactions",
+    "normal": "a77be5f9beeb7500f3f1c34bd6a1470f2f0f22774ccfdfaf023c84b1a17ee67b",
+    "compact": "fd2d509491b3e88724fb78a1f046ee6baa3241e055879f6071fa7c42c7c17f06",
+    "execution": "d2fe6d0d594f885e5e432bcc126459f5938f7ee58956af5b3429d4c34669dc12"
+  },
+  {
+    "name": "J-random",
+    "normal": "345944215972d81e96ce1f899508228096039a7fb98e238d6419217e67c04a97",
+    "compact": "a1f096c4ebb8105fabf3dac4bb8df4ae832693d0899a8bb239b6a1e19f669335",
+    "execution": "e3b751d149f7a921e2c90a2a9d03649afe22506ccd1fb53b34cff45e99ba155d"
+  },
+  {
+    "name": "J-interactions",
+    "normal": "f4d18786a16f2dcee7d896b384d72f82218654c497744ab1c43e0b8ce202205f",
+    "compact": "89b3e8846d66761778c82b3dc071bb0cf914a56fb351e581f5deeaddfc404017",
+    "execution": "da5c0b5678129bfd19e840bce95a10112c40834099f3181e6b47c40db37c2d2c"
+  },
+  {
+    "name": "K-random",
+    "normal": "8c7d26635b9bb85c54d397d32d85a71b1a930646139e5ced353801be8477fca3",
+    "compact": "84529c0dcf479937d2db9cd405b3bd107e396054123906a94d881c70f53e988d",
+    "execution": "964224f4c012ea30def79ffc39dafa50cb8e443941d18893d3c18e1602d7258f"
+  },
+  {
+    "name": "K-interactions",
+    "normal": "5deb2acfabfa01483df85df6f8dac01c532f943968bc73b7824f9f3b89b7b00a",
+    "compact": "294844ba4435ef106af906f4424c25da6625a17e741ff3d27bff0e4dcda0e7bc",
+    "execution": "0fa9ba87e9b3c80aa11cb1eaf229f1644a33ff30b26757c9748b8872ad122d5d"
+  },
+  {
+    "name": "L-random",
+    "normal": "7f216f79b3667a0dab0b36d4d41c83ed0cd5199e2e28b400fc9ff0515ba285a1",
+    "compact": "58bc1abb72f7e56887183b351a4a0506759589f640125e448e0394d640365d0b",
+    "execution": "5c72c2d03f3304f59574196651365b162c9253726714d43f121cdc6b9171a660"
+  },
+  {
+    "name": "L-interactions",
+    "normal": "aaa2990a4430380a5c9b9fec5f223b599bdaef1060e1bbe9a720594831b61557",
+    "compact": "cefdc19a5833dfd6a142e12ce537dae41f2f1520ba1d26060d43fefc49ac4498",
+    "execution": "a16adf754772a50cfbe8acfe10cf32571b9559fcf9631cd47d0aa3c69a6e81b1"
+  },
+  {
+    "name": "M-random",
+    "normal": "202212b7a1f709d24ff9e0a1537db722ad25a0303d1a95ff766fe147f079068e",
+    "compact": "9d84b99218212cc38392e91299fc542f174fc478a45e1b4ea14a80059fcada27",
+    "execution": "fdbf31a4102fa8912f557624e14d52b1c384efbcdd0836358d00362989871f80"
+  },
+  {
+    "name": "M-interactions",
+    "normal": "afd4831c60abd831088473f1cd559e08ad6a57ec7d36bfd248e47443b68ff1de",
+    "compact": "d6f24491c38c0790c6fc5413f3e4e42d10e4846a260ddc5eee3b4417be6e5053",
+    "execution": "6a58bd11e4ce01318193fdce6e7a91d4f64b1fd02032275f11070378bbc17948"
+  },
+  {
+    "name": "N-random",
+    "normal": "2a1aa3c1afa94a53399ddd90c555de6e3a77adadfcc6213edc7a5520eaa74c11",
+    "compact": "0f6ff15c85811c3d04520d20ac81422fc581dc3374439e0d57eecab85882cd56",
+    "execution": "bea6bdc7f3dffa34b700c055e136fadd0d6a8ff9760e5fff8ab31a9e2033ded8"
+  },
+  {
+    "name": "N-interactions",
+    "normal": "702e0795af742905c2758593575abc3c31751843b2624618b8831a3859273756",
+    "compact": "0ac30e5836cf1bf3927e108264c1d962c64c3f7c7e309ee18703103b4811aae7",
+    "execution": "092ba5bd1092173081f8373f24dd543ebc76a4d499473b27c93ba48040e52af9"
+  },
+  {
+    "name": "O-random",
+    "normal": "543cfaabba69f2b46cbf70970d0b4bc53e0721daa6a0f8e31d4ec2895ac8821b",
+    "compact": "ad9463d9d7830e38244a7caf572431d5c51e86f342f0a98a0cd754aa577356dd",
+    "execution": "6ab5d058e535be019135998efefa56853cf4dc0912760fb57137fa92277b9605"
+  },
+  {
+    "name": "O-interactions",
+    "normal": "31d137041fdeaac69a1c75f5fab5b0b1791bb42cb649dd6fc0c2132c20d10064",
+    "compact": "974b1f372949bbe99e2522885414eeb7ffa0293342bdf81a22bcdc9aee5996f2",
+    "execution": "bd25fef3d1aa3d164024c599872c36d8ecaee84e94a46589f44724480eab523e"
+  },
+  {
+    "name": "P-random",
+    "normal": "b8e805e6b435bf8f8060e9e7d882d86b2c4a7101d64d64c66274126d4aca7c2f",
+    "compact": "5e546756867ec6ec99da37a26eedd0719d21c1e028c48fc0c671c191e9a88da1",
+    "execution": "21bdf235ab2562b54ee21f0e01bcb381115c0de2410febb0a023fe5f2b67c6bc"
+  },
+  {
+    "name": "P-interactions",
+    "normal": "6c70f9fe11d092165fa342452572a5ab4730dddad24974270db9c71a03e64f5a",
+    "compact": "d39291c90fd593155c6cc528659839e5e83532f5179e55540d8f4fbe9c2ad41f",
+    "execution": "1d4589b884ee34f4b6c9acc512030d05a80beb72e17096b76befc1bd2fb8b97b"
+  },
+  {
+    "name": "Q-random",
+    "normal": "cb87b917a843b49417a9a3b98b7a1042240d3154d6f84b894802aee935aaa9f2",
+    "compact": "3909a992ee68192ea7bd096bb006113c355c3920c52cc1c5b330a5508be7e83f",
+    "execution": "57bac607fdc12a6df7db8bda664c09d53307c581310a75d06470fe12b1aedc77"
+  },
+  {
+    "name": "Q-interactions",
+    "normal": "2869ee02e75762a564658ecbefec2d9be06fa2655536ae1d8d80455e4f7d3b14",
+    "compact": "1b1e6191b45e20cd7a5746df844dd03be219002057a5b015c20360137905b756",
+    "execution": "43244da459a07aaccc196193e7351bf70daa9fc3ede9b94c97f2b3bce18699fe"
+  },
+  {
+    "name": "R-random",
+    "normal": "ac889c81e8d71ab96a5fa23b8c7129fc4edc0000336215edcdc593ec31b442de",
+    "compact": "4b2ff55979d9deef29673050430692c842a32f57879ee7cb8305d1593b8195ac",
+    "execution": "966b5c6641d73fe15a4084df1b46b27ac7d36c3d560bd3c855dfb40a84844a4a"
+  },
+  {
+    "name": "R-interactions",
+    "normal": "35b0110ca1944dc628538d5d6b1c57f4a2e4013066ed48cb04d4869bf416964f",
+    "compact": "527d000f0404fc97ff60e5d730db4badd94dd09f9c53f972c3df1a5b64eee64d",
+    "execution": "3380e6a410c88cf8301381f17cd81d340c59226e5c1e6e259eca2c3ab241d56e"
+  },
+  {
+    "name": "S-random",
+    "normal": "6d9e83b2054c9f02f2c270546dd98866bef276f29573fb60d4b59e78269d23ec",
+    "compact": "4536da3126600bdca7d6dce1d8888c81b1177dba7e2af1d1ee7eb99307322212",
+    "execution": "d2cd6d4785abbbd21daf752523b879090ae4c304a1162b548b86e2641b7881c9"
+  },
+  {
+    "name": "S-interactions",
+    "normal": "cfaf6bc76ebab3aeac92fb1c2ab61d11136a206c8cfcadaba910450bf1c40b53",
+    "compact": "1d8f3503439c954425ed7b9b659b597616dfc84a309b4cd2f137ecf171da98f2",
+    "execution": "e87af9db12604acb6e45c343bba76419dcde0493bbae9cc7c34a6956c95471ed"
+  },
+  {
+    "name": "T-random",
+    "normal": "04f06949e4f75d7f1b6babd4c25681478d52c124a3faf4173c1903f84e769951",
+    "compact": "ef58cbe865c3d328ce897131543684f701650a90e90a098308c94bec0080700f",
+    "execution": "3bdcecd204b08235869dc73f58aacd8c7ce5266179b1972577a6c68c4fb86786"
+  },
+  {
+    "name": "T-interactions",
+    "normal": "835d5feb1e6ed02d1dc9fbf7fe6d7e9be288380bbcfd6997de82f6071e444b69",
+    "compact": "85681e2c1acdfecd024e444d3ba7aaf38f3a32a912a1a23e137292255fc70267",
+    "execution": "3edbaba3ed905190eeb1b7bd0a48878b4f5e0f3fbb6a9422b1180a78f8bdfaed"
+  },
+  {
+    "name": "U-random",
+    "normal": "3e835e8ca4b7bd3dda55fd163c03a40acb1bc5851e8f40fc874d8c85baea807c",
+    "compact": "45ec6b7ab166632820364535a567441662d93e833d54f5a0885ab277ec99a1f6",
+    "execution": "29cbad01ba77e6a24bef5111f1eb6688af784473ff4b27a5c73886a0b135946a"
+  },
+  {
+    "name": "U-interactions",
+    "normal": "81a18b814b92c7141930d74edba008adbb6ef6a9e6f7874cdb881ae8679d7de0",
+    "compact": "4ba3635844b07a1d0376d6ab25dd644b2f2dcf51c370890bc1d03082959dfaea",
+    "execution": "df0c1d48c64faa238bec2e6df3d58d2505502fa2ad4a2b25912d7659bc5eed0f"
+  },
+  {
+    "name": "V-random",
+    "normal": "2e1b89d92b0f38d1246a0fb25d5a41332e58ec902fd92d93328199b9eedaf33d",
+    "compact": "5be4bb84620273418e58ee501f1f89d3098170c3083a54c4960c99923c363714",
+    "execution": "1f01d76f2834f2055e0a830233bbf3b6b1c8dcf0e2a84ff4d56ba9be3006baac"
+  },
+  {
+    "name": "V-interactions",
+    "normal": "50acd409cd1a3db790ce9097e48bc88bd7b8aec1f3531933a3de60ad60f7a09d",
+    "compact": "cd93bcf613c3597a6114684caf34a695cc58f739a3faf0ea222d4bc55bb3be25",
+    "execution": "8f5200ed69b61f23b687d756006fcaef54d0951977ab7f4492d216996c143478"
+  }
+]

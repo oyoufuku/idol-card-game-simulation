@@ -366,4 +366,6 @@ PR34測定は開始指示により固定tag `measurement-pr34-20261015` で開�
 
 ## 最新の追加調整（2026-10-16）
 
-ルール版は `stage-target-charge-20261016-v8`、構築版は `constructed-decks-20261016-v10`、CHARGE policyは `charge-v4-score-tradeoff`。5待機・R6固定温存を廃止し、現在得点と将来在庫で投入を比較する。美穂は消費数×2の自身Appeal、莉奈は相手FRONT2人へ各消費数×1の減少、平尾は味方最高疲労の回復・相手ステージのランダム1人への付与を各消費数×2。5消費時の自身+2はない。確定したカード・編成は[確定差分](docs/simulation/reviewed-burst-20261014.md)と[12デッキ](docs/simulation/constructed-decks-20261016.md)を参照。旧ルール・構築・CPU policyの結果やcheckpointとは混合・再開しない。大量測定は開始していない。
+ルール版は `immunity-song-bonus-20261017-v9`、構築版は `constructed-decks-20261017-v11`、CHARGE policyは `charge-v4-score-tradeoff`。5待機・R6固定温存を廃止し、現在得点と将来在庫で投入を比較する。美穂は消費数×2の自身Appeal、莉奈は相手FRONT2人へ各消費数×1の減少、平尾は味方最高疲労の回復・相手ステージのランダム1人への付与を各消費数×2。5消費時の自身+2はない。確定したカード・編成は[確定差分](docs/simulation/reviewed-burst-20261014.md)と[12デッキ](docs/simulation/constructed-decks-20261016.md)を参照。旧ルール・構築・CPU policyの結果やcheckpointとは混合・再開しない。大量測定は開始していない。
+
+2026-10-17追加確定：対スキルはPR41前の編成へ戻し、クールは現在の全員クール8人を維持。光莉・濱岸の特殊曲Bに次回本人Appeal+2を追加。[最新構築](docs/simulation/constructed-decks-20261017.md)。新測定は停止中。

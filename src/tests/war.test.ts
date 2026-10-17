@@ -139,6 +139,6 @@ it('CLIのLEVEL 1/2は別実行でき、デフォルトで能力除外/ペア/Ro
  }finally{rmSync(dir,{recursive:true,force:true});}
 },30000);
 
-it('指定調整後のgenerator全チーム・楽曲・採用理由が複数seedで固定される',()=>{
- for(const [seed,digest] of [[1,'30f7cd92574152a7e5e2df8490a541be40c39a7a984984e09033e5517dd3ac50'],[123,'a57687bdefe93015cc1a042cd53e4334ceec25102a947d30cc53fca8bda587fe'],[876,'080d9994f082bd8c17d5dabb7064324101b5ccd085a8f607cdc3ddf812c2c775']] as const)expect(hash(generateArchetypes(seed,3,'legacy'))).toBe(digest);
+it('大園Aのマイナス無効を反映したgenerator全チーム・楽曲・採用理由が複数seedで固定される',()=>{
+ for(const [seed,digest] of [[1,'4adc30d2c9089deb95d3eba92f7050f9877b72176f29c41bdbb590183dc69d8b'],[123,'d0762eb5604fe37c953b968f436fdc41d051bed1a447893a63f6be080188fe80'],[876,'d2082df686a39b7b583eceebd5589f9f396ac243b869a9f8dfda0c253597b0d4']] as const)expect(hash(generateArchetypes(seed,3,'legacy'))).toBe(digest);
 });

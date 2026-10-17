@@ -88,7 +88,7 @@ export function calcBoth(p1: Player, p2: Player, song: Song, detailed = true, ef
       const reduction = idsBack(p).reduce((sum, id) => sum + (autoEnabled(p, opp, id) ? skillFor(id,p).backCenterMitigation || 0 : 0), 0);
       if (reduction) { for(const id of idsBack(p))if(autoEnabled(p,opp,id)&&skillFor(id,p).backCenterMitigation)p.states[id].autoTriggered=true; n = Math.min(0, n + reduction); reason = '小島A軽減'; }
     }
-    if (skill.immuneAppeal && skillEnabled(p,m.id,'BURST') && st.burstActive) { n = n<0?0:n*2; reason = [reason, '大園B×2'].filter(Boolean).join(' / '); }
+    if ((skill.immuneAppeal||skill.doubleBurstGains) && skillEnabled(p,m.id,'BURST') && st.burstActive) { n = n<0?0:n*2; reason = [reason, '大園B×2'].filter(Boolean).join(' / '); }
     return { n, reason, ...(blocker===undefined?{}:{blocker,blocked}) };
   }
   // Snapshot resolved positive modifiers before copies; two copying AUTOs cannot recurse.

@@ -333,7 +333,7 @@ export const IDOLS: Idol[] = [
     "base": 3,
     "A": "シンメがクールなら、自身とシンメのAppealをそれぞれ+1する。",
     "Bcond": "パフォーマンス終了時、CENTER・FRONT-L・FRONT-Rの3人全員がクール。",
-    "B": "次のパフォーマンスの楽曲を「ジャマイカビール」に変更する。",
+    "B": "次のパフォーマンスの楽曲を「ジャマイカビール」に変更し、そのパフォーマンス中、自身のAppealを+2する。",
     "C": null,
     "skill": "endo_hikari"
   },
@@ -355,9 +355,9 @@ export const IDOLS: Idol[] = [
       "Appeal増減"
     ],
     "base": 4,
-    "A": "自身はスキルおよび楽曲によるAppealの増減を受けない。",
+    "A": "自身にマイナス無効を適用する。",
     "Bcond": "R5以降に、自身がFRONTまたはCENTERでパフォーマンスを終了する。",
-    "B": "BURST中、自身のAUTOによるAppeal増減無効を解除し、スキル・楽曲由来のAppeal上昇量を2倍にする。スキル・楽曲由来のAppeal減少は受けない。",
+    "B": "BURST中、自身が受けるスキル・楽曲由来のAppeal上昇量を2倍にする。スキル・楽曲由来のAppeal減少は受けない。",
     "C": null,
     "skill": "ozono"
   },
@@ -1101,7 +1101,7 @@ export const IDOLS: Idol[] = [
     "base": 4,
     "A": "現在の楽曲属性が前ラウンドと同じなら、自身のAppealを+2する。R1は発動しない。",
     "Bcond": "自身のAUTOが累計2回発動する。",
-    "B": "次のパフォーマンスの楽曲を「NO WAR in the future」に変更する。",
+    "B": "次のパフォーマンスの楽曲を「NO WAR in the future」に変更し、そのパフォーマンス中、自身のAppealを+2する。",
     "C": null,
     "skill": "hamagishi"
   },

@@ -54,12 +54,12 @@ it('疲労回復は河田から松田好花へ交換し、回復コア・楽曲�
  expect(count(48)).toBe(2);expect(count(40)).toBe(1);
 });
 
-it('対スキルは大園を含む条件付き編成に替え、村井の最低1回と全48人の1〜2回起用を維持する',()=>{
- const decks=constructedTeams(),anti=decks.find(t=>t.mainTags[0]==='対スキル')!,multi=decks.find(t=>t.mainTags[0]==='多属性')!;
- expect(anti.members).toEqual([7,19,14,20,15,8,46,36]);expect(anti.songs).toEqual(['V','B','N']);
- expect(anti.members).not.toContain(9);expect(anti.members).not.toContain(39);expect(anti.members).not.toContain(33);
- expect(multi.members).toEqual([22,30,35,46,41,28,17,33]);
+it('対スキルをPR41前に戻し、クール8人統一と全48人の1〜2回起用を維持する',()=>{
+ const decks=constructedTeams(),anti=decks.find(t=>t.mainTags[0]==='対スキル')!,cool=decks.find(t=>t.mainTags[0]==='クール')!;
+ expect(anti.members).toEqual([7,19,9,20,33,8,39,36]);expect(anti.songs).toEqual(['V','B','N']);
+ expect(cool.members).toEqual([11,10,18,14,27,8,20,15]);
+ expect(cool.members.every(id=>IDOLS.find(c=>c.id===id)!.attr==='クール')).toBe(true);
  const count=(id:number)=>decks.slice(0,9).filter(t=>t.members.includes(id)).length;
- expect(count(9)).toBe(1);expect(decks.find(t=>t.mainTags[0]==='フォーメーション移動')!.members).toContain(9);expect(count(15)).toBe(2);
+ expect(count(9)).toBe(2);expect(count(15)).toBe(1);
  for(let id=1;id<=48;id++)expect([1,2]).toContain(count(id));
 });

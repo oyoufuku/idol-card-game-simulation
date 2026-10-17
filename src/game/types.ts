@@ -94,6 +94,7 @@ export interface Skill {
   burstEffects?: (ctx: Context) => AppealEffect[];
   centerEffects?: (ctx: Context) => AppealEffect[];
   immuneAppeal?: boolean;
+  selfAutoShield?: boolean; doubleBurstGains?:boolean;
   copyOppositeAuto?: boolean; copyOppositeGain?:boolean; negativeImmuneOnEntry?:boolean; burstPartyShield?:boolean; cancelEnemyPositions?:boolean; enemyPositionFatigueMultiplier?:number;
   centerSongImmune?: boolean;
   protectCoolFromAuto?: boolean;

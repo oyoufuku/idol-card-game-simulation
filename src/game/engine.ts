@@ -12,7 +12,7 @@ import { calcBoth } from './appeal';
 import { skillFor } from './skills';
 import { finalResult, scoreRound } from './scoring';
 import { effectsFor } from './effects';
-export const GAME_RULE_VERSION='stage-target-charge-20261016-v8';
+export const GAME_RULE_VERSION='immunity-song-bonus-20261017-v9';
 export function stateFor(id: number): IdolState {
   return { charge: 0, spentCharge: 0, lastSpentCharge: 0, samePositionStreak: 0, positionCounts: {}, symmetries: [], positionKinds: [], fatigueStreak: 0, freshStreak: 0, cuteRounds: 0, exactlyTwoCuteRounds: 0, repeatedSongAutos: 0, swapReduction: 0, plain: false, baseAdjustment: 0, fatigueAffected: false, autoTriggered: false, centerTriggered: false, matchedAttribute: null, stats: { auto: 0, ready: 0, center: 0, positions: { CENTER: 0, 'FRONT-L': 0, 'FRONT-R': 0, 'MIDDLE-L': 0, 'MIDDLE-R': 0, BACK: 0 } }, id, fatigue: 0, normalUsed: false, burstActive: false, forcedBurstCount: 0, burstCount: 0, burstStacks: 0, attributeOverride: null, addedAttributes: [],
     autoGainTotal: 0, autoDebuffTotal: 0, lastAutoGain: 0, lastAutoDebuff: 0, lastAppealGain:0, lastOppositeReduction:0,lastOppositeGain:0, nextAutoCarry: 0, activeAutoCarry: 0, burstDebuff: 0, permBonus: 0,

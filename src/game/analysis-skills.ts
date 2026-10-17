@@ -4,8 +4,8 @@ import type { Player,Skill } from './types';
 import {burstSkillSuppressed,suppressBurstHooks} from './skill-suppression';
 export type AblationKind='AUTO'|'BURST'|'CENTER'|'ALL';
 export const SKILL_COMPONENTS:Record<'AUTO'|'BURST'|'CENTER',(keyof Skill)[]>={
- AUTO:['start','post','autoActive','chargeConsumer','positionMultiplier','cancelOppositePosition','pre','autoAppeal','autoEffects','copyOppositeAuto','copyOppositeGain','negativeImmuneOnEntry','fatigueReduction','disableOppositeAuto','backCenterMitigation'],
- BURST:['burstPre','selfBurstShield','reactionPosition','burst','condition','burstEffects','postBurst','postFatigue','positionTeamMultiplier','cancelEnemyFront','cancelEnemyPositions','burstPartyShield','enemyPositionFatigueMultiplier','reactToOpponentBackBurst','reactToTeamBursts','reactToOpponentBurst'],
+ AUTO:['start','post','autoActive','chargeConsumer','positionMultiplier','cancelOppositePosition','pre','autoAppeal','autoEffects','copyOppositeAuto','copyOppositeGain','negativeImmuneOnEntry','selfAutoShield','fatigueReduction','disableOppositeAuto','backCenterMitigation'],
+ BURST:['doubleBurstGains','burstPre','selfBurstShield','reactionPosition','burst','condition','burstEffects','postBurst','postFatigue','positionTeamMultiplier','cancelEnemyFront','cancelEnemyPositions','burstPartyShield','enemyPositionFatigueMultiplier','reactToOpponentBackBurst','reactToTeamBursts','reactToOpponentBurst'],
  CENTER:['centerEntryFatigueReduction','plainCenter','baseEnemyCenter','centerPositionBonus','centerEffects','centerSongImmune','protectCoolFromAuto','disableOpponentCenter','centerPre','centerAppeal','centerLoss'],
 };
 interface Masks { kinds:Map<number,AblationKind>;cache:Map<number,{base:Skill;filtered:Skill}> }

@@ -2,7 +2,7 @@ import {expect,it} from 'vitest';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {createElement} from 'react';
 import {SONGS,SELECTABLE_SONGS,songById} from '../data/songs';
-import {createGame,executeRound,nextRound,prepareRound} from '../game/engine';
+import {createGame,executeRound,nextRound,prepareRound,preview,createCpuPreview} from '../game/engine';
 import {applyBurst} from '../game/burst';
 import {randomTeam,generateArchetypes} from '../simulation/teams';
 import {Setup} from '../components/Setup';
@@ -29,4 +29,21 @@ it('ENCORE通常抽選は20曲のみ。R7のB変更は特殊曲にできるが�
  const g=make();g.round=7;
  for(const random of [0,.49,.999]){g.encoreSong=undefined;prepareRound(g,()=>random);expect([...g.p1.songs,...g.p2.songs]).toContain(g.roundSong.id);expect(g.roundSong.selectable).not.toBe(false);}
  const pool=[...g.p1.songs,...g.p2.songs],deck=[...g.songDeck];applyBurst(g,g.p1,g.p2,46,true,()=>.5);prepareRound(g,()=>{throw new Error('特殊楽曲ではENCOREも抽選しない');});expect(g.roundSong.id).toBe('S');expect(g.songDeck).toEqual(deck);expect([...g.p1.songs,...g.p2.songs]).toEqual(pool);
+});
+
+it.each([[14,'K'],[46,'S']] as const)('特殊曲B %iは次のパフォーマンスの本人だけ+2し、予測/CPU/実処理と効果終了が一致する', (id,song)=>{
+ for(const forced of [false,true]){
+  const g=make();applyBurst(g,g.p1,g.p2,id,forced,()=>.5);g.roundResolved=true;nextRound(g,()=>.5);
+  expect(g.roundSong.id).toBe(song);
+  const a=preview(g),cpu=createCpuPreview(g)(g.p1.formation,g.p2.formation);
+  const bonus=(r:typeof a)=>r.p1.members.flatMap(m=>(m.breakdown||[]).filter(e=>e.sourceId===id&&e.kind==='B').map(e=>({id:m.id,amount:e.amount})));
+  expect(bonus(a)).toEqual([{id,amount:2}]);expect(cpu.p1.total).toBe(a.p1.total);
+  expect(executeRound(g).p1.total).toBe(a.p1.total);nextRound(g,()=>.5);
+  expect(bonus(preview(g))).toEqual([]);
+ }
+});
+it.each([14,46])('特殊曲B %iの本人+2はJOYFUL LOVEで解除する',id=>{
+ const g=make();applyBurst(g,g.p1,g.p2,id,true,()=>.5);g.roundResolved=true;nextRound(g,()=>.5);g.roundSong=songById('V');
+ const a=preview(g);expect(a.players[0].states[id].burstSelfAppeal).toBe(0);
+ expect(a.p1.members.flatMap(m=>(m.breakdown||[]).filter(e=>e.sourceId===id&&e.kind==='B'))).toEqual([]);
 });
