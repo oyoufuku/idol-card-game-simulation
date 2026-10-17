@@ -1,0 +1,85 @@
+name: Continue PR41 measurement through L2
+run-name: PR41 RANDOM WAR L2 / source 38988521338
+on:
+  workflow_run:
+    workflows: [Constructed decks and RANDOM through L1]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pr41-level2-38988521338
+  cancel-in-progress: false
+jobs:
+  level2:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.id == 38988521338 &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_sha == '6c7801e37f36b5f9f9ab1c7c57efb444caeadcfd')
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      # The analysis runs the original measured source, not the newer workflow commit.
+      MEASURED_SOURCE_SHA: 6c7801e37f36b5f9f9ab1c7c57efb444caeadcfd
+      SOURCE_RUN_ID: '38988521338'
+      SIMULATION_INPUTS: >-
+        {"scenario":"CUSTOM","mode":"all","archetype_selection":"constructed","cpu_strategy":"charge-archetype","matches_per_matchup":50,"random_matches":1000,"seed":1,"workers":0,"fast_simulation":true,"burst_round_trace":true,"cpu_search":"two-stage","preview_candidates":"100","max_new_matches":0,"runtime_minutes":300,"retention_days":14,"analysis_level":"level2","war_samples_per_card":50,"war_workers":0,"war_max_new_jobs":0,"war_detail_ids":"","war_skill_ablation":"AUTO,BURST,CENTER,ALL","war_pairs":"","continue_to_level2":false,"resume_run_id":"38988521338","resume_compatible_commit":""}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: 6c7801e37f36b5f9f9ab1c7c57efb444caeadcfd
+          persist-credentials: false
+      - name: Verify completed L1 and select its artifact
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'JS'
+          import {appendFileSync} from 'node:fs';
+          const base=`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.SOURCE_RUN_ID}`;
+          async function api(url) {
+            const response=await fetch(url,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},signal:AbortSignal.timeout(30000)});
+            if(!response.ok)throw Error(`Source API HTTP ${response.status}`);
+            return response.json();
+          }
+          const run=await api(base);
+          if(run.status!=='completed'||run.conclusion!=='success'||run.head_sha!==process.env.MEASURED_SOURCE_SHA)throw Error('Original run must complete successfully at the pinned source commit');
+          const listing=await api(base+'/artifacts?per_page=100');
+          const matches=listing.artifacts.filter(a=>!a.expired&&a.name.startsWith('simulation-results-level1-all-'));
+          if(matches.length!==1)throw Error('Expected exactly one completed L1 artifact; never restore the baseline artifact as L1');
+          appendFileSync(process.env.GITHUB_OUTPUT,'artifact_name='+matches[0].name+'\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,`Source run: ${run.html_url}\nMeasured source: ${run.head_sha}\nWorkflow configuration: ${process.env.GITHUB_WORKFLOW_SHA}\nResume artifact: ${matches[0].name}\nL2 only; no L3 dispatch.\n`);
+          JS
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@a8198c4bff370c8506180b035930dea56dbd5288
+        with:
+          version: '11.19.0'
+          cache: false
+      - run: pnpm install --frozen-lockfile
+      - name: Validate unchanged simulation contract
+        id: prepare
+        run: |
+          test "$(git rev-parse HEAD)" = "$MEASURED_SOURCE_SHA"
+          GITHUB_SHA="$MEASURED_SOURCE_SHA" node --import tsx scripts/actions-simulation.ts prepare
+      - name: Restore L1 artifact with baseline and checksum manifest
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: '38988521338'
+          name: ${{ steps.source.outputs.artifact_name }}
+          path: simulation-results/restored
+      - name: Execute L2 RANDOM WAR only
+        run: GITHUB_SHA="$MEASURED_SOURCE_SHA" node --import tsx scripts/actions-simulation.ts run
+      - name: Save results including incomplete checkpoints
+        if: always() && steps.prepare.outcome == 'success'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: ${{ steps.prepare.outputs.artifact_name }}
+          path: simulation-results/remote/
+          if-no-files-found: error
+          retention-days: 14
