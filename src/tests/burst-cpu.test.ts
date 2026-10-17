@@ -94,7 +94,7 @@ it('実候補の現在Appeal差を少し犠牲にして、B疲労付与と次回
  g.round=g.p1.round=g.p2.round=4;g.roundSong=songById('J');g.playedSongs=['L','J','C','J'];
  g.p1.formation=formationFromArray([45,43,9,13,17]);
  for(const p of [g.p1,g.p2])for(const id of p.ids)p.states[id].normalUsed=true;
- for(const id of g.p1.ids){const s=g.p1.states[id];s.prevPos=s.pos=posOf(g.p1,id);s.fatigue=3;}
+ for(const id of g.p1.ids){const s=g.p1.states[id];s.prevPos=s.pos=posOf(g.p1,id);s.fatigue=4;}
  for(const id of [32,38,44]){const s=g.p1.states[id];s.charge=3;s.normalUsed=false;s.prevPos='BACK';}
  g.p1.states[38].charge=0;
  for(const slot of ['CENTER','FRONT-L','FRONT-R','MIDDLE-L'] as const)g.p1.states[g.p1.formation[slot]].lockedPos=slot;

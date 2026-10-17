@@ -223,7 +223,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "38": {
-    "A": "【チャージ】\n【登場】時、消費数×2、相手CENTERのAppeal−。",
+    "A": "【チャージ】\n【登場】時、消費数分、相手FRONT2人のAppealを各−。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"
@@ -259,7 +259,7 @@ export const CARD_TEXT: Record<number,{A:string;Bcond:string;B:string;C:string}>
     "C": "—"
   },
   "44": {
-    "A": "【チャージ】\n【登場】時、消費数×2、味方の最高疲労1人を−／相手の最高疲労1人を＋。",
+    "A": "【チャージ】\n【登場】時、消費数×2、味方の最高疲労1人を−／相手ステージのランダム1人を＋。",
     "Bcond": "【登場】してチャージ3以上を消費。",
     "B": "【再充填】",
     "C": "—"

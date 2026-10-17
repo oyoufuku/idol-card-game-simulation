@@ -15,15 +15,16 @@ function hirao(){
  g.p1.formation=formationFromArray([8,44,18,24,27]);g.p1.states[44].charge=3;
  return g;
 }
-it('平尾はCENTERではなく両軍8人の最高疲労を対象にし、BACKSにも消費チャージ×2を適用する',()=>{
+it('平尾はCENTERではなく味方8人の最高疲労と相手ステージ1人へ消費チャージ×2を適用する',()=>{
  const g=hirao();g.p1.states[8].fatigue=2;g.p1.states[31].fatigue=8;g.p2.states[8].fatigue=1;g.p2.states[31].fatigue=7;
+ g.p1.performanceRandomById={[44]:[.5,0]};
  const before=structuredClone(g),predicted=preview(g);expect(g).toEqual(before);
- expect(predicted.players[0].states[31].fatigue).toBe(2);expect(predicted.players[1].states[31].fatigue).toBe(13);
- expect(predicted.players[0].states[8].fatigue).toBe(2);expect(predicted.players[1].states[8].fatigue).toBe(1);
+ expect(predicted.players[0].states[31].fatigue).toBe(2);expect(predicted.players[1].states[31].fatigue).toBe(7);
+ expect(predicted.players[0].states[8].fatigue).toBe(2);expect(predicted.players[1].states[8].fatigue).toBe(7);
  expect(predicted.players[0].states[44]).toMatchObject({spentCharge:3,charge:0});
  const actual=executeRound(g);expect([actual.p1.total,actual.p2.total]).toEqual([predicted.p1.total,predicted.p2.total]);
  const effect=g.skillEffects!.find(e=>e.id===44&&e.kind==='A'&&e.targets.some(t=>t.id===31&&t.label==='疲労値'));
- expect(effect?.targets).toEqual(expect.arrayContaining([expect.objectContaining({side:0,id:31,delta:-6}),expect.objectContaining({side:1,id:31,delta:6})]));
+ expect(effect?.targets).toEqual(expect.arrayContaining([expect.objectContaining({side:0,id:31,delta:-6}),expect.objectContaining({side:1,id:8,delta:6})]));
  expect(CARD_TEXT[44].A).toContain('最高疲労');
 });
 it('平尾の同率抽選はカード別の予約乱数を使い、previewを繰り返しても対象・実処理・乱数を変えない',()=>{
@@ -32,14 +33,23 @@ it('平尾の同率抽選はカード別の予約乱数を使い、previewを繰
  setRandomSources(g,{players:[()=>{throw Error('live P1 RNG');},()=>{throw Error('live P2 RNG');}]});
  const before=structuredClone(g),a=preview(g);for(let n=0;n<3;n++)expect(preview(g)).toEqual(a);expect(g).toEqual(before);
  expect(a.players[0].states[8].fatigue).toBe(8);expect(a.players[0].states[10].fatigue).toBe(2);
- expect(a.players[1].states[24].fatigue).toBe(15);expect(a.players[1].states[27].fatigue).toBe(9);
+ expect(a.players[1].states[24].fatigue).toBe(9);expect(a.players[1].states[8].fatigue).toBe(6);expect(a.players[1].states[27].fatigue).toBe(9);
  expect(executeRound(g).p1.total).toBe(a.p1.total);
 });
-it('平尾は最高疲労の免疫対象を選んでも別人へ再抽選せず、回復は0未満にならず、AUTO無効なら消費しない',()=>{
- const g=hirao();g.p1.states[31].fatigue=2;g.p2.states[31].fatigue=9;g.p2.states[31].shield=true;g.p2.states[28].fatigue=8;
+it('平尾はステージの免疫対象を選んでも別人へ再抽選せず、回復は0未満にならず、AUTO無効なら消費しない',()=>{
+ const g=hirao();g.p1.states[31].fatigue=2;g.p2.states[31].fatigue=9;g.p2.states[8].shield=true;g.p1.performanceRandomById={[44]:[0,0]};g.p2.states[28].fatigue=8;
  const a=preview(g);expect(a.players[0].states[31].fatigue).toBe(0);expect(a.players[1].states[31].fatigue).toBe(9);expect(a.players[1].states[28].fatigue).toBe(8);
  setAnalysisSkillMasks(g.p1,[{id:44,kind:'AUTO'}]);const b=preview(g);
  expect(b.players[0].states[44]).toMatchObject({charge:3,spentCharge:0});expect(b.players[0].states[31].fatigue).toBe(2);
+});
+it('平尾の相手抽選は5つのステージ枠を等幅で選び、高疲労BACKSを対象にしない',()=>{
+ const stage=[8,10,18,24,27];
+ for(const [index,draw] of [.01,.21,.41,.61,.81].entries()){
+  const g=hirao();g.p2.states[31].fatigue=20;g.p1.performanceRandomById={[44]:[0,draw]};
+  const p=preview(g).players[1];
+  for(const id of stage)expect(p.states[id].fatigue).toBe(id===stage[index]?6:0);
+  expect(p.states[31].fatigue).toBe(20);
+ }
 });
 it('平尾と山口を同じチームに置いても抽選を別に予約し、公開スナップショットの配列を共有しない',()=>{
  let draw=0;const g=createGame([44,42,8,10,18,24,27,30],[8,10,18,24,27,28,30,31],['A','B','C'],['D','E','F'],'local',()=>++draw/100);

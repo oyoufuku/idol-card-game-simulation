@@ -25,14 +25,11 @@ function scenario(round:number){
  for(const id of [32,38,44]){const s=g.p1.states[id];s.charge=round===1?0:round===4?3:5;if(round===6){s.prevPos='FRONT-L';s.normalUsed=true;s.burstCount=1;s.lastSpentCharge=4;}}
  g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];return g;
 }
-it('チャージ5未満は5人の支援で戦い、満充填投入・R6温存・R7再登場を選ぶ',()=>{
+it('現在得点と将来チャージを比較し、R7では将来価値を加点しない',()=>{
  for(const round of [1,4,5,6,7]){
-  const g=scenario(round),before=structuredClone(g),charge=evaluateChargeFormation(g,1,prng(1));expect(g).toEqual(before);expect(validateFormation(g.p1,charge.formation)).toBeNull();expect(charge.checked).toBe(120);
-  const stage=Object.values(charge.formation).filter(id=>chargeConsumers(g.p1).includes(id));
-  if(round===1||round===4||round===6)expect(stage).toHaveLength(0);
-  if(round===5)expect(stage).toEqual(expect.arrayContaining([32,38]));
-  if(round===7){expect(stage).toHaveLength(3);expect('futureValue' in charge&&charge.futureValue).toBe(0);}
-  if(round===6)expect(charge.formation).not.toEqual(evaluateCpuFormation(g,1,prng(1)).formation);
+  const g=scenario(round),before=structuredClone(g),e=evaluateChargeFormation(g,1,prng(1));
+  expect(g).toEqual(before);expect(validateFormation(g.p1,e.formation)).toBeNull();expect(e.checked).toBe(120);
+  if(round===7)expect('futureValue' in e&&e.futureValue).toBe(0);
  }
 },20000);
 it('CHARGEも公開状態だけを参照し、同seed再現・同評価の選択に非seed乱数を使わない',()=>{
@@ -148,11 +145,12 @@ it.each(['exhaustive','two-stage'] as const)('5未満でも温存すると予測
  expect('recoverable' in e&&e.recoverable).toBe(true);expect(e.outcome).toBeGreaterThanOrEqual(0);
  expect(Object.values(e.formation).some(id=>chargeConsumers(g.p1).includes(id))).toBe(true);
 },20000);
-it('二段階評価でも3/4チャージの登場を抑え、支援5人の合法配置を精密評価に残す',()=>{
+it('数学的敗北の危険がなくても3/4チャージで得点できれば投入する（概算・精密とも）',()=>{
  for(const n of [3,4]){
   const g=scenario(4);for(const id of chargeConsumers(g.p1))g.p1.states[id].charge=n;g.publicPlayers=[clonePlayer(g.p1),clonePlayer(g.p2)];
   const e=evaluateChargeFormation(g,1,prng(1),{mode:'two-stage',previewCandidates:100});
-  expect(Object.values(e.formation).filter(id=>chargeConsumers(g.p1).includes(id))).toHaveLength(0);
+  expect('recoverable' in e&&e.recoverable).toBe(true);
+  expect(Object.values(e.formation).some(id=>chargeConsumers(g.p1).includes(id))).toBe(true);
   expect(e.checked).toBeLessThanOrEqual(100);expect(validateFormation(g.p1,e.formation)).toBeNull();
  }
 },20000);

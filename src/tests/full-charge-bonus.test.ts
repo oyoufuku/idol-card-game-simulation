@@ -12,10 +12,10 @@ function scenario(id:number,charge:number){
  setAnalysisSkillMasks(g.p2,g.p2.ids.map(id=>({id,kind:'ALL'})));
  g.p1.states[id].charge=charge;g.p1.states[id].prevPos='BACK';
  const f=formationFromArray([8,10,18,id,27]);
- if(id===44){g.p1.states[8].fatigue=6;g.p2.states[13].fatigue=6;}
+ if(id===44){g.p1.states[8].fatigue=6;g.p2.states[13].fatigue=6;g.p1.performanceRandomById={[44]:[.5,0]};}
  return {g,f};
 }
-it.each([32,38,44])('チャージ型%sは消費チャージ×2を元のAUTOへ適用、通常予測・CPU予測・実行が一致する',id=>{
+it.each([32,38,44])('チャージ型%sは確定した消費チャージ倍率をAUTOへ適用、通常予測・CPU予測・実行が一致する',id=>{
  for(const charge of [0,1,2,3,4,5]){
   const {g,f}=scenario(id,charge),before=structuredClone(g),pred=preview(g,f,g.p2.formation),cpu=createCpuPreview(g)(f,g.p2.formation);
   expect(g).toEqual(before);expect(cpu.p1.members.map(m=>m.val)).toEqual(pred.p1.members.map(m=>m.val));
@@ -23,7 +23,7 @@ it.each([32,38,44])('チャージ型%sは消費チャージ×2を元のAUTOへ�
   const own=pred.p1.members.find(m=>m.id===id)!;
   const actualAuto=(own.breakdown||[]).filter(x=>x.sourceId===id&&x.kind==='A').reduce((n,x)=>n+x.amount,0);
   expect(actualAuto).toBe(id===32?charge*2:0);
-  if(id===38)expect(pred.p2.members.find(m=>m.id===g.p2.formation.CENTER)!.breakdown!.filter(e=>e.sourceId===38&&e.kind==='A').reduce((n,e)=>n+e.amount,0)).toBe(charge?-charge*2:0);
+  if(id===38)for(const pos of ['CENTER','FRONT-L','FRONT-R'] as const)expect(pred.p2.members.find(m=>m.id===g.p2.formation[pos])!.breakdown!.filter(e=>e.sourceId===38&&e.kind==='A').reduce((n,e)=>n+e.amount,0)).toBe(pos==='CENTER'||charge===0?0:-charge);
   if(id===44){expect(pred.players[0].states[8].fatigue).toBe(Math.max(0,6-charge*2));expect(pred.players[1].states[13].fatigue).toBe(6+charge*2);}
   const result=executeRound(g,f,g.p2.formation,()=>.5);expect(result.p1.total).toBe(pred.p1.total);expect(result.p1.members.find(m=>m.id===id)!.val).toBe(own.val);
  }
